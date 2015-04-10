@@ -8,7 +8,7 @@ class DashboardController extends BaseController {
 			return Redirect::to('/backend/user/login');
 		}
 
-		return 'Yeah';
+		return View::make('dashboard');
 
 	}
  
