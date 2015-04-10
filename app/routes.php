@@ -13,7 +13,14 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+	return Redirect::to('/backend/dashboard');
 });
 
 Route::get('/test', 'HomeController@showWelcome');
+
+Route::group(array('prefix'=>'backend'), function() {
+
+	Route::controller('dashboard', 'DashboardController');
+	Route::controller('user', 'UserController');
+
+});
