@@ -12,6 +12,7 @@ class CreateYearLevelsTable extends Migration {
 	 */
 	public function up()
 	{
+        DB::table('school_year')->delete();
 		Schema::create('year_levels', function($table) {
             $table->string('id', 36);
             $table->string('school_year_id', 36);
