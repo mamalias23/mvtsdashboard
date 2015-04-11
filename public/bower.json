@@ -16,6 +16,8 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.4",
-    "font-awesome": "~4.3.0"
+    "font-awesome": "~4.3.0",
+    "jquery-validation": "~1.13.1",
+    "bootbox": "~4.4.0"
   }
 }

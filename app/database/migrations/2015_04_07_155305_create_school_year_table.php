@@ -13,9 +13,11 @@ class CreateSchoolYearTable extends Migration {
 	public function up()
 	{
 		Schema::create('school_year', function($table) {
-			$table->increments('id');
-			$table->string('name');
+			$table->string('id', 36);
+            $table->string('school_year');
+			$table->boolean('activated')->default(false);
 			$table->timestamps();
+			$table->primary('id');
 			$table->engine = 'InnoDB';
 		});
 

@@ -13,6 +13,15 @@
         </div>
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
+        <li class="treeview active">
+            <a href="javascript:;">
+                <i class="fa fa-cogs"></i> <span>SETTINGS</span> <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu menu-open">
+                <li class="{{ Request::is('backend/school-year*') ? 'active':'' }}"><a href="{{ url('backend/school-year') }}"><i class="fa fa-circle-o"></i> School Year</a></li>
+                <li class="{{ Request::is('backend/year-level*') ? 'active':'' }}"><a href="{{ url('backend/year-level') }}"><i class="fa fa-circle-o"></i> Year Levels</a></li>
+            </ul>
+        </li>
         <li class="header">MAIN NAVIGATION</li>
         <!-- <li class="treeview">
             <a href="#">
@@ -56,7 +65,7 @@
                 <!-- <i class="fa fa-th"></i>  --><span>Test</span><!--  <small class="label pull-right bg-green">Hot</small> -->
             </a>
         </li>
-        <li class="header"><i class="fa fa-cogs"></i> SETTINGS</li>
+        <li class="header"><i class="fa fa-cogs"></i> USER SETTINGS</li>
         <li>
             <a href="#">
                 <span>Profile</span>

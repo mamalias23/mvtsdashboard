@@ -22,5 +22,7 @@ Route::group(array('prefix'=>'backend'), function() {
 
 	Route::controller('dashboard', 'DashboardController');
 	Route::controller('user', 'UserController');
+	Route::controller('school-year', 'SchoolYearController');
+	Route::controller('year-level', 'YearLevelController');
 
 });
