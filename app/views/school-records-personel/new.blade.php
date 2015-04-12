@@ -19,7 +19,46 @@
     <div class="col-md-8">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">New School Records Personel</h3>
+                <h3 class="box-title">Choose from existing record</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                    <!-- <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button> -->
+                </div>
+            </div>
+            <div class="box-body">
+                {{ Form::open(array('url'=>'/backend/school-records-personel/new-from-existing')) }}
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="personels" class="control-label">Select Personel(s)</label>
+                        {{ 
+                            Form::select(
+                                'personels[]', 
+                                $availablePersonels, 
+                                null,
+                                array(
+                                    'id'=>'personels', 
+                                    'class'=>'form-control select-multiple',
+                                    'data-rule-required'=>'true',
+                                    'multiple'=>'multiple'
+                                )
+                            ) 
+                        }}
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px">
+                    <div class="col-md-12">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-success">SAVE</button>
+                        </div>
+                    </div>
+                </div>
+                {{ Form::close() }}
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">or Add a new School Records Personel</h3>
                 <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 </div>
@@ -36,7 +75,6 @@
                                 array(
                                     'id'=>'first_name', 
                                     'class'=>'form-control',
-                                    'autofocus'=>'',
                                     'data-rule-required'=>'true',
                                 )
                             ) 
@@ -190,7 +228,6 @@
                 {{ Form::close() }}
             </div><!-- /.box-body -->
         </div>
-        <!-- /.box -->
     </div>
 </div>
 

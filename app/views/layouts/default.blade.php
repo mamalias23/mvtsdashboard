@@ -16,6 +16,8 @@
     <link href="{{ asset('plugins/timepicker/bootstrap-timepicker.min.css') }}" rel="stylesheet"/>
     <!-- DATA TABLES -->
     <link href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+    <!-- select2 -->
+    <link href="{{ asset('bower_components/select2/select2.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('plugins/iCheck/all.css') }}" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
@@ -164,6 +166,8 @@
     <!-- DATA TABES SCRIPT -->
     <script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+    <!-- select2 -->
+    <script src="{{ asset('bower_components/select2/select2.min.js') }}" type="text/javascript"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>
 
@@ -185,6 +189,7 @@
             });
 
             $("table.dynamic").dataTable();
+            $("select.select-multiple").select2();
 
         });
     </script>
