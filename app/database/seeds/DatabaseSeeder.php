@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('SentryUserSeeder');
 		$this->call('SentryUserGroupSeeder');
 
+        DB::table('year_levels')->delete();
         DB::table('school_year')->delete();
         $schoolYear = new SchoolYear;
         $schoolYear->school_year = '2014-2015';
