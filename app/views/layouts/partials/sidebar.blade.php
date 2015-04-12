@@ -45,9 +45,9 @@
                 <li><a href="../layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
             </ul>
         </li> -->
-        <li>
-            <a href="#">
-                <!-- <i class="fa fa-th"></i>  --><span>Test</span><!--  <small class="label pull-right bg-green">Hot</small> -->
+        <li class="{{ Request::is('backend/school-records-personel*') ? 'active':'' }}">
+            <a href="{{ url('backend/school-records-personel') }}">
+                <!-- <i class="fa fa-th"></i>  --><span>School Records Personel</span><!--  <small class="label pull-right bg-green">Hot</small> -->
             </a>
         </li>
         <li>

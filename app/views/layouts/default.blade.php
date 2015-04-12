@@ -14,11 +14,16 @@
     <link href="{{ asset('plugins/daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet" type="text/css" />
     <!-- Bootstrap time Picker -->
     <link href="{{ asset('plugins/timepicker/bootstrap-timepicker.min.css') }}" rel="stylesheet"/>
+    <!-- DATA TABLES -->
+    <link href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('plugins/iCheck/all.css') }}" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
     <link href="{{ asset('css/AdminLTE.min.css') }}" rel="stylesheet" type="text/css" />
 <!-- AdminLTE Skins. Choose a skin from the css/skins 
     folder instead of downloading all of them to reduce the load. -->
     <link href="{{ asset('css/skins/_all-skins.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -145,7 +150,8 @@
     <script src="{{ asset('plugins/colorpicker/bootstrap-colorpicker.min.js') }}" type="text/javascript"></script>
     <!-- bootstrap time picker -->
     <script src="{{ asset('plugins/timepicker/bootstrap-timepicker.min.js') }}" type="text/javascript"></script>
-
+    <!-- iCheck -->
+    <script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
     <!-- jqueryValidation -->
     <script src="{{ asset('bower_components/jquery-validation/dist/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('bower_components/jquery-validation/dist/additional-methods.min.js') }}"></script>
@@ -155,6 +161,9 @@
     <script src="{{ asset('plugins/fastclick/fastclick.min.js') }}" type="text/javascript"></script>
     <!-- bootbox -->
     <script src="{{ asset('bower_components/bootbox/bootbox.js') }}"></script>
+    <!-- DATA TABES SCRIPT -->
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>
 
@@ -163,6 +172,7 @@
 
             $("form").validate();
             $("[data-mask]").inputmask();
+            $("[data-mask-mobile]").inputmask({ mask: "+63\\9999999999", "clearIncomplete": true });
 
             $(".delete-record").on("click", function(e) {
                 e.preventDefault();
@@ -173,6 +183,8 @@
                     }
                 }); 
             });
+
+            $("table.dynamic").dataTable();
 
         });
     </script>

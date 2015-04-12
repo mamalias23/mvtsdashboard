@@ -33,12 +33,12 @@
 			<div class="form-group has-feedback">
 				{{ 
 					Form::text(
-					'email', 
+					'username', 
 					null, 
 					array(
-					'id'=>'email', 
+					'id'=>'username', 
 					'class'=>'form-control',
-					'placeholder'=>'Email',
+					'placeholder'=>'Username',
 					'autofocus'=>'',
 					)
 					) 

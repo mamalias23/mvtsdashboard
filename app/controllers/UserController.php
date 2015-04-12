@@ -13,7 +13,7 @@ class UserController extends BaseController {
 		{
 		    // Login credentials
 		    $credentials = array(
-		        'email'    => Input::get('email'),
+		        'username'    => Input::get('username'),
 		        'password' => Input::get('password'),
 		    );
 
@@ -24,7 +24,7 @@ class UserController extends BaseController {
 		}
 		catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
 		{
-		    Session::flash('error','Login field is required.');
+		    Session::flash('error','Username field is required.');
 		    return Redirect::back();
 		}
 		catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
