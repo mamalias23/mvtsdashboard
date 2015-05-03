@@ -8,16 +8,13 @@ class YearLevelController extends BaseController {
         $this->beforeFilter('admin');
     }
 
-    public function getIndex()
+    public function index($school_year_id)
     {
-        //get activated school year
-        $yearActivated = SchoolYear::getActivated() ? SchoolYear::getActivated()->id:0;
-
-        $years = YearLevel::where('school_year_id',$yearActivated)->orderBy('level')->get();
+        $years = YearLevel::where('school_year_id',$school_year_id)->orderBy('level')->get();
         return View::make('year-level.index', compact('years'));
     }
 
-    public function postIndex()
+    public function store($school_year_id)
     {
 
         $hidden_id = Input::get('hidden_id');
@@ -33,18 +30,12 @@ class YearLevelController extends BaseController {
         if($validator->fails()) {
             return Redirect::back()->withErrors($validator);
         }
-
-        //get activated school year
-        $yearActivated = SchoolYear::getActivated();
-        if(!$yearActivated)
-            return Redirect::back()->withError('Please activate a school year'); 
-
         
         if($hidden_id)
             $year = YearLevel::find($hidden_id);
         else
             $year = new YearLevel;
-        $year->school_year_id = $yearActivated->id;
+        $year->school_year_id = $school_year_id;
         $year->level = Input::get('level');
         $year->description = Input::get('description');
         $year->save();
@@ -55,7 +46,7 @@ class YearLevelController extends BaseController {
             return Redirect::back()->withSuccess('Year level has been successfully added.');
     }
 
-    public function getDelete($id)
+    public function destroy($school_year_id, $id)
     {
         $year = YearLevel::find($id);
         if(!$year)

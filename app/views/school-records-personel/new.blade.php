@@ -8,7 +8,7 @@
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{ url('backend') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ url('backend/school-records-personel') }}">School Records Personel</a></li>
+    <li><a href="{{ route('backend.school-year.personels.index') }}">School Records Personel</a></li>
     <li class="active">New</li>
 </ol>
 
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="box-body">
-                {{ Form::open(array('url'=>'/backend/school-records-personel/new-from-existing')) }}
+                {{ Form::open(array('route'=>array('backend.school-year.personels.storeFromExisting', SchoolYear::getActivated()->id))) }}
                 <div class="row">
                     <div class="col-md-12">
                         <label for="personels" class="control-label">Select Personel(s)</label>
@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="box-body">
-                {{ Form::open(array('url'=>'/backend/school-records-personel/new')) }}
+                {{ Form::open(array('route'=>array('backend.school-year.personels.store', SchoolYear::getActivated()->id))) }}
                 <div class="row">
                     <div class="col-md-5">
                         <label for="first_name" class="control-label">First name</label>

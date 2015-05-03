@@ -51,7 +51,7 @@
                                             data-description="{{ $year->description }}" 
                                             class="btn btn-xs btn-success edit-by-modal"
                                         >Edit</a>
-                                        <a href="javascript:;" data-href="{{ url('backend/year-level/delete/'.$year->id) }}" data-message="Are you sure you want to delete?" class="btn btn-xs btn-danger delete-record">Delete</a>
+                                        <a href="{{ route('backend.school-year.year-level.destroy', array(SchoolYear::getActivated()->id, $year->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -74,7 +74,7 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {{ Form::open(array('url'=>'/backend/year-level')) }}
+            {{ Form::open(array('route'=>array('backend.school-year.year-level.index', SchoolYear::getActivated()->id))) }}
             {{ 
                 Form::hidden(
                     'hidden_id', 

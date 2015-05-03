@@ -8,19 +8,15 @@ class SchoolRecordsPersonelController extends BaseController {
         $this->beforeFilter('admin');
     }
 
-    public function getIndex()
+    public function index($school_year_id)
     {
         //get activated school year
-        $yearActivated = SchoolYear::getActivated();
-        if(!$yearActivated)
-            return Redirect::back()->withError('Please activate a school year'); 
-
+        $yearActivated = SchoolYear::find($school_year_id);
         $personels = $yearActivated->records_personel()->get();
-
         return View::make('school-records-personel.index', compact('personels'));
     }
 
-    public function getNew()
+    public function create($school_year_id)
     {
         //get activated school year
         $yearActivated = SchoolYear::getActivated();
@@ -37,7 +33,7 @@ class SchoolRecordsPersonelController extends BaseController {
         return View::make('school-records-personel.new', compact('availablePersonels'));
     }
 
-    public function postNew()
+    public function store($school_year_id)
     {
         try {
 
@@ -60,11 +56,6 @@ class SchoolRecordsPersonelController extends BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             }
 
-            //get activated school year
-            $yearActivated = SchoolYear::getActivated();
-            if(!$yearActivated)
-                return Redirect::back()->withError('Please activate a school year'); 
-
             $user = Sentry::getUserProvider()->create(array(
                 'username'    => Input::get('username'),
                 'password' => Input::get('password') ?: '12345678',
@@ -83,13 +74,13 @@ class SchoolRecordsPersonelController extends BaseController {
             $user->addGroup($group);
 
             $personel = new SchoolRecordPersonel;
-            $personel->school_year_id = $yearActivated->id;
+            $personel->school_year_id = $school_year_id;
             $personel->user_id = $user->id;
             $personel->save();
 
             DB::commit();
 
-            return Redirect::to('backend/school-records-personel')->withSuccess('Personel has been successfully added.');
+            return Redirect::route('backend.school-year.personels.index', array($school_year_id))->withSuccess('Personel(s) has been successfully added.');
 
         } catch(Exception $e) {
             DB::rollback();
@@ -99,7 +90,7 @@ class SchoolRecordsPersonelController extends BaseController {
 
     }
 
-    public function postNewFromExisting()
+    public function storeFromExisting($school_year_id)
     {
         try {
 
@@ -116,23 +107,18 @@ class SchoolRecordsPersonelController extends BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             }
 
-            //get activated school year
-            $yearActivated = SchoolYear::getActivated();
-            if(!$yearActivated)
-                return Redirect::back()->withError('Please activate a school year'); 
-
             $personels = Input::get('personels');
             foreach ($personels as $key => $personel) {
                 $user = User::find($personel);
                 $personel = new SchoolRecordPersonel;
-                $personel->school_year_id = $yearActivated->id;
+                $personel->school_year_id = $school_year_id;
                 $personel->user_id = $user->id;
                 $personel->save();
             }
 
             DB::commit();
 
-            return Redirect::to('backend/school-records-personel')->withSuccess('Personel(s) has been successfully added.');
+            return Redirect::route('backend.school-year.personels.index', array($school_year_id))->withSuccess('Personel(s) has been successfully added.');
 
         } catch(Exception $e) {
             DB::rollback();
@@ -140,7 +126,7 @@ class SchoolRecordsPersonelController extends BaseController {
         }
     }
 
-    public function getEdit($id)
+    public function edit($school_year_id, $id)
     {
         $personel = SchoolRecordPersonel::find($id);
         if(!$personel)
@@ -149,7 +135,7 @@ class SchoolRecordsPersonelController extends BaseController {
         return View::make('school-records-personel.edit', compact('personel'));
     }
 
-    public function postEdit($id)
+    public function update($school_year_id, $id)
     {
         try {
 
@@ -178,11 +164,6 @@ class SchoolRecordsPersonelController extends BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             }
 
-            //get activated school year
-            $yearActivated = SchoolYear::getActivated();
-            if(!$yearActivated)
-                return Redirect::back()->withError('Please activate a school year'); 
-
             $user = Sentry::findUserById($personel->user->id);
             $user->username = Input::get('username');
             if(Input::get('password'))
@@ -198,7 +179,7 @@ class SchoolRecordsPersonelController extends BaseController {
 
             DB::commit();
 
-            return Redirect::to('backend/school-records-personel')->withSuccess('Personel has been successfully updated.');
+            return Redirect::route('backend.school-year.personels.index', array($school_year_id))->withSuccess('Personel has been successfully updated.');
 
         } catch(Exception $e) {
             DB::rollback();
@@ -206,7 +187,7 @@ class SchoolRecordsPersonelController extends BaseController {
         }
     }
 
-    public function getDelete($id) {
+    public function destroy($school_year_id, $id) {
         try {
 
             DB::beginTransaction();
@@ -218,7 +199,8 @@ class SchoolRecordsPersonelController extends BaseController {
             $personel->delete();
 
             DB::commit();
-            return Redirect::to('backend/school-records-personel')->withSuccess('Personel has been successfully deleted.');
+            
+            return Redirect::route('backend.school-year.personels.index', array($school_year_id))->withSuccess('Personel has been successfully deleted.');
 
         } catch(Exception $e) {
             DB::rollback();

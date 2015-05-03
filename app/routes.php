@@ -22,8 +22,14 @@ Route::group(array('prefix'=>'backend'), function() {
 
 	Route::controller('dashboard', 'DashboardController');
 	Route::controller('user', 'UserController');
-	Route::controller('school-year', 'SchoolYearController');
-    Route::controller('year-level', 'YearLevelController');
-	Route::controller('school-records-personel', 'SchoolRecordsPersonelController');
+
+	Route::get('school-year/{school_year}/activate', ['as' => 'backend.school-year.activate', 'uses' => 'SchoolYearController@activate']);
+	Route::resource('school-year', 'SchoolYearController');
+    Route::resource('school-year.year-level', 'YearLevelController');
+    Route::post('school-year/{school_year}/personels/existing', ['as' => 'backend.school-year.personels.storeFromExisting', 'uses' => 'SchoolRecordsPersonelController@storeFromExisting']);
+	Route::resource('school-year.personels', 'SchoolRecordsPersonelController');
+	Route::resource('school-year.departments', 'DepartmentsController');
+	Route::resource('school-year.sections', 'SectionsController');
+	Route::resource('school-year.subjects', 'SubjectsController');
 
 });

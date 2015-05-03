@@ -8,13 +8,13 @@ class SchoolYearController extends BaseController {
 		$this->beforeFilter('admin');
 	}
 
-	public function getIndex()
+	public function index()
 	{
         $years = SchoolYear::orderBy('school_year')->get();
 		return View::make('school-year.index', compact('years'));
 	}
 
-    public function postIndex()
+    public function store()
     {
         $validator = Validator::make(
             Input::all(),
@@ -39,7 +39,7 @@ class SchoolYearController extends BaseController {
 
     }
 
-    public function getDelete($id)
+    public function destroy($id)
     {
         try {
 
@@ -60,7 +60,7 @@ class SchoolYearController extends BaseController {
         
     }
 
-    public function getActivate($id)
+    public function activate($id)
     {
         $year = SchoolYear::find($id);
         if(!$year)

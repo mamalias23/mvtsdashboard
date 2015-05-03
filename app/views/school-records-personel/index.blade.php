@@ -21,7 +21,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">School Records Personel</h3>
                 <div class="box-tools pull-right">
-                    <a href="{{ url('backend/school-records-personel/new') }}" class="btn btn-xs btn-info">Add new</a>
+                    <a href="{{ route('backend.school-year.personels.create', array(SchoolYear::getActivated()->id)) }}" class="btn btn-xs btn-info">Add new</a>
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 </div>
             </div>
@@ -48,8 +48,8 @@
                             <td>{{ $personel->user->mobile_number }}</td>
                             <td>{{ $personel->user->full_address }}</td>
                             <td>
-                                <a href="{{ url('backend/school-records-personel/edit/'.$personel->id) }}" class="btn btn-success btn-xs">Edit</a>
-                                <a href="javascript:;" data-href="{{ url('backend/school-records-personel/delete/'.$personel->id) }}" data-message="Are you sure you want to delete?" class="btn btn-danger btn-xs delete-record">Delete</a>
+                                <a href="{{ route('backend.school-year.personels.edit', array(SchoolYear::getActivated()->id, $personel->id)) }}" class="btn btn-success btn-xs">Edit</a>
+                                <a href="{{ route('backend.school-year.personels.destroy', array(SchoolYear::getActivated()->id, $personel->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
                             </td>
                         </tr>
                     @endforeach

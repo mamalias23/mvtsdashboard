@@ -8,6 +8,9 @@
 		"cartalyst/sentry": "2.1.*",
 		"webpatser/laravel-uuid": "1.*"
 	},
+	"require-dev": {
+	    "way/generators": "~2.0"
+	},
 	"autoload": {
 		"classmap": [
 			"app/commands",

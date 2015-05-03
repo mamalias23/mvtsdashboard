@@ -8,7 +8,7 @@
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{ url('backend') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ url('backend/school-records-personel') }}">School Records Personel</a></li>
+    <li><a href="{{ route('backend.school-year.personels.index', array(SchoolYear::getActivated()->id)) }}">School Records Personel</a></li>
     <li class="active">Update</li>
 </ol>
 
@@ -25,7 +25,18 @@
                 </div>
             </div>
             <div class="box-body">
-                {{ Form::open(array('url'=>'/backend/school-records-personel/edit/'.$personel->id)) }}
+                {{ 
+                    Form::open(
+                        array(
+                            'route'=>array(
+                                'backend.school-year.personels.update',
+                                SchoolYear::getActivated()->id, 
+                                $personel->id
+                            ),
+                            'method'=>'PUT'
+                        )
+                    ) 
+                }}
                 <div class="row">
                     <div class="col-md-5">
                         <label for="first_name" class="control-label">First name</label>

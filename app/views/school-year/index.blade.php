@@ -44,8 +44,8 @@
                                         <button type="button" class="btn btn-xs btn-success" disabled>Activate</button>
                                         <button type="button" class="btn btn-xs btn-danger" disabled>Delete</button>
                                     @else
-                                        <a href="{{ url('backend/school-year/activate/'.$year->id) }}" class="btn btn-xs btn-success">Activate</a>
-                                        <a href="javascript:;" data-href="{{ url('backend/school-year/delete/'.$year->id) }}" data-message="Are you sure you want to delete?" class="btn btn-xs btn-danger delete-record">Delete</a>
+                                        <a href="{{ route('backend.school-year.activate', array($year->id)) }}" class="btn btn-xs btn-success">Activate</a>
+                                        <a href="{{ route('backend.school-year.destroy', array($year->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
                                     @endif
                                 </td>
                             </tr>
