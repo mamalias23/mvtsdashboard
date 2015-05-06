@@ -9,3 +9,13 @@ ul.select2-choices {
       background-image: none !important;
       box-shadow: none !important; 
 }
+
+.icon-success {
+    color: #00a65a;
+    font-size:18px;
+}
+
+.icon-danger {
+    color: #dd4b39;
+    font-size:18px;
+}

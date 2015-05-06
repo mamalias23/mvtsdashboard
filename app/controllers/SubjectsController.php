@@ -8,9 +8,10 @@ class SubjectsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($school_year_id)
 	{
-		//
+		$subjects = Subject::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        return View::make('subjects.index', compact('subjects'));
 	}
 
 	/**
@@ -19,9 +20,23 @@ class SubjectsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($school_year_id)
 	{
-		//
+		$years = YearLevel::where('school_year_id',$school_year_id)->orderBy('level')->get();
+        $yearLevels = array();
+        $yearLevels[''] = "";
+        foreach ($years as $year) {
+        	$yearLevels[$year->id] = $year->description;
+        }
+
+        $departments = Department::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        $departmentLists = array();
+        $departmentLists[''] = "";
+        foreach ($departments as $department) {
+        	$departmentLists[$department->id] = $department->name;
+        }
+
+        return View::make('subjects.create', compact('yearLevels', 'departmentLists'));
 	}
 
 	/**
@@ -30,9 +45,41 @@ class SubjectsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($school_year_id)
 	{
-		//
+		try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'year_level' => 'required',
+                    'department' => 'required',
+                    'name' => 'required'
+                )
+            );
+
+            if($validator->fails()) {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+
+            $subject = new Subject;
+            $subject->school_year_id = $school_year_id;
+            $subject->year_level_id = Input::get('year_level');
+            $subject->department_id = Input::get('department');
+            $subject->name = Input::get('name');
+            $subject->major = Input::get('major', 0);
+            $subject->save();
+
+            DB::commit();
+
+            return Redirect::route('backend.school-year.subjects.index', array($school_year_id))->withSuccess('Subject has been successfully added.');
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
 	}
 
 	/**
@@ -54,9 +101,27 @@ class SubjectsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($school_year_id, $id)
 	{
-		//
+		$years = YearLevel::where('school_year_id',$school_year_id)->orderBy('level')->get();
+        $yearLevels = array();
+        $yearLevels[''] = "";
+        foreach ($years as $year) {
+        	$yearLevels[$year->id] = $year->description;
+        }
+
+        $departments = Department::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        $departmentLists = array();
+        $departmentLists[''] = "";
+        foreach ($departments as $department) {
+        	$departmentLists[$department->id] = $department->name;
+        }
+
+		$subject = Subject::find($id);
+        if(!$subject)
+            return Redirect::back()->withError('Subject not found');
+
+        return View::make('subjects.edit', compact('subject', 'yearLevels', 'departmentLists'));
 	}
 
 	/**
@@ -66,9 +131,40 @@ class SubjectsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($school_year_id, $id)
 	{
-		//
+		try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'year_level' => 'required',
+                    'department' => 'required',
+                    'name' => 'required'
+                )
+            );
+
+            if($validator->fails()) {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+
+            $subject = Subject::find($id);
+            $subject->year_level_id = Input::get('year_level');
+            $subject->department_id = Input::get('department');
+            $subject->name = Input::get('name');
+            $subject->major = Input::get('major', 0);
+            $subject->save();
+
+            DB::commit();
+
+            return Redirect::route('backend.school-year.subjects.index', array($school_year_id))->withSuccess('Subject has been successfully updated.');
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
 	}
 
 	/**
@@ -78,9 +174,28 @@ class SubjectsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($school_year_id, $id)
 	{
-		//
+		try {
+
+            DB::beginTransaction();
+
+            $subject = Subject::find($id);
+            
+            if(!$subject) {
+                return Redirect::back()->withError('Subject not found');
+            }
+
+            $subject->delete();
+
+            DB::commit();
+            
+            return Redirect::route('backend.school-year.subjects.index', array($school_year_id))->withSuccess('Subject has been successfully deleted.');
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
 	}
 
 }

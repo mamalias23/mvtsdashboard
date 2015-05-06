@@ -191,6 +191,9 @@
 
             $("table.dynamic").dataTable();
             $("select.select-multiple").select2();
+            $("select.select-single").select2({
+                allowClear: true
+            });
 
         });
     </script>
