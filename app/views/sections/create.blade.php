@@ -26,23 +26,38 @@
             </div>
             <div class="box-body">
                 {{ Form::open(array('route'=>array('backend.school-year.sections.store', SchoolYear::getActivated()->id))) }}
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="first_name" class="control-label">Select Year Level</label>
+                <div class="row" id="example1">
+                    <div class="col-md-4">
+                        <label for="curriculum" class="control-label">Select Curriculum</label>
                         {{ 
                             Form::select(
-                                'year_level', 
-                                $yearLevels, 
+                                'curriculum', 
+                                $curriculumsArray, 
                                 null,
                                 array(
-                                    'id'=>'years', 
+                                    'id'=>'curriculum', 
                                     'class'=>'form-control',
                                     'data-rule-required'=>'true'
                                 )
                             ) 
                         }}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label for="first_name" class="control-label">Select Year Level</label>
+                        {{ 
+                            Form::select(
+                                'year_level', 
+                                array(), 
+                                null,
+                                array(
+                                    'id'=>'years', 
+                                    'class'=>'form-control',
+                                    'data-rule-required'=>'true',
+                                )
+                            ) 
+                        }}
+                    </div>
+                    <div class="col-md-4">
                         <label for="last_name" class="control-label">Name</label>
                         {{ 
                             Form::text(
@@ -77,6 +92,28 @@
         $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
             checkboxClass: 'icheckbox_minimal-red',
             radioClass: 'iradio_minimal-red'
+        });
+
+        $('#example1').cascadingDropdown({
+            selectBoxes: [
+                {
+                    selector: '#curriculum'
+                },
+                {
+                    selector: '#years',
+                    requires: ['#curriculum'],
+                    source: function(request, response) {
+                        $.getJSON('/backend/school-year/<?php echo SchoolYear::getActivated()->id ?>/year-level/json', request, function(data) {
+                            response($.map(data, function(item, index) {
+                                return {
+                                    label: item.label,
+                                    value: item.value
+                                }
+                            }));
+                        });
+                    }
+                }
+            ]
         });
     });
 </script>

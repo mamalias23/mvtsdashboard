@@ -22,6 +22,13 @@ class SubjectsController extends \BaseController {
 	 */
 	public function create($school_year_id)
 	{
+        $curriculums = Curriculum::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        $curriculumsArray = array();
+        $curriculumsArray[''] = "";
+        foreach ($curriculums as $curriculum) {
+            $curriculumsArray[$curriculum->id] = $curriculum->name;
+        }
+
 		$years = YearLevel::where('school_year_id',$school_year_id)->orderBy('level')->get();
         $yearLevels = array();
         $yearLevels[''] = "";
@@ -36,7 +43,7 @@ class SubjectsController extends \BaseController {
         	$departmentLists[$department->id] = $department->name;
         }
 
-        return View::make('subjects.create', compact('yearLevels', 'departmentLists'));
+        return View::make('subjects.create', compact('yearLevels', 'departmentLists', 'curriculumsArray'));
 	}
 
 	/**
@@ -55,6 +62,7 @@ class SubjectsController extends \BaseController {
                 Input::all(),
                 array(
                     'year_level' => 'required',
+                    'curriculum' => 'required',
                     'department' => 'required',
                     'name' => 'required'
                 )
@@ -103,6 +111,13 @@ class SubjectsController extends \BaseController {
 	 */
 	public function edit($school_year_id, $id)
 	{
+        $curriculums = Curriculum::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        $curriculumsArray = array();
+        $curriculumsArray[''] = "";
+        foreach ($curriculums as $curriculum) {
+            $curriculumsArray[$curriculum->id] = $curriculum->name;
+        }
+
 		$years = YearLevel::where('school_year_id',$school_year_id)->orderBy('level')->get();
         $yearLevels = array();
         $yearLevels[''] = "";
@@ -121,7 +136,7 @@ class SubjectsController extends \BaseController {
         if(!$subject)
             return Redirect::back()->withError('Subject not found');
 
-        return View::make('subjects.edit', compact('subject', 'yearLevels', 'departmentLists'));
+        return View::make('subjects.edit', compact('subject', 'yearLevels', 'departmentLists', 'curriculumsArray'));
 	}
 
 	/**

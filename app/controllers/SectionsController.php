@@ -10,6 +10,7 @@ class SectionsController extends \BaseController {
 	 */
 	public function index($school_year_id)
 	{
+		
 		$sections = Section::where('school_year_id',$school_year_id)->orderBy('name')->get();
         return View::make('sections.index', compact('sections'));
 	}
@@ -22,13 +23,20 @@ class SectionsController extends \BaseController {
 	 */
 	public function create($school_year_id)
 	{
+		$curriculums = Curriculum::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        $curriculumsArray = array();
+        $curriculumsArray[''] = "";
+        foreach ($curriculums as $curriculum) {
+            $curriculumsArray[$curriculum->id] = $curriculum->name;
+        }
+
         $years = YearLevel::where('school_year_id',$school_year_id)->orderBy('level')->get();
         $yearLevels = array();
         $yearLevels[''] = "";
         foreach ($years as $year) {
         	$yearLevels[$year->id] = $year->description;
         }
-        return View::make('sections.create', compact('yearLevels'));
+        return View::make('sections.create', compact('yearLevels', 'curriculumsArray'));
 	}
 
 	/**
@@ -47,6 +55,7 @@ class SectionsController extends \BaseController {
                 Input::all(),
                 array(
                     'year_level' => 'required',
+                    'curriculum' => 'required',
                     'name' => 'required'
                 )
             );
@@ -57,6 +66,7 @@ class SectionsController extends \BaseController {
 
             $section = new Section;
             $section->school_year_id = $school_year_id;
+            $section->curriculum_id = Input::get('curriculum');
             $section->year_level_id = Input::get('year_level');
             $section->name = Input::get('name');
             $section->save();
@@ -92,6 +102,13 @@ class SectionsController extends \BaseController {
 	 */
 	public function edit($school_year_id, $id)
 	{
+		$curriculums = Curriculum::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        $curriculumsArray = array();
+        $curriculumsArray[''] = "";
+        foreach ($curriculums as $curriculum) {
+            $curriculumsArray[$curriculum->id] = $curriculum->name;
+        }
+
 		$years = YearLevel::where('school_year_id',$school_year_id)->orderBy('level')->get();
         $yearLevels = array();
         $yearLevels[''] = "";
@@ -103,7 +120,7 @@ class SectionsController extends \BaseController {
         if(!$section)
             return Redirect::back()->withError('Section not found');
 
-        return View::make('sections.edit', compact('section', 'yearLevels'));
+        return View::make('sections.edit', compact('section', 'yearLevels', 'curriculumsArray'));
 	}
 
 	/**
@@ -129,6 +146,7 @@ class SectionsController extends \BaseController {
                 Input::all(),
                 array(
                     'year_level' => 'required',
+                    'curriculum' => 'required',
                     'name' => 'required'
                 )
             );
@@ -138,6 +156,7 @@ class SectionsController extends \BaseController {
             }
 
             $section->year_level_id = Input::get('year_level');
+            $section->curriculum_id = Input::get('curriculum');
             $section->name = Input::get('name');
             $section->save();
 

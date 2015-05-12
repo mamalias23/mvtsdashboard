@@ -7,4 +7,9 @@ class Section extends UuidModel {
     {
         return $this->belongsTo('YearLevel', 'year_level_id');
     }
+
+    public function curriculum()
+    {
+        return $this->belongsTo('Curriculum', 'curriculum_id');
+    }
 }

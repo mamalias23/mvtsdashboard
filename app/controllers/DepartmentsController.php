@@ -10,9 +10,30 @@ class DepartmentsController extends \BaseController {
 	 */
 	public function index($school_year_id)
 	{
+		$curriculums = Curriculum::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        $curriculumsArray = array();
+        $curriculumsArray[''] = "";
+        foreach ($curriculums as $curriculum) {
+        	$curriculumsArray[$curriculum->id] = $curriculum->name;
+        }
 		$departments = Department::where('school_year_id',$school_year_id)->orderBy('name')->get();
-        return View::make('departments.index', compact('departments'));
+        return View::make('departments.index', compact('departments', 'curriculumsArray'));
 	}
+
+	public function json() {
+        $departments = Department::where('curriculum_id',Input::get('curriculum'))->orderBy('name')->get();
+        $out = array();
+        if($departments->count()==0) {
+            $out[] = array('label'=>'', 'value'=>'');
+        }
+        foreach ($departments as $department) {
+            $out[] = array(
+                'label'=>$department->name,
+                'value'=>$department->id
+            );
+        }
+        echo json_encode($out);
+    }
 
 	/**
 	 * Show the form for creating a new resource.
@@ -39,6 +60,7 @@ class DepartmentsController extends \BaseController {
             Input::all(),
             array(
                 'name' => 'required',
+                'curriculum' => 'required',
             )
         );
 
@@ -51,6 +73,7 @@ class DepartmentsController extends \BaseController {
         else
             $department = new Department;
         $department->school_year_id = $school_year_id;
+        $department->curriculum_id = Input::get('curriculum');
         $department->name = Input::get('name');
         $department->save();
 

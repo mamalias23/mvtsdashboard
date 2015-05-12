@@ -29,6 +29,7 @@
                 <table class="table table-bordered table-striped dynamic">
                     <thead>
                         <tr>
+                            <th>Curriculum</th>
                             <th>Year Level</th>
                             <th>Department</th>
                             <th>Name</th>
@@ -39,6 +40,7 @@
                     <tbody>
                     @foreach($subjects as $subject)
                         <tr>
+                            <td>{{ $subject->year->curriculum->name }}</td>
                             <td>{{ $subject->year->level }} - {{ $subject->year->description }}</td>
                             <td>{{ $subject->department->name }}</td>
                             <td>{{ $subject->name }}</td>

@@ -19,6 +19,7 @@
             </a>
             <ul class="treeview-menu menu-open">
                 <li><a href="{{ route('backend.school-year.index') }}"><i class="fa fa-circle-o"></i> School Year</a></li>
+                <li><a href="{{ route('backend.school-year.curriculums.index', array(SchoolYear::getActivated()->id)) }}"><i class="fa fa-circle-o"></i> Curriculums</a></li>
                 <li><a href="{{ route('backend.school-year.departments.index', array(SchoolYear::getActivated()->id)) }}"><i class="fa fa-circle-o"></i> Departments</a></li>
                 <li><a href="{{ route('backend.school-year.year-level.index', array(SchoolYear::getActivated()->id)) }}"><i class="fa fa-circle-o"></i> Year Levels</a></li>
                 <li><a href="{{ route('backend.school-year.sections.index', array(SchoolYear::getActivated()->id)) }}"><i class="fa fa-circle-o"></i> Sections</a></li>
@@ -48,24 +49,29 @@
                 <li><a href="../layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
             </ul>
         </li> -->
-        <li class="{{ Request::is('backend/school-records-personel*') ? 'active':'' }}">
+        <li class="{{ Request::is('backend/school-year/*/personels*') ? 'active':'' }}">
             <a href="{{ route('backend.school-year.personels.index', array(SchoolYear::getActivated()->id)) }}">
                 <!-- <i class="fa fa-th"></i>  --><span>School Records Personel</span><!--  <small class="label pull-right bg-green">Hot</small> -->
             </a>
         </li>
-        <li>
-            <a href="#">
-                <!-- <i class="fa fa-th"></i>  --><span>Test</span><!--  <small class="label pull-right bg-green">Hot</small> -->
+        <li class="{{ Request::is('backend/school-year/*/teachers*') ? 'active':'' }}">
+            <a href="{{ route('backend.school-year.teachers.index', array(SchoolYear::getActivated()->id)) }}">
+                <!-- <i class="fa fa-th"></i>  --><span>Teachers</span><!--  <small class="label pull-right bg-green">Hot</small> -->
             </a>
         </li>
-        <li>
-            <a href="#">
-                <!-- <i class="fa fa-th"></i>  --><span>Test</span><!--  <small class="label pull-right bg-green">Hot</small> -->
+        <li class="{{ Request::is('backend/school-year/*/registrars*') ? 'active':'' }}">
+            <a href="{{ route('backend.school-year.registrars.index', array(SchoolYear::getActivated()->id)) }}">
+                <!-- <i class="fa fa-th"></i>  --><span>Registrars</span><!--  <small class="label pull-right bg-green">Hot</small> -->
             </a>
         </li>
-        <li>
-            <a href="#">
-                <!-- <i class="fa fa-th"></i>  --><span>Test</span><!--  <small class="label pull-right bg-green">Hot</small> -->
+        <li class="{{ Request::is('backend/school-year/*/guards*') ? 'active':'' }}">
+            <a href="{{ route('backend.school-year.guards.index', array(SchoolYear::getActivated()->id)) }}">
+                <!-- <i class="fa fa-th"></i>  --><span>Guards</span><!--  <small class="label pull-right bg-green">Hot</small> -->
+            </a>
+        </li>
+        <li class="{{ Request::is('backend/school-year/*/staffs*') ? 'active':'' }}">
+            <a href="{{ route('backend.school-year.staffs.index', array(SchoolYear::getActivated()->id)) }}">
+                <!-- <i class="fa fa-th"></i>  --><span>Other Staffs</span><!--  <small class="label pull-right bg-green">Hot</small> -->
             </a>
         </li>
         <li class="header"><i class="fa fa-cogs"></i> USER SETTINGS</li>

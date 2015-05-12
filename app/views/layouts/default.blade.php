@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
 <head>
     <meta charset="UTF-8">
     <title>MVTS DASHBOARD | Dashboard</title>
@@ -27,6 +27,7 @@
     <link href="{{ asset('css/skins/_all-skins.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 
+    <script src="{{ asset('bower_components/angular/angular.min.js') }}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -169,6 +170,9 @@
     <script src="{{ asset('plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
     <!-- select2 -->
     <script src="{{ asset('bower_components/select2/select2.min.js') }}" type="text/javascript"></script>
+    <!-- dependent-dropdown -->
+    <script src="{{ asset('bower_components/jquery-cascading-dropdown/dist/jquery.cascadingdropdown.js') }}" type="text/javascript"></script>
+    
     <!-- AdminLTE App -->
     <script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>
 

@@ -16,7 +16,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">New Subject</h3>
@@ -26,13 +26,28 @@
             </div>
             <div class="box-body">
                 {{ Form::open(array('route'=>array('backend.school-year.subjects.store', SchoolYear::getActivated()->id))) }}
-                <div class="row">
-                    <div class="col-md-4">
+                <div class="row" id="example1">
+                    <div class="col-md-3">
+                        <label for="curriculum" class="control-label">Select Curriculum</label>
+                        {{ 
+                            Form::select(
+                                'curriculum', 
+                                $curriculumsArray, 
+                                null,
+                                array(
+                                    'id'=>'curriculum', 
+                                    'class'=>'form-control',
+                                    'data-rule-required'=>'true'
+                                )
+                            ) 
+                        }}
+                    </div>
+                    <div class="col-md-3">
                         <label for="first_name" class="control-label">Select Year Level</label>
                         {{ 
                             Form::select(
                                 'year_level', 
-                                $yearLevels, 
+                                array(), 
                                 null,
                                 array(
                                     'id'=>'years', 
@@ -42,12 +57,12 @@
                             ) 
                         }}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="first_name" class="control-label">Select Department</label>
                         {{ 
                             Form::select(
                                 'department', 
-                                $departmentLists, 
+                                array(), 
                                 null,
                                 array(
                                     'id'=>'department', 
@@ -57,7 +72,7 @@
                             ) 
                         }}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="last_name" class="control-label">Name</label>
                         {{ 
                             Form::text(
@@ -104,6 +119,42 @@
         $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
             checkboxClass: 'icheckbox_minimal-red',
             radioClass: 'iradio_minimal-red'
+        });
+
+        $('#example1').cascadingDropdown({
+            selectBoxes: [
+                {
+                    selector: '#curriculum'
+                },
+                {
+                    selector: '#years',
+                    requires: ['#curriculum'],
+                    source: function(request, response) {
+                        $.getJSON('/backend/school-year/<?php echo SchoolYear::getActivated()->id ?>/year-level/json', request, function(data) {
+                            response($.map(data, function(item, index) {
+                                return {
+                                    label: item.label,
+                                    value: item.value
+                                }
+                            }));
+                        });
+                    }
+                },
+                {
+                    selector: '#department',
+                    requires: ['#curriculum'],
+                    source: function(request, response) {
+                        $.getJSON('/backend/school-year/<?php echo SchoolYear::getActivated()->id ?>/departments/json', request, function(data) {
+                            response($.map(data, function(item, index) {
+                                return {
+                                    label: item.label,
+                                    value: item.value
+                                }
+                            }));
+                        });
+                    }
+                }
+            ]
         });
     });
 </script>

@@ -10,8 +10,29 @@ class YearLevelController extends BaseController {
 
     public function index($school_year_id)
     {
+        $curriculums = Curriculum::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        $curriculumsArray = array();
+        $curriculumsArray[''] = "";
+        foreach ($curriculums as $curriculum) {
+            $curriculumsArray[$curriculum->id] = $curriculum->name;
+        }
         $years = YearLevel::where('school_year_id',$school_year_id)->orderBy('level')->get();
-        return View::make('year-level.index', compact('years'));
+        return View::make('year-level.index', compact('years', 'curriculumsArray'));
+    }
+
+    public function json() {
+        $years = YearLevel::where('curriculum_id',Input::get('curriculum'))->orderBy('level')->get();
+        $out = array();
+        if($years->count()==0) {
+            $out[] = array('label'=>'', 'value'=>'');
+        }
+        foreach ($years as $year) {
+            $out[] = array(
+                'label'=>$year->description,
+                'value'=>$year->id
+            );
+        }
+        echo json_encode($out);
     }
 
     public function store($school_year_id)
@@ -22,7 +43,8 @@ class YearLevelController extends BaseController {
         $validator = Validator::make(
             Input::all(),
             array(
-                'level' => 'required|unique:year_levels,level,'.$hidden_id,
+                'curriculum' => 'required',
+                'level' => 'required',
                 'description' => 'required',
             )
         );
@@ -36,6 +58,7 @@ class YearLevelController extends BaseController {
         else
             $year = new YearLevel;
         $year->school_year_id = $school_year_id;
+        $year->curriculum_id = Input::get('curriculum');
         $year->level = Input::get('level');
         $year->description = Input::get('description');
         $year->save();

@@ -17,4 +17,24 @@ class SchoolYear extends UuidModel {
     {
         return $this->hasMany('SchoolRecordPersonel', 'school_year_id');
     }
+
+    public function teachers()
+    {
+        return $this->hasMany('Teacher', 'school_year_id');
+    }
+
+    public function registrars()
+    {
+        return $this->hasMany('Registrar', 'school_year_id');
+    }
+
+    public function guards()
+    {
+        return $this->hasMany('Guard', 'school_year_id');
+    }
+
+    public function staffs()
+    {
+        return $this->hasMany('Staff', 'school_year_id');
+    }
 }

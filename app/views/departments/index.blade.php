@@ -30,6 +30,7 @@
                 <table class="table table-striped">
                     <tbody>
                         <tr>
+                            <th>Curriculum</th>
                             <th>Name</th>
                             <th>Action</th>
                         </tr>
@@ -37,12 +38,16 @@
                             @foreach($departments as $department)
                                 <tr>
                                     <td>
+                                        {{ $department->curriculum->name }}
+                                    </td>
+                                    <td>
                                         {{ $department->name }}
                                     </td>
                                     <td>
                                         <a 
                                             href="javascript:;" 
                                             data-id="{{ $department->id }}" 
+                                            data-curriculum="{{ $department->curriculum_id }}" 
                                             data-name="{{ $department->name }}" 
                                             class="btn btn-xs btn-success edit-by-modal"
                                         >Edit</a>
@@ -86,6 +91,24 @@
             <div class="modal-body">
                 <div class="row" style="margin-top:15px">
                     <div class="col-md-12">
+                        <label for="curriculum" class="control-label">Select Curriculum</label>
+                        {{ 
+                            Form::select(
+                                'curriculum', 
+                                $curriculumsArray, 
+                                null,
+                                array(
+                                    'id'=>'curriculum', 
+                                    'class'=>'form-control',
+                                    'data-rule-required'=>'true'
+                                )
+                            ) 
+                        }}
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px">
+                    <div class="col-md-12">
+                        <label for="name" class="control-label">Name</label>
                         {{ 
                             Form::text(
                                 'name', 
@@ -119,6 +142,7 @@
             $("#myModalLabel").html("New Department");
             $("#hidden_id").val('');
             $("#name").val('');
+            $("#curriculum").val('');
         });
 
         $(".edit-by-modal").on("click", function(e) {
@@ -127,6 +151,7 @@
             $("#myModalLabel").html("Update Department");
             $("#hidden_id").val($(this).data('id'));
             $("#name").val($(this).data('name'));
+            $("#curriculum").val($(this).data('curriculum'));
         });
     });
 </script>

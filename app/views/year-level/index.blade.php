@@ -30,6 +30,7 @@
                 <table class="table table-striped">
                     <tbody>
                         <tr>
+                            <th>Curriculum</th>
                             <th>Level</th>
                             <th>Description</th>
                             <th>Action</th>
@@ -37,6 +38,9 @@
                         @if($years->count())
                             @foreach($years as $year)
                                 <tr>
+                                    <td>
+                                        {{ $year->curriculum->name }}
+                                    </td>
                                     <td>
                                         {{ $year->level }}
                                     </td>
@@ -47,6 +51,7 @@
                                         <a 
                                             href="javascript:;" 
                                             data-id="{{ $year->id }}" 
+                                            data-curriculum="{{ $year->curriculum_id }}" 
                                             data-level="{{ $year->level }}" 
                                             data-description="{{ $year->description }}" 
                                             class="btn btn-xs btn-success edit-by-modal"
@@ -90,6 +95,23 @@
             </div>
             <div class="modal-body">
                 <div class="row">
+                    <div class="col-md-12">
+                        <label for="curriculum" class="control-label">Select Curriculum</label>
+                        {{ 
+                            Form::select(
+                                'curriculum', 
+                                $curriculumsArray, 
+                                null,
+                                array(
+                                    'id'=>'curriculum', 
+                                    'class'=>'form-control',
+                                    'data-rule-required'=>'true'
+                                )
+                            ) 
+                        }}
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px">
                     <div class="col-md-5">
                         {{ 
                             Form::number(
@@ -143,6 +165,7 @@
             $("#hidden_id").val('');
             $("#level").val('');
             $("#description").val('');
+            $("#curriculum").val('');
         });
 
         $(".edit-by-modal").on("click", function(e) {
@@ -152,6 +175,7 @@
             $("#hidden_id").val($(this).data('id'));
             $("#level").val($(this).data('level'));
             $("#description").val($(this).data('description'));
+            $("#curriculum").val($(this).data('curriculum'));
         });
     });
 </script>
