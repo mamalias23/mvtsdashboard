@@ -12,4 +12,9 @@ class Subject extends UuidModel {
     {
         return $this->belongsTo('Department', 'department_id');
     }
+
+    public function teachers()
+    {
+    	return $this->belongsToMany('Teacher');
+    }
 }

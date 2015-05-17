@@ -42,7 +42,7 @@
                             <td>{{ $section->curriculum->name }}</td>
                             <td>{{ $section->year->level }} - {{ $section->year->description }}</td>
                             <td>{{ $section->name }}</td>
-                            <td></td>
+                            <td>{{ $section->adviser ? '<a href="'.route('backend.school-year.teachers.show', array(SchoolYear::getActivated()->id, $section->adviser->id)).'">'.$section->adviser->user->first_name . " " . $section->adviser->user->last_name.'</a>' : 'No Adviser'; }}</td>
                             <td>
                                 <a href="{{ route('backend.school-year.sections.edit', array(SchoolYear::getActivated()->id, $section->id)) }}" class="btn btn-success btn-xs">Edit</a>
                                 <a href="{{ route('backend.school-year.sections.destroy', array(SchoolYear::getActivated()->id, $section->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>

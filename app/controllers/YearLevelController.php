@@ -23,9 +23,7 @@ class YearLevelController extends BaseController {
     public function json() {
         $years = YearLevel::where('curriculum_id',Input::get('curriculum'))->orderBy('level')->get();
         $out = array();
-        if($years->count()==0) {
-            $out[] = array('label'=>'', 'value'=>'');
-        }
+        $out[] = array('label'=>'', 'value'=>'');
         foreach ($years as $year) {
             $out[] = array(
                 'label'=>$year->description,

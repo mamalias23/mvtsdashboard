@@ -145,9 +145,30 @@ class TeachersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($school_year_id, $id)
 	{
-		//
+		$teacher = Teacher::find($id);
+        if(!$teacher)
+            return Redirect::back()->withError('Teacher not found');
+
+        $availableSubjects = array();
+        $subjects = Subject::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        foreach($subjects as $subject) {
+            $availableSubjects[$subject->id] = $subject->name;
+        }
+
+        $teacherSubjects = array();
+        $sbjects = $teacher->subjects()->get();
+        foreach($sbjects as $sbject)
+            $teacherSubjects[] = $sbject->id;
+
+        $sectionsArray = array();
+        $sectionsArray[""] = "";
+        $sections = Section::where('school_year_id', $school_year_id)->orderBy('name')->get();
+        foreach($sections as $section)
+            $sectionsArray[$section->id] =  $section->name." - ".$section->year->description;
+
+        return View::make('teachers.show', compact('teacher', 'availableSubjects', 'teacherSubjects', 'sectionsArray'));
 	}
 
 	/**
@@ -250,6 +271,52 @@ class TeachersController extends \BaseController {
         } catch(Exception $e) {
             DB::rollback();
             return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
+    }
+
+    public function subjects($school_year_id, $id)
+    {
+        $teacher = Teacher::find($id);
+        if(!$teacher)
+            return Redirect::back()->withError('Teacher not found');
+
+        $teacher->subjects()->sync(Input::get('subjects') ?: array());
+
+        return Redirect::back()->withSuccess('Successfully saved');
+    }
+
+    public function advisory($school_year_id, $id)
+    {
+        $teacher = Teacher::find($id);
+        if(!$teacher)
+            return Redirect::back()->withError('Teacher not found');
+
+        //
+        if(!Input::get('section')) {
+            $section = $teacher->advisory;
+            $section->teacher_id = null;
+            $section->save();
+
+            return Redirect::back()->withSuccess('Successfully saved');
+            
+        } else {
+            $section = Section::where('school_year_id',$school_year_id)
+                            ->where('id', Input::get('section'))
+                            ->get()
+                            ->first();
+
+            if(!$section)
+                return Redirect::back()->withError('Section not found');
+
+            if($section->teacher_id!=null && $section->teacher_id!=$teacher->id) {
+                return Redirect::back()->withError('Sorry, but that section has already been assigned to other teacher');
+            }
+
+            $section->teacher_id = $teacher->id;
+            $section->save();
+
+            return Redirect::back()->withSuccess('Successfully saved');
+
         }
     }
 

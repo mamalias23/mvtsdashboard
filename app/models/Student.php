@@ -1,9 +1,9 @@
 <?php
 
-class Teacher extends UuidModel {
+class Student extends UuidModel {
 	protected $fillable = [];
 
-	public function user()
+    public function user()
     {
         return $this->belongsTo('User', 'user_id');
     }
@@ -13,13 +13,8 @@ class Teacher extends UuidModel {
         return $this->belongsTo('SchoolYear', 'school_year_id');
     }
 
-    public function subjects() 
+    public function section()
     {
-    	return $this->belongsToMany('Subject');
-    }
-
-    public function advisory()
-    {
-    	return $this->hasOne('Section');
+        return $this->belongsTo('Section', 'section_id');
     }
 }

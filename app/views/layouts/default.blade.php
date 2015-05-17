@@ -18,6 +18,8 @@
     <link href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
     <!-- select2 -->
     <link href="{{ asset('bower_components/select2/select2.css') }}" rel="stylesheet" type="text/css" />
+    <!-- boostrap-toggle -->
+    <link href="{{ asset('bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('plugins/iCheck/all.css') }}" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
@@ -26,6 +28,8 @@
     folder instead of downloading all of them to reduce the load. -->
     <link href="{{ asset('css/skins/_all-skins.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
+
+    @yield('on-page-styles')
 
     <script src="{{ asset('bower_components/angular/angular.min.js') }}"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -172,6 +176,8 @@
     <script src="{{ asset('bower_components/select2/select2.min.js') }}" type="text/javascript"></script>
     <!-- dependent-dropdown -->
     <script src="{{ asset('bower_components/jquery-cascading-dropdown/dist/jquery.cascadingdropdown.js') }}" type="text/javascript"></script>
+    <!-- bootstrap-toggle -->
+    <script src="{{ asset('bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js') }}" type="text/javascript"></script>
     
     <!-- AdminLTE App -->
     <script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>

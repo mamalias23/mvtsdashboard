@@ -15,6 +15,19 @@ class SectionsController extends \BaseController {
         return View::make('sections.index', compact('sections'));
 	}
 
+    public function json() {
+        $sections = Section::where('year_level_id',Input::get('year_level'))->orderBy('name')->get();
+        $out = array();
+        $out[] = array('label'=>'', 'value'=>'');
+        foreach ($sections as $section) {
+            $out[] = array(
+                'label'=>$section->name,
+                'value'=>$section->id
+            );
+        }
+        echo json_encode($out);
+    }
+
 	/**
 	 * Show the form for creating a new resource.
 	 * GET /sections/create

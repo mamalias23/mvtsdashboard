@@ -48,6 +48,7 @@
                             <td>{{ $teacher->user->mobile_number }}</td>
                             <td>{{ $teacher->user->full_address }}</td>
                             <td>
+                                <a href="{{ route('backend.school-year.teachers.show', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-info btn-xs">View/Manage</a>
                                 <a href="{{ route('backend.school-year.teachers.edit', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-success btn-xs">Edit</a>
                                 <a href="{{ route('backend.school-year.teachers.destroy', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
                             </td>

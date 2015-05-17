@@ -23,9 +23,7 @@ class DepartmentsController extends \BaseController {
 	public function json() {
         $departments = Department::where('curriculum_id',Input::get('curriculum'))->orderBy('name')->get();
         $out = array();
-        if($departments->count()==0) {
-            $out[] = array('label'=>'', 'value'=>'');
-        }
+        $out[] = array('label'=>'', 'value'=>'');
         foreach ($departments as $department) {
             $out[] = array(
                 'label'=>$department->name,

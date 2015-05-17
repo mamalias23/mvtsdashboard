@@ -12,4 +12,9 @@ class Section extends UuidModel {
     {
         return $this->belongsTo('Curriculum', 'curriculum_id');
     }
+
+    public function adviser()
+    {
+    	return $this->belongsTo('Teacher', 'teacher_id');
+    }
 }
