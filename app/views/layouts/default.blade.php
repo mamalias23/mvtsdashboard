@@ -77,6 +77,7 @@
                                         {{ Sentry::getUser()->first_name . " " . Sentry::getUser()->last_name }}
                                         <!-- <small>Member since Nov. 2012</small> -->
                                     </p>
+                                    <p>{{ Sentry::getUser()->getGroups()->first()->name }}</p>
                                 </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
