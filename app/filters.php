@@ -53,6 +53,135 @@ Route::filter('admin', function()
 
 });
 
+Route::filter('student', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('student')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
+
+Route::filter('parents', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('parents')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
+
+Route::filter('guard', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('guard')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
+
+Route::filter('others', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('others')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
+
+Route::filter('records_personel', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('school_records_personel')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
+
+Route::filter('department_heads', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('department_heads')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
+
+Route::filter('registrar', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('registrar')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
+
+Route::filter('curriculum_department', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('curriculum_departments')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
+
+Route::filter('teacher', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('teachers')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
+
+Route::filter('alumni', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+    $user = Sentry::getUser();
+    if(!$user->hasAccess('alumni')) {
+        Session::flash('error','Permission Denied.');
+        return Redirect::back();
+    }
+
+});
 
 Route::filter('auth.basic', function()
 {

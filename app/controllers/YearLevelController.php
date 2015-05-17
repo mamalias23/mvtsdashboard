@@ -2,10 +2,10 @@
 
 class YearLevelController extends BaseController {
 
-    public function __construct() 
+    public function __construct()
     {
         $this->beforeFilter('csrf', array('on'=>'post'));
-        $this->beforeFilter('admin');
+        $this->beforeFilter('curriculum_department', array('except'=>array('json')));
     }
 
     public function index($school_year_id)

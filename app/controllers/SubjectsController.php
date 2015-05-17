@@ -2,7 +2,13 @@
 
 class SubjectsController extends \BaseController {
 
-	/**
+    public function __construct()
+    {
+        $this->beforeFilter('csrf', array('on'=>'post'));
+        $this->beforeFilter('department_heads');
+    }
+
+    /**
 	 * Display a listing of the resource.
 	 * GET /subjects
 	 *

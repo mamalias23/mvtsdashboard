@@ -2,6 +2,12 @@
 
 class StudentsController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('csrf', array('on'=>'post'));
+        $this->beforeFilter('registrar');
+    }
+
 	/**
 	 * Display a listing of the resource.
 	 * GET /students

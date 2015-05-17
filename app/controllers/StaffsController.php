@@ -2,6 +2,12 @@
 
 class StaffsController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('csrf', array('on'=>'post'));
+        $this->beforeFilter('records_personel');
+    }
+
 	/**
 	 * Display a listing of the resource.
 	 * GET /staffs

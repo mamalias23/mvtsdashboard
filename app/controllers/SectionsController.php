@@ -2,6 +2,12 @@
 
 class SectionsController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('csrf', array('on'=>'post'));
+        $this->beforeFilter('curriculum_department', array('except'=>array('json')));
+    }
+
 	/**
 	 * Display a listing of the resource.
 	 * GET /sections
