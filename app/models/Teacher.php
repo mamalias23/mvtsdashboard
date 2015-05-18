@@ -22,4 +22,9 @@ class Teacher extends UuidModel {
     {
     	return $this->hasOne('Section');
     }
+
+    public function department()
+    {
+        return $this->hasOne('Department');
+    }
 }

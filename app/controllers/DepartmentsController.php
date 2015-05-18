@@ -22,8 +22,23 @@ class DepartmentsController extends \BaseController {
         foreach ($curriculums as $curriculum) {
         	$curriculumsArray[$curriculum->id] = $curriculum->name;
         }
+
+        $availableTeachers = array();
+        $availableTeachers[""] = "";
+        $group = Sentry::findGroupByName('Teachers');
+        $users = Sentry::findAllUsersInGroup($group);
+        foreach($users as $user) {
+            $teacher_exists_in_school_year = Teacher::where('school_year_id',$school_year_id)->where('user_id', $user->id)->first();
+            if($teacher_exists_in_school_year) {
+                $teacher_check = Department::where('school_year_id',$school_year_id)->where('teacher_id',$teacher_exists_in_school_year->id)->get();
+                if($teacher_check->count()==0) {
+                    $availableTeachers[$teacher_exists_in_school_year->id] = $user->first_name . " " . $user->middle_initial . ". " . $user->last_name;
+                }
+            }
+        }
+
 		$departments = Department::where('school_year_id',$school_year_id)->orderBy('name')->get();
-        return View::make('departments.index', compact('departments', 'curriculumsArray'));
+        return View::make('departments.index', compact('departments', 'curriculumsArray', 'availableTeachers'));
 	}
 
 	public function json() {
@@ -87,6 +102,38 @@ class DepartmentsController extends \BaseController {
             return Redirect::back()->withSuccess('Department has been successfully added.');
 	}
 
+    public function storeHead($school_year_id)
+    {
+        $hidden_id = Input::get('hidden_id');
+
+        $validator = Validator::make(
+            Input::all(),
+            array(
+                'teacher_id' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $teacher = Teacher::find(Input::get('teacher_id'));
+        if(!$teacher) {
+            return Redirect::back()->withError('Teacher not found.');
+        }
+
+        $department = Department::find($hidden_id);
+        $department->teacher_id = Input::get('teacher_id');
+        $department->save();
+
+        $user = Sentry::findUserById($teacher->user->id);
+        $group = Sentry::getGroupProvider()->findByName('Department Heads');
+        $user->addGroup($group);
+
+        return Redirect::back()->withSuccess('Department has been successfully updated.');
+
+    }
+
 	/**
 	 * Display the specified resource.
 	 * GET /departments/{id}
@@ -141,5 +188,22 @@ class DepartmentsController extends \BaseController {
 
         return Redirect::back()->withSuccess('Department "'.$temp.'" has been successfully deleted.');
 	}
+
+    public function removeHead($school_year_id, $id)
+    {
+        $department = Department::find($id);
+        if(!$department)
+            return Redirect::route('backend.school-year.departments.index', array($school_year_id))->withError('Department not found!');
+
+        $teacher = Teacher::find($department->teacher_id);
+        $user = Sentry::findUserById($teacher->user->id);
+        $group = Sentry::getGroupProvider()->findByName('Department Heads');
+        $user->removeGroup($group);
+
+        $department->teacher_id = NULL;
+        $department->save();
+
+        return Redirect::back()->withSuccess('Department has been successfully updated.');
+    }
 
 }

@@ -30,8 +30,12 @@ Route::group(array('prefix'=>'backend'), function() {
     Route::resource('school-year.curriculums', 'CurriculumsController');
     Route::post('school-year/{school_year}/personels/existing', ['as' => 'backend.school-year.personels.storeFromExisting', 'uses' => 'SchoolRecordsPersonelController@storeFromExisting']);
 	Route::resource('school-year.personels', 'SchoolRecordsPersonelController');
+
+    Route::post('school-year/{school_year}/departments/store-head', ['as' => 'backend.school-year.departments.storeHead', 'uses' => 'DepartmentsController@storeHead']);
 	Route::get('school-year/{school_year}/departments/json', ['as' => 'backend.school-year.departments.json', 'uses' => 'DepartmentsController@json']);
+    Route::delete('school-year/{school_year}/departments/{departments}/remove-head', ['as' => 'backend.school-year.departments.removeHead', 'uses' => 'DepartmentsController@removeHead']);
 	Route::resource('school-year.departments', 'DepartmentsController');
+
     Route::get('school-year/{school_year}/sections/json', ['as' => 'backend.school-year.sections.json', 'uses' => 'SectionsController@json']);
 	Route::resource('school-year.sections', 'SectionsController');
 	Route::resource('school-year.subjects', 'SubjectsController');

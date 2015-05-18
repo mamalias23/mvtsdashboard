@@ -7,4 +7,9 @@ class Department extends UuidModel {
     {
         return $this->belongsTo('Curriculum', 'curriculum_id');
     }
+
+    public function head()
+    {
+        return $this->belongsTo('Teacher', 'teacher_id');
+    }
 }

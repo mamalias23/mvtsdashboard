@@ -32,6 +32,7 @@
                         <tr>
                             <th>Curriculum</th>
                             <th>Name</th>
+                            <th>Head</th>
                             <th>Action</th>
                         </tr>
                         @if($departments->count())
@@ -44,6 +45,20 @@
                                         {{ $department->name }}
                                     </td>
                                     <td>
+                                        {{ $department->head ? $department->head->user->first_name . " " . $department->head->user->last_name : 'no head yet' }}
+                                    </td>
+                                    <td>
+                                        @if(!$department->head)
+                                        <a
+                                            href="javascript:;"
+                                            data-id="{{ $department->id }}"
+                                            data-curriculum="{{ $department->curriculum_id }}"
+                                            data-name="{{ $department->name }}"
+                                            class="btn btn-xs btn-info assign-department-head"
+                                        >Assign Department Head</a>
+                                        @else
+                                            <a href="{{ route('backend.school-year.departments.removeHead', array(SchoolYear::getActivated()->id, $department->id)) }}" class="btn btn-xs btn-warning" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to remove this head?">Remove Department Head</a>
+                                        @endif
                                         <a 
                                             href="javascript:;" 
                                             data-id="{{ $department->id }}" 
@@ -133,6 +148,51 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-assign-head" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAssignHead" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {{ Form::open(array('route'=>array('backend.school-year.departments.storeHead', SchoolYear::getActivated()->id))) }}
+            {{
+                Form::hidden(
+                    'hidden_id',
+                    null,
+                    array(
+                        'id'=>'hidden_id_department',
+                    )
+                )
+            }}
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabelAssignHead">Assign Department Head</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-top:15px">
+                    <div class="col-md-12">
+                        <label for="teacher_id" class="control-label">Select Teacher</label>
+                        {{
+                            Form::select(
+                                'teacher_id',
+                                $availableTeachers,
+                                null,
+                                array(
+                                    'id'=>'teacher_id',
+                                    'class'=>'form-control',
+                                    'data-rule-required'=>'true'
+                                )
+                            )
+                        }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" name="submit" value="add" class="btn btn-primary">Save</button>
+            </div>
+            {{ Form::close() }}
+        </div>
+    </div>
+</div>
+
 @section('on-page-scripts')
 <script>
     $(document).ready(function() {
@@ -152,6 +212,13 @@
             $("#hidden_id").val($(this).data('id'));
             $("#name").val($(this).data('name'));
             $("#curriculum").val($(this).data('curriculum'));
+        });
+
+        $(".assign-department-head").on("click", function(e) {
+            e.preventDefault();
+            $("#modal-assign-head").modal();
+            $("#myModalLabelAssignHead").html("Assign Department Head");
+            $("#hidden_id_department").val($(this).data('id'));
         });
     });
 </script>
