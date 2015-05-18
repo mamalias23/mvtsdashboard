@@ -179,14 +179,27 @@ class DepartmentsController extends \BaseController {
 	 */
 	public function destroy($school_year_id, $id)
 	{
-		$department = Department::find($id);
-        if(!$department)
-            return Redirect::route('backend.school-year.departments.index', array($school_year_id))->withError('Department not found!');
-        
-        $temp = $department->name;
-        $department->delete();
+        try {
 
-        return Redirect::back()->withSuccess('Department "'.$temp.'" has been successfully deleted.');
+            $department = Department::find($id);
+            if(!$department)
+                return Redirect::route('backend.school-year.departments.index', array($school_year_id))->withError('Department not found!');
+
+            if($department->teacher_id) {
+                $teacher = Teacher::find($department->teacher_id);
+                $user = Sentry::findUserById($teacher->user->id);
+                $group = Sentry::getGroupProvider()->findByName('Department Heads');
+                $user->removeGroup($group);
+            }
+
+            $temp = $department->name;
+            $department->delete();
+
+            return Redirect::back()->withSuccess('Department "'.$temp.'" has been successfully deleted.');
+
+        } catch(Exception $e) {
+            return Redirect::to('/backend/school-year')->withError('Unable to delete department; maybe it is used? hmm please check');
+        }
 	}
 
     public function removeHead($school_year_id, $id)
