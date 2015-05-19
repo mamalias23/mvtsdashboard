@@ -58,4 +58,23 @@ Route::group(array('prefix'=>'backend'), function() {
     Route::post('school-year/{school_year}/students/enroll', ['as' => 'backend.school-year.students.storeEnroll', 'uses' => 'StudentsController@storeEnroll']);
     Route::resource('school-year.students', 'StudentsController');
 
+    Route::resource('school-year.announcements', 'AnnouncementsController');
+
+});
+
+Route::get('/test-sms', function() {
+
+    //$sms = Twilio::from('+18124965904')->to('+639086082188')->message('this is a test message..');
+    $sid = "AC147dceeb8ec57e4347457eb5ff74d3be"; // Your Account SID from www.twilio.com/user/account
+    $token = "feed0a30cc3cdd7090ed5f4452215969"; // Your Auth Token from www.twilio.com/user/account
+
+    $client = new Services_Twilio($sid, $token);
+    $message = $client->account->messages->sendMessage(
+        '+13344685575', // From a valid Twilio number
+        '+639086082188', // Text this number
+        "Hello monkey!"
+    );
+
+    return $message->sid;
+
 });

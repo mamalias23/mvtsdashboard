@@ -42,4 +42,14 @@ class SchoolYear extends UuidModel {
     {
         return $this->hasMany('Student', 'school_year_id');
     }
+
+    public function departments()
+    {
+        return $this->hasMany('Department', 'school_year_id');
+    }
+
+    public function curriculums()
+    {
+        return $this->hasMany('Curriculum', 'school_year_id');
+    }
 }

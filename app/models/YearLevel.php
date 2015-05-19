@@ -9,4 +9,8 @@ class YearLevel extends UuidModel {
         return $this->belongsTo('Curriculum', 'curriculum_id');
     }
 
+    public function sections()
+    {
+        return $this->hasMany('Section','year_level_id');
+    }
 }

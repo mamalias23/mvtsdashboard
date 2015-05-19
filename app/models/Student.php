@@ -5,7 +5,7 @@ class Student extends UuidModel {
 
     public function user()
     {
-        return $this->belongsTo('User', 'user_id');
+        return $this->belongsTo('User', 'user_id')->orderBy('last_name');
     }
 
     public function school_year()

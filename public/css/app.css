@@ -19,3 +19,22 @@ ul.select2-choices {
     color: #dd4b39;
     font-size:18px;
 }
+
+.daredevel-tree li span.daredevel-tree-anchor {
+    top: 4px;
+    left: -19px;
+}
+
+.ui-icon, .ui-widget-content .ui-icon {
+    background-image: url('/img/ui-icons_ff0000_256x240.png');
+}
+
+.ui-widget-content {
+    border: 0px !important;
+}
+
+.daredevel-tree label {
+    margin-left:5px;
+    font-weight: normal;
+    font-size:13px;
+}

@@ -17,4 +17,9 @@ class Section extends UuidModel {
     {
     	return $this->belongsTo('Teacher', 'teacher_id');
     }
+
+    public function students()
+    {
+        return $this->hasMany('Student', 'section_id');
+    }
 }

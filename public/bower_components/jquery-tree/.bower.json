@@ -1,0 +1,14 @@
+{
+  "name": "jquery-tree",
+  "homepage": "https://github.com/daredevel/jquery-tree",
+  "_release": "c0c691de4b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "c0c691de4b17c2bf695d7a0ce42d3466f1002d33"
+  },
+  "_source": "git://github.com/daredevel/jquery-tree.git",
+  "_target": "*",
+  "_originalSource": "jquery-tree",
+  "_direct": true
+}

@@ -20,6 +20,9 @@
     <link href="{{ asset('bower_components/select2/select2.css') }}" rel="stylesheet" type="text/css" />
     <!-- boostrap-toggle -->
     <link href="{{ asset('bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- jquery-tree -->
+    <link href="{{ asset('bower_components/jquery-tree/minified/jquery.tree.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
 
     <link href="{{ asset('plugins/iCheck/all.css') }}" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
@@ -38,6 +41,7 @@
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 <![endif]-->
+
 </head>
 <body class="skin-red">
     <!-- Site wrapper -->
@@ -146,7 +150,7 @@
 
     <!-- jQuery 2.1.3 -->
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('bower_components/jquery-ujs/src/rails.js') }}"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <!-- Bootstrap 3.3.2 JS -->
     <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <!-- InputMask -->
@@ -179,6 +183,8 @@
     <script src="{{ asset('bower_components/jquery-cascading-dropdown/dist/jquery.cascadingdropdown.js') }}" type="text/javascript"></script>
     <!-- bootstrap-toggle -->
     <script src="{{ asset('bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js') }}" type="text/javascript"></script>
+    <!-- jquery-tree -->
+    <script src="{{ asset('bower_components/jquery-tree/minified/jquery.tree.min.js') }}" type="text/javascript"></script>
     
     <!-- AdminLTE App -->
     <script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>

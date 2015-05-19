@@ -14,6 +14,15 @@
         </div>
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
+        <li class="treeview">
+            <a href="javascript:;">
+                <i class="fa fa-cogs"></i> <span>ANNOUNCEMENT</span> <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu menu-open">
+                <li><a href="{{ route('backend.school-year.announcements.create', array(SchoolYear::getActivated()->id)) }}"><i class="fa fa-circle-o"></i> New</a></li>
+                <li><a href="javascript:;"><i class="fa fa-circle-o"></i> Pending</a></li>
+            </ul>
+        </li>
         @if(Sentry::getUser()->hasAccess('admin') || Sentry::getUser()->hasAccess('curriculum_departments') || Sentry::getUser()->hasAccess('department_heads'))
             <li class="treeview active">
                 <a href="javascript:;">
@@ -69,7 +78,7 @@
             <li class="treeview {{ Request::is('backend/school-year/*/students*') ? 'active':'' }}">
                 <a href="javascript:;">
                     <i class="fa fa-users"></i>
-                    <span>Students</span>
+                    <span>Students</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{ route('backend.school-year.students.index', array(SchoolYear::getActivated()->id)) }}"><i class="fa fa-list"></i> Lists</a></li>
