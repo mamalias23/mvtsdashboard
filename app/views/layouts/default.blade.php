@@ -169,7 +169,7 @@
     <script src="{{ asset('bower_components/jquery-validation/dist/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('bower_components/jquery-validation/dist/additional-methods.min.js') }}"></script>
     <!-- SlimScroll -->
-    <script src="{{ asset('plugins/slimScroll/jquery.slimScroll.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/slimScroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
     <!-- FastClick -->
     <script src="{{ asset('plugins/fastclick/fastclick.min.js') }}" type="text/javascript"></script>
     <!-- bootbox -->
