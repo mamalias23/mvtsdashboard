@@ -26,6 +26,8 @@
     "dependent-dropdown": "~1.4.0",
     "jquery-cascading-dropdown": "~1.2.6",
     "bootstrap-toggle": "~2.2.0",
-    "jquery-tree": "*"
+    "jquery-tree": "*",
+    "angular-bootstrap-calendar": "~0.10.6",
+    "angular-bootstrap": "~0.13.0"
   }
 }

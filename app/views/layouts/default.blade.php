@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app>
+<html>
 <head>
     <meta charset="UTF-8">
     <title>MVTS DASHBOARD | Dashboard</title>
@@ -34,7 +34,8 @@
 
     @yield('on-page-styles')
 
-    <script src="{{ asset('bower_components/angular/angular.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css') }}">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -43,7 +44,7 @@
 <![endif]-->
 
 </head>
-<body class="skin-red">
+<body class="skin-red" ng-app="mvtsdashboard">
     <!-- Site wrapper -->
     <div class="wrapper">
 
@@ -148,6 +149,8 @@
 
     </div><!-- ./wrapper -->
 
+
+
     <!-- jQuery 2.1.3 -->
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -215,6 +218,18 @@
         });
     </script>
 
+    <script src="{{ asset('bower_components/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('bower_components/angular/angular.min.js') }}"></script>
+    <script src="{{ asset('bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js') }}"></script>
+    <script src="{{ asset('bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js') }}"></script>
+    <script src="{{ asset('js/mvtsdashboard.js') }}" type="text/javascript"></script>
+    <script>
+    moment.locale('en', {
+      week : {
+        dow : 1 // Monday is the first day of the week
+      }
+    });
+    </script>
     @yield('on-page-scripts')
 </body>
 </html>

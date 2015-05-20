@@ -60,6 +60,8 @@ Route::group(array('prefix'=>'backend'), function() {
 
     Route::resource('school-year.announcements', 'AnnouncementsController');
 
+    Route::resource('activities', 'ActivitiesController');
+
 });
 
 Route::get('/test-sms', function() {
