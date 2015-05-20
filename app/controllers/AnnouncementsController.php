@@ -32,44 +32,55 @@ class AnnouncementsController extends \BaseController {
 	 */
 	public function store($school_year_id)
 	{
-        $validator = Validator::make(
-            Input::all(),
-            array(
-                'title' => 'required',
-                'body' => 'required',
-                'users'=>'required',
-            ),
-            array(
-                'users.required' => 'Oh crap! who will receive the announcement? please select receiver(s)',
-            )
-        );
+        try {
 
-        if($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+            DB::beginTransaction();
 
-        $announcement = new Announcement;
-        $announcement->sender_id = Sentry::getUser()->id;
-        $announcement->school_year_id = $school_year_id;
-        $announcement->title = Input::get('title');
-        $announcement->body = Input::get('body');
-        if(Sentry::getUser()->hasAccess('admin'))
-            $announcement->status = 2;
-        $announcement->save();
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'title' => 'required',
+                    'body' => 'required',
+                    'users'=>'required',
+                ),
+                array(
+                    'users.required' => 'Oh crap! who will receive the announcement? please select receiver(s)',
+                )
+            );
 
-        $announcement = Announcement::find($announcement->id);
-        $announcement->receivers()->sync(Input::get('users'));
-
-        if($announcement->status==2 && Input::has('sms')) {
-            foreach($announcement->receivers()->get() as $receiver) {
-                SMS::message($receiver, $announcement);
+            if($validator->fails()) {
+                return Redirect::back()->withErrors($validator)->withInput();
             }
-        }
 
-        if(Sentry::getUser()->hasAccess('admin'))
-            return Redirect::route('backend.school-year.announcements.create', array($school_year_id))->withSuccess('Announcement has been successfully sent');
-	    else
-            return Redirect::route('backend.school-year.announcements.create', array($school_year_id))->withSuccess('Announcement has been successfully saved, and is currently pending. Please let the admin know');
+            $announcement = new Announcement;
+            $announcement->sender_id = Sentry::getUser()->id;
+            $announcement->school_year_id = $school_year_id;
+            $announcement->title = Input::get('title');
+            $announcement->body = Input::get('body');
+            if(Sentry::getUser()->hasAccess('admin'))
+                $announcement->status = 2;
+            $announcement->save();
+
+            $announcement = Announcement::find($announcement->id);
+            $announcement->receivers()->sync(Input::get('users'));
+
+            if($announcement->status==2 && Input::has('sms')) {
+                foreach($announcement->receivers()->get() as $receiver) {
+                    SMS::message($receiver, $announcement);
+                }
+            }
+
+            DB::commit();
+
+            if(Sentry::getUser()->hasAccess('admin'))
+                return Redirect::route('backend.school-year.announcements.create', array($school_year_id))->withSuccess('Announcement has been successfully sent');
+            else
+                return Redirect::route('backend.school-year.announcements.create', array($school_year_id))->withSuccess('Announcement has been successfully saved, and is currently pending. Please let the admin know');
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
     }
 
 	/**
