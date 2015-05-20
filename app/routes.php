@@ -82,3 +82,7 @@ Route::get('/test-sms', function() {
 Route::get('sms/reply', function() {
     return Response::view('sms.message')->header('Content-Type', 'Text/xml');
 });
+
+Route::post('voice/reply', function() {
+    return Response::view('sms.message')->header('Content-Type', 'Text/xml');
+});
