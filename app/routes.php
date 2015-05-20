@@ -84,5 +84,14 @@ Route::get('sms/reply', function() {
 });
 
 Route::post('voice/reply', function() {
-    return Response::view('sms.message')->header('Content-Type', 'Text/xml');
+    return Response::view('sms.message')->header('Content-Type', 'text/xml');
+});
+
+Route::get('testxml', function()
+{
+    $data = [
+            'Say' => 'Thank you for enquiring your announcement',
+            'Sms' => 'Thanks'
+    ];
+    return Response::xml($data);
 });
