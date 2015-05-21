@@ -55,6 +55,10 @@ angular.module('mvtsdashboard', ['mwl.calendar', 'ui.bootstrap'])
                             $scope.responseData = response;
                             $modalInstance.close($scope);
                         });
+
+                        event.error(function(response) {
+                           alert(response.error);
+                        });
                     };
 
                     $scope.toggle = function($event, field, event) {

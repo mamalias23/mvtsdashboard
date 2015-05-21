@@ -87,6 +87,10 @@ class ActivitiesController extends \BaseController
             )
         );
 
+        if($validator->fails()) {
+            return Response::json(array('error'=>'all fields are required'), 500);
+        }
+
         if($validator->passes()) {
             $activity = new Activity;
             $activity->user_id = Sentry::getUser()->id;
