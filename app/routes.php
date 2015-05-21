@@ -60,6 +60,7 @@ Route::group(array('prefix'=>'backend'), function() {
 
     Route::resource('school-year.announcements', 'AnnouncementsController');
 
+    Route::get('activities/lists', ['as' => 'backend.activities.lists', 'uses' => 'ActivitiesController@lists']);
     Route::resource('activities', 'ActivitiesController');
 
 });

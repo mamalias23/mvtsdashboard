@@ -1,29 +1,19 @@
 angular.module('mvtsdashboard', ['mwl.calendar', 'ui.bootstrap'])
-    .controller('ActivitiesController', function($scope, $modal, moment) {
+
+    .controller('ActivitiesController', function($scope, $rootScope, $modal, $http, moment) {
 
         $scope.calendarDay = moment();
         $scope.calendarView = 'month';
         $scope.calendarTitle = 'test';
-        $scope.events = [
-            {
-                title: 'Event 1',
-                type: 'warning',
-                startsAt: moment().startOf('week').subtract(2, 'days').add(8, 'hours').toDate(),
-                endsAt: moment().startOf('week').add(1, 'week').add(9, 'hours').toDate()
-            },
-            {
-                title: 'Event 2',
-                type: 'info',
-                startsAt: moment().subtract(1, 'day').toDate(),
-                endsAt: moment().add(5, 'days').toDate()
-            },
-            {
-                title: 'This is a really long event title',
-                type: 'important',
-                startsAt: moment().startOf('day').add(5, 'hours').toDate(),
-                endsAt: moment().startOf('day').add(19, 'hours').toDate()
-            }
-        ];
+        $scope.events = [];
+        var getActivities = function() {
+            var activities = $http.get('/backend/activities/lists');
+            activities.success(function(response) {
+                $scope.events = response;
+            });
+        };
+
+        getActivities();
 
         function showModal(action, event) {
             $modal.open({
@@ -40,6 +30,46 @@ angular.module('mvtsdashboard', ['mwl.calendar', 'ui.bootstrap'])
             });
         }
 
+        function showAddModal() {
+            var modalInstance = $modal.open({
+                templateUrl: 'myAddModalContent.html',
+
+                controller: function($scope, $rootScope, $modalInstance, $http) {
+                    $scope.$modalInstance = $modalInstance;
+
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss('cancel');
+                    };
+
+                    $scope.event = {
+                        title:'',
+                        type:'info',
+                        body:'',
+                        startsAt:moment().toDate(),
+                        endsAt:moment().toDate()
+                    };
+
+                    $scope.submitEvent = function() {
+                        var event = $http.post('/backend/activities', $scope.event);
+                        event.success(function(response) {
+                            $scope.responseData = response;
+                            $modalInstance.close($scope);
+                        });
+                    };
+
+                    $scope.toggle = function($event, field, event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+                        event[field] = !event[field];
+                    };
+                }
+            });
+
+            modalInstance.result.then(function (result) {
+                $scope.events.push(result.responseData);
+            });
+        }
+
         $scope.eventClicked = function(event) {
             showModal('Clicked', event);
         };
@@ -49,8 +79,19 @@ angular.module('mvtsdashboard', ['mwl.calendar', 'ui.bootstrap'])
         };
 
         $scope.eventDeleted = function(event) {
-            showModal('Deleted', event);
+            if(confirm('Are you sure you want to delete?')) {
+                var del = $http.delete('/backend/activities/'+event.id);
+                for(var i = $scope.events.length - 1; i >= 0; i--) {
+                    if($scope.events[i].id == event.id) {
+                        $scope.events.splice(i, 1);
+                    }
+                }
+            }
         };
+
+        $scope.addEvent = function() {
+            showAddModal();
+        }
 
     })
 ;
