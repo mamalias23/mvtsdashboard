@@ -63,6 +63,23 @@ class StudentsController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             }
 
+            //check if exists
+            $users = User::where('first_name', 'LIKE', Input::get('first_name'))
+                ->where('last_name', 'LIKE', Input::get('last_name'))
+                ->where('middle_initial', 'LIKE', Input::get('middle_initial'))
+                ->get();
+
+            if($users->count()) {
+                foreach($users as $u) {
+                    $u = Sentry::findUserById($u->id);
+                    // Find the Student group
+                    $student = Sentry::findGroupByName('Students');
+                    if($u->inGroup($student)) {
+                        return Redirect::back()->withError("Student Info already exists, please check the name")->withInput();
+                    }
+                }
+            }
+
             $user = Sentry::getUserProvider()->create(array(
                 'username'    => Input::get('username'),
                 'password' => Input::get('password') ?: '12345678',

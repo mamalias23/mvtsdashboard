@@ -79,6 +79,11 @@ class CurriculumsController extends \BaseController {
 
         } else {
             $curriculum = new Curriculum;
+
+            //check if exists
+            if(Curriculum::where('school_year_id', $school_year_id)->where('name', 'LIKE', Input::get('name'))->get()->count()) {
+                return Redirect::back()->withError('Curriculum is already exists');
+            }
         }
         $curriculum->school_year_id = $school_year_id;
         $curriculum->user_id = $user->id;

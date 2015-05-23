@@ -87,10 +87,16 @@ class DepartmentsController extends \BaseController {
             return Redirect::back()->withErrors($validator);
         }
         
-        if($hidden_id)
+        if($hidden_id) {
             $department = Department::find($hidden_id);
-        else
+        } else {
             $department = new Department;
+
+            //check if exists
+            if(Department::where('school_year_id', $school_year_id)->where('curriculum_id', Input::get('curriculum'))->where('name', 'LIKE', Input::get('name'))->get()->count()) {
+                return Redirect::back()->withError('Department already exists.');
+            }
+        }
         $department->school_year_id = $school_year_id;
         $department->curriculum_id = Input::get('curriculum');
         $department->name = Input::get('name');

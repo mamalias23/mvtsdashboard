@@ -56,6 +56,23 @@ class SchoolRecordsPersonelController extends BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             }
 
+            //check if exists
+            $users = User::where('first_name', 'LIKE', Input::get('first_name'))
+                ->where('last_name', 'LIKE', Input::get('last_name'))
+                ->where('middle_initial', 'LIKE', Input::get('middle_initial'))
+                ->get();
+
+            if($users->count()) {
+                foreach($users as $u) {
+                    $u = Sentry::findUserById($u->id);
+                    // Find the group
+                    $group = Sentry::findGroupByName('School Records Personel');
+                    if($u->inGroup($group)) {
+                        return Redirect::back()->withError("Information already exists, please check the name")->withInput();
+                    }
+                }
+            }
+
             $user = Sentry::getUserProvider()->create(array(
                 'username'    => Input::get('username'),
                 'password' => Input::get('password') ?: '12345678',
