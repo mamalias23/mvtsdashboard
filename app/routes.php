@@ -68,6 +68,8 @@ Route::group(array('prefix'=>'backend'), function() {
 
     Route::controller('my-advisory', 'AdvisoriesController');
 
+    Route::resource('chats', 'ChatsController');
+
 });
 
 Route::get('/test-sms', function() {

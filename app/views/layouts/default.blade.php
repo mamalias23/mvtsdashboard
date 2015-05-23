@@ -30,7 +30,7 @@
 <!-- AdminLTE Skins. Choose a skin from the css/skins 
     folder instead of downloading all of them to reduce the load. -->
     <link href="{{ asset('css/skins/_all-skins.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/app.css?v=0.1') }}" rel="stylesheet" type="text/css" />
 
     @yield('on-page-styles')
 
@@ -231,6 +231,7 @@
       }
     });
     </script>
+
     @yield('on-page-scripts')
 </body>
 </html>

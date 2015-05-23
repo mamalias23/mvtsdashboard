@@ -1,0 +1,1 @@
+/home/vagrant/Code/work/mvtsdashboard/app/views/chats/create.blade.php

@@ -13,10 +13,19 @@ return array(
 	|
 	*/
 
+    'url' => 'http://mvtsdashboard.dev',
+
+    'domain' => 'mvtsdashboard.dev',
+
 	'debug' => true,
 
 	'providers' => array(
 		'Way\Generators\GeneratorsServiceProvider',
+        'BrainSocket\BrainSocketServiceProvider',
 	),
+
+    'aliases' => array(
+        'BrainSocket'     => 'BrainSocket\BrainSocketFacade',
+    )
 
 );

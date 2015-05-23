@@ -110,6 +110,11 @@
                 </a>
             </li>
         @endif
+        <li>
+            <a href="{{ route('backend.chats.index') }}">
+                <span>Chat</span>
+            </a>
+        </li>
         <li class="header"><i class="fa fa-cogs"></i> USER SETTINGS</li>
         <li>
             <a href="#">
