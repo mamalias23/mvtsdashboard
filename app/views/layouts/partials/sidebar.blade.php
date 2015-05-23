@@ -35,6 +35,11 @@
                 </ul>
             </li>
         @endif
+        <li>
+            <a href="{{ route('backend.chats.index') }}">
+                <i class="fa fa-weixin"></i> <span>Public Chat</span>
+            </a>
+        </li>
         <li class="treeview">
             <a href="javascript:;">
                 <i class="fa fa-cogs"></i> <span>ANNOUNCEMENT</span> <i class="fa fa-angle-left pull-right"></i>
@@ -110,11 +115,6 @@
                 </a>
             </li>
         @endif
-        <li>
-            <a href="{{ route('backend.chats.index') }}">
-                <span>Chat</span>
-            </a>
-        </li>
         <li class="header"><i class="fa fa-cogs"></i> USER SETTINGS</li>
         <li>
             <a href="#">
