@@ -36,8 +36,11 @@ Route::group(array('prefix'=>'backend'), function() {
     Route::delete('school-year/{school_year}/departments/{departments}/remove-head', ['as' => 'backend.school-year.departments.removeHead', 'uses' => 'DepartmentsController@removeHead']);
 	Route::resource('school-year.departments', 'DepartmentsController');
 
+    Route::post('school-year/{school_year}/sections/store-adviser', ['as' => 'backend.school-year.sections.storeAdviser', 'uses' => 'SectionsController@storeAdviser']);
     Route::get('school-year/{school_year}/sections/json', ['as' => 'backend.school-year.sections.json', 'uses' => 'SectionsController@json']);
+    Route::delete('school-year/{school_year}/sections/{sections}/remove-adviser', ['as' => 'backend.school-year.sections.removeAdviser', 'uses' => 'SectionsController@removeAdviser']);
 	Route::resource('school-year.sections', 'SectionsController');
+
 	Route::resource('school-year.subjects', 'SubjectsController');
 
 	Route::post('school-year/{school_year}/teachers/{teachers}/advisory', ['as' => 'backend.school-year.teachers.advisory', 'uses' => 'TeachersController@advisory']);

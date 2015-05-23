@@ -177,7 +177,7 @@ class TeachersController extends \BaseController {
         $availableSubjects = array();
         $subjects = Subject::where('school_year_id',$school_year_id)->orderBy('name')->get();
         foreach($subjects as $subject) {
-            $availableSubjects[$subject->id] = $subject->name;
+            $availableSubjects[$subject->id] = $subject->name . ' - ' . $subject->department->curriculum->name;
         }
 
         $teacherSubjects = array();
@@ -189,7 +189,7 @@ class TeachersController extends \BaseController {
         $sectionsArray[""] = "";
         $sections = Section::where('school_year_id', $school_year_id)->orderBy('name')->get();
         foreach($sections as $section)
-            $sectionsArray[$section->id] =  $section->name." - ".$section->year->description;
+            $sectionsArray[$section->id] =  $section->name." - ".$section->year->description . " - " . $section->curriculum->name;
 
         return View::make('teachers.show', compact('teacher', 'availableSubjects', 'teacherSubjects', 'sectionsArray'));
 	}

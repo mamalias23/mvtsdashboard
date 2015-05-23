@@ -16,9 +16,24 @@ class SectionsController extends \BaseController {
 	 */
 	public function index($school_year_id)
 	{
+
+        $availableTeachers = array();
+        $availableTeachers[""] = "";
+        $group = Sentry::findGroupByName('Teachers');
+        $users = Sentry::findAllUsersInGroup($group);
+        foreach($users as $user) {
+            $teacher_exists_in_school_year = Teacher::where('school_year_id',$school_year_id)->where('user_id', $user->id)->first();
+            if($teacher_exists_in_school_year) {
+                $teacher_check = Section::where('school_year_id',$school_year_id)->where('teacher_id',$teacher_exists_in_school_year->id)->get();
+                if($teacher_check->count()==0) {
+                    $availableTeachers[$teacher_exists_in_school_year->id] = $user->first_name . " " . $user->middle_initial . ". " . $user->last_name;
+                }
+            }
+        }
+
 		
 		$sections = Section::where('school_year_id',$school_year_id)->orderBy('name')->get();
-        return View::make('sections.index', compact('sections'));
+        return View::make('sections.index', compact('sections', 'availableTeachers'));
 	}
 
     public function json() {
@@ -99,6 +114,34 @@ class SectionsController extends \BaseController {
             return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
         }
 	}
+
+    public function storeAdviser($school_year_id)
+    {
+        $hidden_id = Input::get('hidden_id');
+
+        $validator = Validator::make(
+            Input::all(),
+            array(
+                'teacher_id' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $teacher = Teacher::find(Input::get('teacher_id'));
+        if(!$teacher) {
+            return Redirect::back()->withError('Teacher not found.');
+        }
+
+        $section = Section::find($hidden_id);
+        $section->teacher_id = Input::get('teacher_id');
+        $section->save();
+
+        return Redirect::back()->withSuccess('Section has been successfully updated.');
+
+    }
 
 	/**
 	 * Display the specified resource.
@@ -219,5 +262,17 @@ class SectionsController extends \BaseController {
             return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
         }
 	}
+
+    public function removeAdviser($school_year_id, $id)
+    {
+        $section = Section::find($id);
+        if(!$section)
+            return Redirect::route('backend.school-year.sections.index', array($school_year_id))->withError('Section not found!');
+
+        $section->teacher_id = NULL;
+        $section->save();
+
+        return Redirect::back()->withSuccess('Section has been successfully updated.');
+    }
 
 }
