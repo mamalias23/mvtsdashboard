@@ -3,13 +3,13 @@
 @section('content-header')
 
 <h1>
-    New Student
+    Add Student
     <small></small>
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{ url('backend') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ route('backend.school-year.students.index') }}">Students</a></li>
-    <li class="active">New</li>
+    <li><a href="{{ url('backend/my-advisory') }}">My Advisory</a></li>
+    <li class="active">add student</li>
 </ol>
 
 @stop
@@ -25,24 +25,49 @@
 @stop
 
 @section('content')
-{{
-    Form::open(
-        array(
-            'route'=>array(
-                'backend.school-year.students.update',
-                SchoolYear::getActivated()->id,
-                $student->id
-            ),
-            'method'=>'PUT',
-            'id'=>'frm'
-        )
-    )
-}}
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Old</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+        {{ Form::open(array('url'=>array('backend/my-advisory/add-students-old'))) }}
+        <div class="row" style="margin-top: 15px">
+            <div class="col-md-12">
+                <label for="students" class="control-label">Select Student(s)</label>
+                {{
+                    Form::select(
+                        'students[]',
+                        $availableStudents,
+                        null,
+                        array(
+                            'id'=>'students',
+                            'class'=>'form-control select-multiple',
+                            'data-rule-required'=>'true',
+                            'multiple'=>'multiple'
+                        )
+                    )
+                }}
+            </div>
+        </div>
+        <div class="row" style="margin-top:15px">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-success">ENROLL</button>
+                </div>
+            </div>
+        </div>
+        {{ Form::close() }}
+    </div><!-- /.box-body -->
+</div>
+{{ Form::open(array('url'=>array('backend/my-advisory/add-students'), 'id'=>'frm')) }}
 <div class="row">
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Student Information</h3>
+                <h3 class="box-title">New</h3>
                 <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 </div>
@@ -51,44 +76,44 @@
                 <div class="row">
                     <div class="col-md-5">
                         <label for="first_name" class="control-label">First name</label>
-                        {{ 
+                        {{
                             Form::text(
-                                'first_name', 
-                                $student->user->first_name,
+                                'first_name',
+                                null,
                                 array(
-                                    'id'=>'first_name', 
+                                    'id'=>'first_name',
                                     'class'=>'form-control',
                                     'data-rule-required'=>'true',
                                 )
-                            ) 
+                            )
                         }}
                     </div>
                     <div class="col-md-5">
                         <label for="last_name" class="control-label">Last name</label>
-                        {{ 
+                        {{
                             Form::text(
-                                'last_name', 
-                                $student->user->last_name,
+                                'last_name',
+                                null,
                                 array(
-                                    'id'=>'last_name', 
+                                    'id'=>'last_name',
                                     'class'=>'form-control',
                                     'data-rule-required'=>'true',
                                 )
-                            ) 
+                            )
                         }}
                     </div>
                     <div class="col-md-2">
                         <label for="middle_initial" class="control-label">M.I.</label>
-                        {{ 
+                        {{
                             Form::selectRange(
                                 'middle_initial',
-                                'A', 
+                                'A',
                                 'Z',
-                                $student->user->middle_initial,
+                                null,
                                 array(
                                     'class'=>'form-control',
                                 )
-                            ) 
+                            )
                         }}
                     </div>
                 </div>
@@ -97,28 +122,28 @@
                         <label for="gender" class="control-label">Gender</label>
                         <div class="form-group">
                             <label style="margin-right:20px">
-                                {{ 
+                                {{
                                     Form::radio(
                                         'gender',
                                         'male',
-                                        $student->user->gender=='male' ? true:null,
+                                        true,
                                         array(
                                             'class'=>'minimal-red',
                                         )
-                                    ) 
+                                    )
                                 }}
                                 Male
                             </label>
                             <label>
-                                {{ 
+                                {{
                                     Form::radio(
                                         'gender',
                                         'female',
-                                        $student->user->gender=='female' ? true:null,
+                                        null,
                                         array(
                                             'class'=>'minimal-red',
                                         )
-                                    ) 
+                                    )
                                 }}
                                 Female
                             </label>
@@ -126,78 +151,78 @@
                     </div>
                     <div class="col-md-4">
                         <label for="birthdate" class="control-label">Birthdate</label>
-                        {{ 
+                        {{
                             Form::text(
-                                'birthdate', 
-                                $student->user->birthdate,
+                                'birthdate',
+                                null,
                                 array(
-                                    'id'=>'birthdate', 
+                                    'id'=>'birthdate',
                                     'class'=>'form-control',
                                     'data-rule-required'=>'true',
                                     'data-inputmask'=>"'alias': 'yyyy-mm-dd', 'clearIncomplete':'true'",
                                     'data-mask'=>''
                                 )
-                            ) 
+                            )
                         }}
                     </div>
                     <div class="col-md-4">
                         <label for="mobile" class="control-label">Mobile Number</label>
-                        {{ 
+                        {{
                             Form::text(
-                                'mobile', 
-                                $student->user->mobile_number,
+                                'mobile',
+                                null,
                                 array(
-                                    'id'=>'mobile', 
+                                    'id'=>'mobile',
                                     'class'=>'form-control',
                                     'data-rule-required'=>'true',
                                     'data-mask-mobile'=>''
                                 )
-                            ) 
+                            )
                         }}
                     </div>
                 </div>
                 <div class="row" style="margin-top:15px">
                     <div class="col-md-12">
                         <label for="full_address" class="control-label">Full Address</label>
-                        {{ 
+                        {{
                             Form::text(
-                                'full_address', 
-                                $student->user->full_address,
+                                'full_address',
+                                null,
                                 array(
-                                    'id'=>'full_address', 
+                                    'id'=>'full_address',
                                     'class'=>'form-control',
                                     'data-rule-required'=>'true',
                                 )
-                            ) 
+                            )
                         }}
                     </div>
                 </div>
                 <div class="row" style="margin-top:15px">
                     <div class="col-md-6">
                         <label for="username" class="control-label">Username</label>
-                        {{ 
+                        {{
                             Form::text(
-                                'username', 
-                                $student->user->username,
+                                'username',
+                                $username,
                                 array(
-                                    'id'=>'username', 
+                                    'id'=>'username',
                                     'class'=>'form-control',
                                     'data-rule-required'=>'true',
                                 )
-                            ) 
+                            )
                         }}
                     </div>
                     <div class="col-md-6">
-                        <label for="password" class="control-label">Password (<small>leave blank if you dont want to change</small>)</label>
-                        {{ 
+                        <label for="password" class="control-label">Password</label>
+                        {{
                             Form::password(
-                                'password', 
+                                'password',
                                 array(
-                                    'id'=>'password', 
+                                    'id'=>'password',
                                     'class'=>'form-control',
                                     'placeholder'=>'Default password: 12345678',
                                 )
-                            ) 
+                            )
                         }}
                     </div>
                 </div>
@@ -210,12 +235,12 @@
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">Guardian Information</h3>
-                <div class="box-tools pull-right" ng-init="guardian={{ Input::old('is_guardian', $student->user->guardian) }}">
+                <div class="box-tools pull-right" ng-init="guardian={{ Input::old('is_guardian', 0) }}">
                     {{
                         Form::checkbox(
                             'is_guardian',
                             1,
-                            Input::old('is_guardian', $student->user->guardian),
+                            null,
                             array(
                                 'id'=>'is_guardian',
                                 'class'=>'minimal-red',
@@ -240,7 +265,7 @@
                         {{
                             Form::text(
                                 'guardian_full_name',
-                                $student->user->guardian_full_name,
+                                null,
                                 array(
                                     'id'=>'guardian_full_name',
                                     'class'=>'form-control',
@@ -256,7 +281,7 @@
                         {{
                             Form::text(
                                 'guardian_mobile',
-                                $student->user->guardian_mobile,
+                                null,
                                 array(
                                     'id'=>'guardian_mobile',
                                     'class'=>'form-control',
@@ -274,12 +299,12 @@
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">Mother Information</h3>
-                    <div class="box-tools pull-right" ng-init="mother={{ Input::old() ? Input::old('is_mother', 0) : $student->user->mother }}">
+                    <div class="box-tools pull-right" ng-init="mother={{ Input::old() ? Input::old('is_mother', 0) : 1 }}">
                         {{
                             Form::checkbox(
                                 'is_mother',
                                 1,
-                                Input::old() ? Input::old('is_mother', 0) : $student->user->mother,
+                                Input::old() ? Input::old('is_mother', 0) : 1,
                                 array(
                                     'id'=>'is_mother',
                                     'class'=>'minimal-red',
@@ -304,7 +329,7 @@
                             {{
                                 Form::text(
                                     'mother_full_name',
-                                    $student->user->mother_full_name,
+                                    null,
                                     array(
                                         'id'=>'mother_full_name',
                                         'class'=>'form-control',
@@ -321,7 +346,7 @@
                             {{
                                 Form::text(
                                     'mother_mobile',
-                                    $student->user->mother_mobile,
+                                    null,
                                     array(
                                         'id'=>'mother_mobile',
                                         'class'=>'form-control',
@@ -340,12 +365,12 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">Father Information</h3>
-                        <div class="box-tools pull-right" ng-init="father={{ Input::old() ? Input::old('is_father', 0) : $student->user->father }}">
+                        <div class="box-tools pull-right" ng-init="father={{ Input::old() ? Input::old('is_father', 0) : 1 }}">
                             {{
                                 Form::checkbox(
                                     'is_father',
                                     1,
-                                    Input::old() ? Input::old('is_father', 0) : $student->user->father,
+                                    Input::old() ? Input::old('is_father', 0) : 1,
                                     array(
                                         'id'=>'is_father',
                                         'class'=>'minimal-red',
@@ -370,7 +395,7 @@
                                 {{
                                     Form::text(
                                         'father_full_name',
-                                        $student->user->father_full_name,
+                                        null,
                                         array(
                                             'id'=>'father_full_name',
                                             'class'=>'form-control',
@@ -387,7 +412,7 @@
                                 {{
                                     Form::text(
                                         'father_mobile',
-                                        $student->user->father_mobile,
+                                        null,
                                         array(
                                             'id'=>'father_mobile',
                                             'class'=>'form-control',
@@ -406,7 +431,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="pull-right">
-            <button type="submit" class="btn btn-success btn-lg">SAVE</button>
+            <button type="submit" class="btn btn-success btn-lg">ENROLL</button>
         </div>
     </div>
 </div>

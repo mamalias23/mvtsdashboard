@@ -5,7 +5,7 @@ class StudentsController extends \BaseController {
     public function __construct()
     {
         $this->beforeFilter('csrf', array('on'=>'post'));
-        $this->beforeFilter('registrar');
+        $this->beforeFilter('registrar', array('except'=>array('edit','update')));
     }
 
 	/**
@@ -270,7 +270,7 @@ class StudentsController extends \BaseController {
 
             DB::commit();
 
-            return Redirect::route('backend.school-year.students.index', array($school_year_id))->withSuccess('Student has been successfully updated.');
+            return Redirect::back()->withSuccess('Student has been successfully updated.');
 
         } catch(Exception $e) {
             DB::rollback();
@@ -299,7 +299,7 @@ class StudentsController extends \BaseController {
 
             DB::commit();
 
-            return Redirect::route('backend.school-year.students.index', array($school_year_id))->withSuccess('Student has been successfully un-enrolled.');
+            return Redirect::back()->withSuccess('Student has been successfully un-enrolled.');
 
         } catch(Exception $e) {
             DB::rollback();

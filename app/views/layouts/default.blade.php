@@ -154,6 +154,7 @@
     <!-- jQuery 2.1.3 -->
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="{{ asset('bower_components/jquery-ujs/src/rails.js') }}"></script>
     <!-- Bootstrap 3.3.2 JS -->
     <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <!-- InputMask -->

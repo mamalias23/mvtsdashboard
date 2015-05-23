@@ -88,6 +88,28 @@
                 </ul>
             </li>
         @endif
+
+        <?php
+            $hasAdvisory = 0;
+            $groupName = Sentry::getUser()->getGroups()->first()->name;
+            $teacher = User::find(Sentry::getUser()->id)
+                            ->teacher()
+                            ->where('school_year_id', SchoolYear::getActivated()->id)
+                            ->first();
+
+            if($groupName=='Teachers' && $teacher) {
+                if($advisory = $teacher->advisory()) {
+                    $hasAdvisory = 1;
+                }
+            }
+        ?>
+        @if($hasAdvisory)
+            <li class="{{ Request::is('backend/my-advisory*') ? 'active':'' }}">
+                <a href="{{ url('backend/my-advisory') }}">
+                    <i class="fa fa-files-o"></i> <span>My Advisory</span><!--  <small class="label pull-right bg-green">Hot</small> -->
+                </a>
+            </li>
+        @endif
         <li class="header"><i class="fa fa-cogs"></i> USER SETTINGS</li>
         <li>
             <a href="#">

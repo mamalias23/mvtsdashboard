@@ -63,6 +63,8 @@ Route::group(array('prefix'=>'backend'), function() {
     Route::get('activities/lists', ['as' => 'backend.activities.lists', 'uses' => 'ActivitiesController@lists']);
     Route::resource('activities', 'ActivitiesController');
 
+    Route::controller('my-advisory', 'AdvisoriesController');
+
 });
 
 Route::get('/test-sms', function() {

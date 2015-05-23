@@ -222,3 +222,26 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+Route::filter('advisory', function()
+{
+    if(!Sentry::check()) {
+        return Redirect::to('/backend/user/login');
+    }
+
+    $hasAdvisory = 0;
+    $groupName = Sentry::getUser()->getGroups()->first()->name;
+    $teacher = User::find(Sentry::getUser()->id)
+        ->teacher()
+        ->where('school_year_id', SchoolYear::getActivated()->id)
+        ->first();
+
+    if($groupName=='Teachers' && $teacher) {
+        if($advisory = $teacher->advisory()) {
+            $hasAdvisory = 1;
+        }
+    }
+
+    if(!$hasAdvisory)
+        return Redirect::back()->withError('Access Denied!');
+});
