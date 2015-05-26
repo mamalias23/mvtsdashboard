@@ -60,10 +60,7 @@ return array(
 			'password'  => 'so6tou5jg54',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-            'options'   => array(
-                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET time_zone = \'Asia/Manila\''
-            ),
+			'prefix'    => ''
 		),
 
 		'pgsql' => array(
