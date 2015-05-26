@@ -15,6 +15,14 @@ return array(
 
 	'debug' => true,
 
+    'announcement' => array(
+        'status' => array(
+            '1' => 'Pending',
+            '2' => 'Approved',
+            '3' => 'Rejected',
+        )
+    ),
+
 	/*
 	|--------------------------------------------------------------------------
 	| Application URL
@@ -124,7 +132,6 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Cartalyst\Sentry\SentryServiceProvider',
-        'BrainSocket\BrainSocketServiceProvider',
 
 	),
 
@@ -194,7 +201,6 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 		'Sentry' 		  => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
 		'Uuid' 			  => 'Webpatser\Uuid\Uuid',
-        'BrainSocket'     => 'BrainSocket\BrainSocketFacade',
 
 	),
 

@@ -2,6 +2,11 @@
 
 class AnnouncementsController extends \BaseController {
 
+    public function __construct()
+    {
+        $this->beforeFilter('auth');
+        $this->beforeFilter('admin', ['only'=>['approve']]);
+    }
 	/**
 	 * Display a listing of the resource.
 	 * GET /announcements
@@ -10,7 +15,8 @@ class AnnouncementsController extends \BaseController {
 	 */
 	public function index($school_year_id)
 	{
-		//
+        $announcements = Announcement::where('school_year_id', $school_year_id)->orderBy('created_at', 'DESC')->get();
+        return View::make('announcements.index', compact('announcements'));
 	}
 
 	/**
@@ -52,11 +58,22 @@ class AnnouncementsController extends \BaseController {
                 return Redirect::back()->withErrors($validator)->withInput();
             }
 
+            $groups = array();
+
+            if(Input::get('group')) {
+                foreach (Input::get('group') as $group) {
+                    $groups[$group] = 1;
+                }
+            }
+
+            $new_groups = json_encode($groups);
+
             $announcement = new Announcement;
             $announcement->sender_id = Sentry::getUser()->id;
             $announcement->school_year_id = $school_year_id;
             $announcement->title = Input::get('title');
             $announcement->body = Input::get('body');
+            $announcement->receivers_group = Input::get('group') ? $new_groups:'';
             if(Sentry::getUser()->hasAccess('admin'))
                 $announcement->status = 2;
             $announcement->save();
@@ -64,7 +81,7 @@ class AnnouncementsController extends \BaseController {
             $announcement = Announcement::find($announcement->id);
             $announcement->receivers()->sync(Input::get('users'));
 
-            if($announcement->status==2 && Input::has('sms')) {
+            if($announcement->status==2) {
                 foreach($announcement->receivers()->get() as $receiver) {
                     SMS::message($receiver, $announcement);
                 }
@@ -102,9 +119,12 @@ class AnnouncementsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($school_year_id, $id)
 	{
-		//
+        $announcement = Announcement::find($id);
+        //dd($announcement->created_at);
+        $groups = json_decode($announcement->receivers_group, true);
+        return View::make('announcements.edit', compact('announcement', 'groups'));
 	}
 
 	/**
@@ -114,10 +134,103 @@ class AnnouncementsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($school_year_id, $id)
 	{
-		//
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'title' => 'required',
+                    'body' => 'required',
+                    'users'=>'required',
+                ),
+                array(
+                    'users.required' => 'Oh crap! who will receive the announcement? please select receiver(s)',
+                )
+            );
+
+            if($validator->fails()) {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+
+            $groups = array();
+
+            if(Input::get('group')) {
+                foreach (Input::get('group') as $group) {
+                    $groups[$group] = 1;
+                }
+            }
+
+            $new_groups = json_encode($groups);
+
+            $announcement = Announcement::find($id);
+
+            if(!$announcement) {
+                return Redirect::back()->withError('Announcement not found');
+            }
+
+            if($announcement->sender_id == Sentry::getUser()->id || Sentry::getUser()->hasAccess('admin')) {
+
+                $announcement->school_year_id = $school_year_id;
+                $announcement->title = Input::get('title');
+                $announcement->body = Input::get('body');
+                $announcement->receivers_group = Input::get('group') ? $new_groups : '';
+                //if(Sentry::getUser()->hasAccess('admin'))
+                //$announcement->status = 2;
+                $announcement->save();
+
+                $announcement = Announcement::find($announcement->id);
+                $announcement->receivers()->sync(Input::get('users'));
+            } else {
+                return Redirect::back()->withError('Permission denied!');
+            }
+
+
+            DB::commit();
+
+            return Redirect::back()->withSuccess('Announcement has been successfully updated');
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
 	}
+
+    public function approve($school_year_id, $id)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $announcement = Announcement::find($id);
+            if(!$announcement) {
+                return Redirect::back()->withError('Announcement not found');
+            }
+
+            if($announcement->status==2) {
+                return Redirect::back()->withError('Announcement already approved!');
+            }
+
+            $announcement->status = 2;
+            $announcement->save();
+
+            //send the sms
+            foreach($announcement->receivers()->get() as $receiver) {
+                SMS::message($receiver, $announcement);
+            }
+
+            DB::commit();
+
+            return Redirect::back()->withSuccess('Announcement has been successfully approved, and sent through sms');
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
+    }
 
 	/**
 	 * Remove the specified resource from storage.
@@ -126,9 +239,20 @@ class AnnouncementsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($school_year_id, $id)
 	{
-		//
+		$announcement = Announcement::find($id);
+
+        if(!$announcement) {
+            return Redirect::back()->withError('Announcement not found');
+        }
+
+        if($announcement->sender_id == Sentry::getUser()->id || Sentry::getUser()->hasAccess('admin')) {
+            $announcement->delete();
+            return Redirect::back()->withSuccess('Announcement has been successfully deleted');
+        } else {
+            return Redirect::back()->withError('Permission denied!');
+        }
 	}
 
 }

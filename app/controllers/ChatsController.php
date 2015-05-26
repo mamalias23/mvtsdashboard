@@ -2,10 +2,13 @@
 
 class ChatsController extends \BaseController {
 
+    protected $pusher;
     public function __construct()
     {
-        $this->beforeFilter('csrf', array('on'=>'post'));
+        //$this->beforeFilter('csrf', array('on'=>'post'));
         $this->beforeFilter('auth');
+
+        $this->pusher = new Pusher('a4b5ea994e8c612a010e', '132b6e79df2108598a90', '121464');
     }
 	/**
 	 * Display a listing of the resource.
@@ -15,7 +18,15 @@ class ChatsController extends \BaseController {
 	 */
 	public function index()
 	{
-		return View::make('chats.index');
+        $pusher = $this->pusher;
+        $this->pusher->trigger('demoChannel', 'userNewMessage', ['message'=>'hello world']);
+
+        if(Input::has('get')) {
+            if(Input::get('get')=='channels') {
+                return json_decode($this->pusher->get('/channels/demoChannel/users'));
+            }
+        }
+		return View::make('chats.index', compact('pusher'));
 	}
 
 	/**
@@ -37,7 +48,9 @@ class ChatsController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+        $this->pusher->trigger(Input::get('channel_name'), 'userNewMessage', array('username'=>Sentry::getUser()->username), Input::get('socket_id'));
+        $this->pusher->presence_auth(Input::get('channel_name'),Input::get('socket_id'), '123456', array('username'=>Sentry::getUser()->username));
+        return $this->pusher->get('/channels/demoChannel');
 	}
 
 	/**

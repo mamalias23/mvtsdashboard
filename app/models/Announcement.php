@@ -8,4 +8,9 @@ class Announcement extends UuidModel {
         return $this->belongsToMany('User');
     }
 
+    public function created_by()
+    {
+        return User::find($this->sender_id);
+    }
+
 }

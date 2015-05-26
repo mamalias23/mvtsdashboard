@@ -28,6 +28,10 @@
     "bootstrap-toggle": "~2.2.0",
     "jquery-tree": "*",
     "angular-bootstrap-calendar": "~0.10.6",
-    "angular-bootstrap": "~0.13.0"
-  }
+    "angular-bootstrap": "~0.13.0",
+    "pusher": "~2.2.4"
+  },
+    "install": {
+        "path": "assets"
+    }
 }

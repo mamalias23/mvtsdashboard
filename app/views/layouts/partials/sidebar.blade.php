@@ -35,19 +35,15 @@
                 </ul>
             </li>
         @endif
-        <li>
-            <a href="{{ route('backend.chats.index') }}">
-                <i class="fa fa-weixin"></i> <span>Public Chat</span>
+        {{--<li>--}}
+            {{--<a href="{{ route('backend.chats.index') }}">--}}
+                {{--<i class="fa fa-weixin"></i> <span>Public Chat</span>--}}
+            {{--</a>--}}
+        {{--</li>--}}
+        <li class="{{ Request::is('backend/school-year/*/announcements*') ? 'active':'' }}">
+            <a href="{{ route('backend.school-year.announcements.index', array(SchoolYear::getActivated()->id)) }}">
+                <i class="fa fa-weixin"></i> <span>ANNOUNCEMENTS</span>
             </a>
-        </li>
-        <li class="treeview">
-            <a href="javascript:;">
-                <i class="fa fa-cogs"></i> <span>ANNOUNCEMENT</span> <i class="fa fa-angle-left pull-right"></i>
-            </a>
-            <ul class="treeview-menu menu-open">
-                <li><a href="{{ route('backend.school-year.announcements.create', array(SchoolYear::getActivated()->id)) }}"><i class="fa fa-circle-o"></i> New</a></li>
-                <li><a href="javascript:;"><i class="fa fa-circle-o"></i> Pending</a></li>
-            </ul>
         </li>
         <li><a href="{{ route('backend.activities.index') }}"><i class="fa fa-calendar"></i> Activities / Events</a></li>
         <li class="header">MAIN NAVIGATION</li>
@@ -103,7 +99,7 @@
                             ->first();
 
             if($groupName=='Teachers' && $teacher) {
-                if($advisory = $teacher->advisory()) {
+                if($advisory = $teacher->advisory) {
                     $hasAdvisory = 1;
                 }
             }

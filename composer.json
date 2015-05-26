@@ -8,7 +8,7 @@
 		"cartalyst/sentry": "2.1.*",
 		"webpatser/laravel-uuid": "1.*",
         "twilio/sdk": "dev-master",
-		"brainboxlabs/brain-socket": "^1.0"
+		"pusher/pusher-php-server": "^2.2"
 	},
 	"require-dev": {
 	    "way/generators": "~2.0"

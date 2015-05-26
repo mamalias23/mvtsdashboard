@@ -61,6 +61,7 @@ Route::group(array('prefix'=>'backend'), function() {
     Route::post('school-year/{school_year}/students/enroll', ['as' => 'backend.school-year.students.storeEnroll', 'uses' => 'StudentsController@storeEnroll']);
     Route::resource('school-year.students', 'StudentsController');
 
+    Route::get('school-year/{school_year}/announcements/{announcements}/approve', ['as' => 'backend.school-year.announcements.approve', 'uses' => 'AnnouncementsController@approve']);
     Route::resource('school-year.announcements', 'AnnouncementsController');
 
     Route::get('activities/lists', ['as' => 'backend.activities.lists', 'uses' => 'ActivitiesController@lists']);

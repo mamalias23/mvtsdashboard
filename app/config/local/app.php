@@ -21,11 +21,10 @@ return array(
 
 	'providers' => array(
 		'Way\Generators\GeneratorsServiceProvider',
-        'BrainSocket\BrainSocketServiceProvider',
 	),
 
     'aliases' => array(
-        'BrainSocket'     => 'BrainSocket\BrainSocketFacade',
+
     )
 
 );
