@@ -11,13 +11,6 @@
 |
 */
 
-Route::get('/', function()
-{
-	return Redirect::to('/backend/dashboard');
-});
-
-Route::get('/test', 'HomeController@showWelcome');
-
 Route::group(array('prefix'=>'backend'), function() {
 
 	Route::controller('dashboard', 'DashboardController');
@@ -90,9 +83,7 @@ Route::get('/test-sms', function() {
 
 });
 
-Route::get('sms/reply', function() {
-    return Response::view('sms.message')->header('Content-Type', 'Text/xml');
-});
+
 
 Route::post('voice/reply', function() {
     return Response::view('sms.message')->header('Content-Type', 'text/xml');
@@ -105,4 +96,9 @@ Route::get('testxml', function()
             'Sms' => 'Thanks'
     ];
     return Response::xml($data);
+});
+
+Route::get('/', function()
+{
+    return View::make('front-end.index');
 });
