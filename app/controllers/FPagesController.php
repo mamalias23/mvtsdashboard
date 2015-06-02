@@ -9,4 +9,9 @@ class FPagesController extends \BaseController {
         return View::make('front-end.pages', compact('page'));
     }
 
+    public function contact()
+    {
+        return View::make('front-end.contact');
+    }
+
 }

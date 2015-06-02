@@ -221,9 +221,9 @@ class AnnouncementsController extends \BaseController {
             $announcement->save();
 
             //send the sms
-            foreach($announcement->receivers()->get() as $receiver) {
-                SMS::message($receiver, $announcement);
-            }
+//            foreach($announcement->receivers()->get() as $receiver) {
+//                SMS::message($receiver, $announcement);
+//            }
 
             DB::commit();
 
