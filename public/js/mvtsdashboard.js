@@ -1,4 +1,4 @@
-angular.module('mvtsdashboard', ['mwl.calendar', 'ui.bootstrap'])
+angular.module('mvtsdashboard', ['mwl.calendar', 'ui.bootstrap', 'slugifier'])
 
     .controller('ActivitiesController', function($scope, $rootScope, $modal, $http, moment) {
 

@@ -224,6 +224,7 @@
     <script src="{{ asset('bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js') }}"></script>
     <script src="{{ asset('bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js') }}"></script>
     <script src="{{ asset('bower_components/pusher/dist/pusher.min.js') }}"></script>
+    <script src="{{ asset('bower_components/angular-slugify/angular-slugify.js') }}"></script>
     <script src="{{ asset('js/pusher.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/mvtsdashboard.js') }}" type="text/javascript"></script>
     <script>

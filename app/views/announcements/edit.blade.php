@@ -27,6 +27,8 @@
             <div class="box-body">
             @if(Sentry::getUser()->hasAccess('admin') || Sentry::getUser()->id == $announcement->sender_id)
                 {{ Form::open(array('route'=>array('backend.school-year.announcements.update', SchoolYear::getActivated()->id, $announcement->id), 'method'=>'PUT')) }}
+            @else
+                {{ Form::open(array('route'=>array('backend.school-year.announcements.update', SchoolYear::getActivated()->id, $announcement->id), 'method'=>'PUT', 'onSubmit'=>'return false;')) }}
             @endif
                 <div class="col-md-6">
                     <div class="col-md-12">
@@ -38,7 +40,8 @@
                                 array(
                                     'id'=>'title',
                                     'class'=>'form-control',
-                                    'data-rule-required'=>'true'
+                                    'data-rule-required'=>'true',
+                                    Sentry::getUser()->hasAccess('admin') || Sentry::getUser()->id == $announcement->sender_id ? '':'readonly',
                                 )
                             )
                         }}
@@ -54,7 +57,8 @@
                                     'id'=>'body',
                                     'class'=>'form-control',
                                     'data-rule-required'=>'true',
-                                    'rows'=>'20'
+                                    'rows'=>'20',
+                                    Sentry::getUser()->hasAccess('admin') || Sentry::getUser()->id == $announcement->sender_id ? '':'readonly',
                                 )
                             )
                         }}
@@ -272,18 +276,20 @@
                     </div>
                 </div>
 
-                @if(Sentry::getUser()->hasAccess('admin') || Sentry::getUser()->id == $announcement->sender_id)
 
-                    <div class="row" style="margin-top:15px">
-                        <div class="col-md-12">
-                            <div class="pull-right">
-                                <button type="submit" class="btn btn-success">SAVE</button>
-                            </div>
+
+                <div class="row" style="margin-top:15px">
+                    <div class="col-md-12">
+                     @if(Sentry::getUser()->hasAccess('admin') || Sentry::getUser()->id == $announcement->sender_id)
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-success">SAVE</button>
                         </div>
+                     @endif
                     </div>
+                </div>
                 {{ Form::close() }}
 
-                @endif
+
 
             </div><!-- /.box-body -->
         </div>

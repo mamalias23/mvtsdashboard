@@ -27,6 +27,9 @@ class AnnouncementsController extends \BaseController {
 	 */
 	public function create($school_year_id)
 	{
+        if(Sentry::getUser()->groups()->first()->name=='Students' || Sentry::getUser()->groups()->first()->name=='Parents or Guardians') {
+            return Redirect::to('/backend/dashboard')->withError('Permission Denied');
+        }
         return View::make('announcements.create');
 	}
 

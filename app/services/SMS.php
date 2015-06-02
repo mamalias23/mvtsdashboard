@@ -4,8 +4,8 @@ class SMS {
 
     public static function message($receiver, $announcement) {
 
-        $sid = "AC147dceeb8ec57e4347457eb5ff74d3be"; // Your Account SID from www.twilio.com/user/account
-        $token = "ffbc6aad8fee23fec4c46be732f98edc"; // Your Auth Token from www.twilio.com/user/account
+        $sid = $_ENV['TWILIO_SID']; // Your Account SID from www.twilio.com/user/account
+        $token = $_ENV['TWILIO_TOKEN']; // Your Auth Token from www.twilio.com/user/account
 
         $sender = User::find($announcement->sender_id);
 

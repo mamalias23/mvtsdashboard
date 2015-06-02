@@ -19,6 +19,8 @@ return array(
 
 	'debug' => true,
 
+    'timezone' => 'UTC',
+
 	'providers' => array(
 		'Way\Generators\GeneratorsServiceProvider',
 	),

@@ -64,6 +64,22 @@ Route::group(array('prefix'=>'backend'), function() {
 
     Route::resource('chats', 'ChatsController');
 
+    Route::resource('pages', 'PagesController');
+
+    Route::post('images/upload', function() {
+        $image = Input::file('file');
+        $filename = Uuid::generate(4);
+        $saveUrl = base_path().'/public/images/uploads/'.$filename.'.jpg';
+
+        Image::make($image->getRealPath())->save($saveUrl);
+
+        $array = array(
+            'filelink' => url('images/uploads/' .$filename. '.jpg')
+        );
+
+        return stripslashes(json_encode($array));
+    });
+
 });
 
 Route::get('/test-sms', function() {
@@ -102,3 +118,6 @@ Route::get('/', function()
 {
     return View::make('front-end.index');
 });
+
+Route::get('/pages/{slug}', 'FPagesController@showPage');
+Route::controller('announcements', 'FAnnouncementsController');
