@@ -12,4 +12,10 @@ class FAnnouncementsController extends \BaseController {
         return View::make('front-end.announcements', compact('announcements'));
     }
 
+    public function getView($announcement_id)
+    {
+        $announcement = Announcement::find($announcement_id);
+        return View::make('front-end.announcement', compact('announcement'));
+    }
+
 }
