@@ -41,7 +41,7 @@ class PagesController extends \BaseController {
                 Input::all(),
                 array(
                     'title' => 'required',
-                    'slug' => 'required|unique:pages,slug',
+                    'slug' => 'unique:pages,slug',
                     'body' => 'required',
                 )
             );
@@ -52,7 +52,7 @@ class PagesController extends \BaseController {
 
             $page = new Page;
             $page->title = Input::get('title');
-            $page->slug = Input::get('slug');
+            $page->slug = Input::get('slug') ?: Str::slug(Input::get('title'));
             $page->body = Input::get('body');
             $page->save();
 
