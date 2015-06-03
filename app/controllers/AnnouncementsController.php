@@ -84,11 +84,11 @@ class AnnouncementsController extends \BaseController {
             $announcement = Announcement::find($announcement->id);
             $announcement->receivers()->sync(Input::get('users'));
 
-            if($announcement->status==2) {
-                foreach($announcement->receivers()->get() as $receiver) {
-                    SMS::message($receiver, $announcement);
-                }
-            }
+//            if($announcement->status==2) {
+//                foreach($announcement->receivers()->get() as $receiver) {
+//                    SMS::message($receiver, $announcement);
+//                }
+//            }
 
             DB::commit();
 
