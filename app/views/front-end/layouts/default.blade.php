@@ -159,6 +159,7 @@
                             <li>
                                 <a class="{{ Request::is('annoucements*') ? 'active':'' }}" href="{{ url('announcements') }}">Announcements</a>
                             </li>
+                            <li><a class="{{ Request::is('monitor*') ? 'active':'' }}" href="{{ url('monitor') }}" target="_blank">Monitor Announcements</a></li>
                             <li><a class="{{ Request::is('contact*') ? 'active':'' }}" href="{{ url('contact') }}">Contact</a></li>
                             <li><a href="{{ url('/backend/user/login') }}">Login</a></li>
                         </ul>

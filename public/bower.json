@@ -31,7 +31,8 @@
     "angular-bootstrap": "~0.13.0",
     "pusher": "~2.2.4",
     "redactor": "*",
-    "angular-slugify": "~1.0.0"
+    "angular-slugify": "~1.0.0",
+    "jquery-textfill": "~0.6.0"
   },
   "install": {
     "path": "assets"

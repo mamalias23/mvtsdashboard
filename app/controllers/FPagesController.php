@@ -14,4 +14,10 @@ class FPagesController extends \BaseController {
         return View::make('front-end.contact');
     }
 
+    public function monitor()
+    {
+        $announcements = Announcement::where('receivers_group', 'LIKE', '{"all":1%')->orderBy('created_at', 'DESC')->get();
+        return View::make('front-end.monitor', compact('announcements'));
+    }
+
 }

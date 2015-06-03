@@ -121,4 +121,5 @@ Route::get('/', function()
 
 Route::get('/pages/{slug}', 'FPagesController@showPage');
 Route::get('contact', 'FPagesController@contact');
+Route::get('monitor', 'FPagesController@monitor');
 Route::controller('announcements', 'FAnnouncementsController');
