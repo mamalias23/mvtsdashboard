@@ -50,8 +50,8 @@
                             @if(!Sentry::getUser()->groups()->first()->name=='Students' && !Sentry::getUser()->groups()->first()->name=='Parents or Guardians')
                                 <td>{{ $announcement->status==1 ? 'Pending':'Approved' }}</td>
                             @endif
-                                <td>{{ $announcement->created_at->diffForHumans() }}</td>
-                                <td>{{ $announcement->updated_at->diffForHumans() }}</td>
+                                <td>{{ $announcement->created_at->tz('Asia/Manila')->diffForHumans() }}</td>
+                                <td>{{ $announcement->updated_at->tz('Asia/Manila')->diffForHumans() }}</td>
                                 <td>
 
                                     <a href="{{ route('backend.school-year.announcements.edit', array(SchoolYear::getActivated()->id, $announcement->id)) }}" class="btn btn-success btn-xs">View/Edit</a>
