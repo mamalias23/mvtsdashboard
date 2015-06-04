@@ -78,7 +78,7 @@
     @foreach($announcements as $announcement)
         <div class="section">
             <span>{{ $announcement->body }}</span>
-            <div class="announcer">By: {{ $announcement->created_by()->first_name . " " . $announcement->created_by()->last_name }} - {{ $announcement->updated_at->timezone('Asia/Manila')->format('l @ h:i A') }}</div>
+            <div class="announcer">By: {{ $announcement->created_by()->first_name . " " . $announcement->created_by()->last_name }} - {{ $announcement->updated_at->format('l @ h:i A') }}</div>
         </div>
     @endforeach
 @else
