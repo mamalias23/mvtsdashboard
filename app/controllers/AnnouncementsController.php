@@ -2,10 +2,12 @@
 
 class AnnouncementsController extends \BaseController {
 
+    protected $pusher;
     public function __construct()
     {
         $this->beforeFilter('auth');
         $this->beforeFilter('admin', ['only'=>['approve']]);
+        $this->pusher = new Pusher('a4b5ea994e8c612a010e', '132b6e79df2108598a90', '121464');
     }
 	/**
 	 * Display a listing of the resource.
@@ -84,11 +86,13 @@ class AnnouncementsController extends \BaseController {
             $announcement = Announcement::find($announcement->id);
             $announcement->receivers()->sync(Input::get('users'));
 
-//            if($announcement->status==2) {
+            if($announcement->status==2) {
+                if(isset($groups['all']))
+                    $this->pusher->trigger('demoChannel', 'NewAnnouncement', ['message'=>'creating announcement']);
 //                foreach($announcement->receivers()->get() as $receiver) {
 //                    SMS::message($receiver, $announcement);
 //                }
-//            }
+            }
 
             DB::commit();
 
@@ -220,6 +224,9 @@ class AnnouncementsController extends \BaseController {
             $announcement->status = 2;
             $announcement->save();
 
+            $groups = json_decode($announcement->receivers_group, true);
+            if(isset($groups['all']) && $groups['all']==1)
+                $this->pusher->trigger('demoChannel', 'NewAnnouncement', ['message'=>'creating announcement']);
             //send the sms
 //            foreach($announcement->receivers()->get() as $receiver) {
 //                SMS::message($receiver, $announcement);

@@ -39,7 +39,7 @@
 
 			setInterval(function() {
                 $.fn.fullpage.moveSectionDown();
-			}, 1000 * 10);
+			}, 1000 * 30);
 
 			$('.section').textfill({
                  maxFontPixels: 180
@@ -78,7 +78,7 @@
     @foreach($announcements as $announcement)
         <div class="section">
             <span>{{ $announcement->body }}</span>
-            <div class="announcer">By: {{ $announcement->created_by()->first_name . " " . $announcement->created_by()->last_name }} - {{ $announcement->created_at->diffForHumans() }}</div>
+            <div class="announcer">By: {{ $announcement->created_by()->first_name . " " . $announcement->created_by()->last_name }} - {{ $announcement->updated_at->timezone('Asia/Manila')->format('l @ h:i A') }}</div>
         </div>
     @endforeach
 @else
@@ -87,6 +87,30 @@
     </div>
 @endif
 </div>
+<script src="{{ asset('bower_components/pusher/dist/pusher.min.js') }}"></script>
+<script>
+    (function($){
 
+        $.extend({
+            playSound: function(){
+                return $("<embed src='"+arguments[0]+".mp3' hidden='true' autostart='true' loop='false' class='playSound'>" + "<audio autoplay='autoplay' style='display:none;' controls='controls'><source src='"+arguments[0]+".mp3' /><source src='"+arguments[0]+".ogg' /></audio>").appendTo('body');
+            }
+        });
+
+    })(jQuery);
+
+    (function() {
+        var pusher = new Pusher('a4b5ea994e8c612a010e');
+        var channel = pusher.subscribe('demoChannel');
+        channel.bind('NewAnnouncement', function(data) {
+            setTimeout(function() {
+                window.location.href = '/monitor';
+            }, 3000);
+
+            $.playSound("/notification");
+
+        });
+    })();
+</script>
 </body>
 </html>
