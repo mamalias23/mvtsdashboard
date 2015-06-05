@@ -35,6 +35,7 @@
                             <th>Gender</th>
                             <th>Mobile</th>
                             <th>Address</th>
+                            <th>Username</th>
                             <th data-orderable="false">Action</th>
                         </tr>
                     </thead>
@@ -47,6 +48,7 @@
                             <td>{{ $teacher->user->gender }}</td>
                             <td>{{ $teacher->user->mobile_number }}</td>
                             <td>{{ $teacher->user->full_address }}</td>
+                            <td>{{ $teacher->user->username }}</td>
                             <td>
                                 <a href="{{ route('backend.school-year.teachers.show', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-info btn-xs">View/Manage</a>
                                 <a href="{{ route('backend.school-year.teachers.edit', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-success btn-xs">Edit</a>

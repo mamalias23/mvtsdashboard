@@ -35,6 +35,7 @@
                             <th>Gender</th>
                             <th>Mobile</th>
                             <th>Address</th>
+                            <th>Username</th>
                             <th data-orderable="false">Action</th>
                         </tr>
                     </thead>
@@ -47,6 +48,7 @@
                             <td>{{ $guard->user->gender }}</td>
                             <td>{{ $guard->user->mobile_number }}</td>
                             <td>{{ $guard->user->full_address }}</td>
+                            <td>{{ $guard->user->username }}</td>
                             <td>
                                 <a href="{{ route('backend.school-year.guards.edit', array(SchoolYear::getActivated()->id, $guard->id)) }}" class="btn btn-success btn-xs">Edit</a>
                                 <a href="{{ route('backend.school-year.guards.destroy', array(SchoolYear::getActivated()->id, $guard->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
