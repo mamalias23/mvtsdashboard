@@ -133,16 +133,6 @@
                        <a class="navbar-brand" href="{{ url('/') }}"><img alt="" src="/images/mvtsdashboard.png"></a>
                     </div>
                     <div class="navbar-collapse collapse">
-                        <!-- Stat Search -->
-                        <div class="search-side">
-                            <a href="#" class="show-search"><i class="fa fa-search"></i></a>
-                            <div class="search-form">
-                                <form autocomplete="off" role="search" method="get" class="searchform" action="#">
-                                    <input type="text" value="" name="s" id="s" placeholder="Search the site...">
-                                </form>
-                            </div>
-                        </div>
-                        <!-- End Search -->
                         <!-- Start Navigation List -->
                         <ul class="nav navbar-nav navbar-right">
                             <li><a class="{{ Request::is('/') ? 'active':'' }}" href="{{ url('/') }}">Home</a></li>
