@@ -78,7 +78,13 @@
     @foreach($announcements as $announcement)
         <div class="section">
             <span>{{ nl2br($announcement->body) }}</span>
-            <div class="announcer">By: {{ $announcement->created_by()->first_name . " " . $announcement->created_by()->last_name }} - {{ $announcement->updated_at->tz('Asia/Manila')->format('l @ h:i A') }}</div>
+            <div class="announcer">
+                By:
+                <img src="/img/{{ $announcement->created_by()->picture ?: 'avatar-' . $announcement->created_by()->gender . '.png' }}" width="30px" />
+                {{ $announcement->created_by()->first_name . " " . $announcement->created_by()->last_name }}
+                 -
+                 {{ $announcement->updated_at->tz('Asia/Manila')->format('l @ h:i A') }}
+            </div>
         </div>
     @endforeach
 @else
