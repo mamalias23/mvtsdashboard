@@ -16,9 +16,10 @@ class FPagesController extends \BaseController {
 
     public function monitor()
     {
-        //dd(\Carbon\Carbon::now()->timezone('Asia/Manila')->toDateString());
+        //dd(\Carbon\Carbon::now()->toDateString());
+        //dd(\Carbon\Carbon::now()->tz('UTC'));
         $announcements = Announcement::where('receivers_group', 'LIKE', '{"all":1%')
-                        ->where('updated_at', '>=', \Carbon\Carbon::now()->timezone('Asia/Manila')->toDateString())
+                        ->where('updated_at', '>=', \Carbon\Carbon::now()->timezone('UTC')->toDateString())
                         ->orderBy('created_at', 'DESC')->get();
         return View::make('front-end.monitor', compact('announcements'));
     }
