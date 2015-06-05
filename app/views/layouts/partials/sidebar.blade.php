@@ -40,7 +40,9 @@
                 {{--<i class="fa fa-weixin"></i> <span>Public Chat</span>--}}
             {{--</a>--}}
         {{--</li>--}}
-        <li><a href="{{ route('backend.pages.index') }}"><i class="fa fa-files-o"></i> Pages</a></li>
+        @if(Sentry::getUser()->hasAccess('admin'))
+            <li><a href="{{ route('backend.pages.index') }}"><i class="fa fa-files-o"></i> Pages</a></li>
+        @endif
         <li class="{{ Request::is('backend/school-year/*/announcements*') ? 'active':'' }}">
             <a href="{{ route('backend.school-year.announcements.index', array(SchoolYear::getActivated()->id)) }}">
                 <i class="fa fa-weixin"></i> <span>ANNOUNCEMENTS</span>

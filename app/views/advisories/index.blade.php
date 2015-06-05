@@ -42,6 +42,10 @@
     </div><!-- /.box-body -->
   </div>
   <!-- /.box -->
+    <div class="pull-right">
+        <a href="{{ url('backend/my-advisory/post-announcement') }}" class="btn btn-lg btn-success">Post Announcement</a>
+    </div>
+    <br /><br /><br />
 
   <div class="box">
       <div class="box-header with-border">

@@ -77,7 +77,7 @@
 @if($announcements->count())
     @foreach($announcements as $announcement)
         <div class="section">
-            <span>{{ $announcement->body }}</span>
+            <span>{{ nl2br($announcement->body) }}</span>
             <div class="announcer">By: {{ $announcement->created_by()->first_name . " " . $announcement->created_by()->last_name }} - {{ $announcement->updated_at->tz('Asia/Manila')->format('l @ h:i A') }}</div>
         </div>
     @endforeach

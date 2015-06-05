@@ -78,6 +78,7 @@ class AnnouncementsController extends \BaseController {
             $announcement->school_year_id = $school_year_id;
             $announcement->title = Input::get('title');
             $announcement->body = Input::get('body');
+            $announcement->sms = Input::get('sms', 0);
             $announcement->receivers_group = Input::get('group') ? $new_groups:'';
             if(Sentry::getUser()->hasAccess('admin'))
                 $announcement->status = 2;
@@ -89,9 +90,12 @@ class AnnouncementsController extends \BaseController {
             if($announcement->status==2) {
                 if(isset($groups['all']))
                     $this->pusher->trigger('demoChannel', 'NewAnnouncement', ['message'=>'creating announcement']);
-//                foreach($announcement->receivers()->get() as $receiver) {
-//                    SMS::message($receiver, $announcement);
-//                }
+
+                if($announcement->sms) {
+//                    foreach ($announcement->receivers()->get() as $receiver) {
+//                        SMS::message($receiver, $announcement);
+//                    }
+                }
             }
 
             DB::commit();
@@ -184,6 +188,7 @@ class AnnouncementsController extends \BaseController {
                 $announcement->school_year_id = $school_year_id;
                 $announcement->title = Input::get('title');
                 $announcement->body = Input::get('body');
+                $announcement->sms = Input::get('sms', 0);
                 $announcement->receivers_group = Input::get('group') ? $new_groups : '';
                 //if(Sentry::getUser()->hasAccess('admin'))
                 //$announcement->status = 2;
@@ -228,13 +233,15 @@ class AnnouncementsController extends \BaseController {
             if(isset($groups['all']) && $groups['all']==1)
                 $this->pusher->trigger('demoChannel', 'NewAnnouncement', ['message'=>'creating announcement']);
             //send the sms
-//            foreach($announcement->receivers()->get() as $receiver) {
-//                SMS::message($receiver, $announcement);
-//            }
+            if($announcement->sms) {
+//                foreach ($announcement->receivers()->get() as $receiver) {
+//                    SMS::message($receiver, $announcement);
+//                }
+            }
 
             DB::commit();
 
-            return Redirect::back()->withSuccess('Announcement has been successfully approved, and sent through sms');
+            return Redirect::back()->withSuccess('Announcement has been successfully approved');
 
         } catch(Exception $e) {
             DB::rollback();

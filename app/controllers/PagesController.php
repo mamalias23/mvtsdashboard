@@ -103,7 +103,40 @@ class PagesController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'title' => 'required',
+                    'slug' => 'unique:pages,slug,' . $id,
+                    'body' => 'required',
+                )
+            );
+
+            if($validator->fails()) {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+
+            $page = Page::find($id);
+            if(!$page) {
+                return Redirect::back()->withError('Page not found');
+            }
+            $page->title = Input::get('title');
+            $page->slug = Input::get('slug') ?: Str::slug(Input::get('title'));
+            $page->body = Input::get('body');
+            $page->save();
+
+            DB::commit();
+
+            return Redirect::route('backend.pages.index')->withSuccess('Page has been successfully updated.');
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
 	}
 
 	/**
@@ -115,7 +148,13 @@ class PagesController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$page = Page::find($id);
+        if(!$page) {
+            return Redirect::back()->withError('Page not found');
+        }
+        $page->delete();
+
+        return Redirect::route('backend.pages.index')->withSuccess('Page has been successfully deleted.');
 	}
 
 }

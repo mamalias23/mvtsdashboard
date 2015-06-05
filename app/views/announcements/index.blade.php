@@ -36,6 +36,7 @@
                         @if(!Sentry::getUser()->groups()->first()->name=='Students' && !Sentry::getUser()->groups()->first()->name=='Parents or Guardians')
                             <th>Status</th>
                         @endif
+                            <th>SMS</th>
                             <th>Created</th>
                             <th>Updated</th>
                             <th data-orderable="false">Action</th>
@@ -50,6 +51,7 @@
                             @if(!Sentry::getUser()->groups()->first()->name=='Students' && !Sentry::getUser()->groups()->first()->name=='Parents or Guardians')
                                 <td>{{ $announcement->status==1 ? 'Pending':'Approved' }}</td>
                             @endif
+                                <td>{{ $announcement->sms ? '<i class="fa fa-check-circle icon-success"></i> Yes' : '<i class="fa fa-times-circle icon-danger"></i> Nope' }}</td>
                                 <td>{{ $announcement->created_at->tz('Asia/Manila')->diffForHumans() }}</td>
                                 <td>{{ $announcement->updated_at->tz('Asia/Manila')->diffForHumans() }}</td>
                                 <td>

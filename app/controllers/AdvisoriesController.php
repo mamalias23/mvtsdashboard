@@ -178,4 +178,73 @@ class AdvisoriesController extends \BaseController {
         }
     }
 
+    public function getPostAnnouncement()
+    {
+        $user = User::find(Sentry::getUser()->id);
+        $teacher = $user->teacher()->where('school_year_id', SchoolYear::getActivated()->id)->first();
+        return View::make('advisories.post-announcement', compact('user','teacher'));
+    }
+
+    public function postPostAnnouncement()
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $user = User::find(Sentry::getUser()->id);
+            $teacher = $user->teacher()->where('school_year_id', SchoolYear::getActivated()->id)->first();
+
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'title' => 'required',
+                    'body' => 'required'
+                )
+            );
+
+            if($validator->fails()) {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+
+            $groups = array();
+
+            if(Input::get('group')) {
+                foreach (Input::get('group') as $group) {
+                    $groups[$group] = 1;
+                }
+            }
+
+            $new_groups = json_encode($groups);
+
+            $announcement = new Announcement;
+            $announcement->sender_id = Sentry::getUser()->id;
+            $announcement->school_year_id = SchoolYear::getActivated()->id;
+            $announcement->title = Input::get('title');
+            $announcement->body = Input::get('body');
+            $announcement->sms = Input::get('sms', 0);
+            $announcement->receivers_group = Input::get('group') ? $new_groups:'';
+            $announcement->status = 2;
+            $announcement->save();
+
+            $announcement = Announcement::find($announcement->id);
+            $announcement->receivers()->sync(Input::get('users'));
+
+            if($announcement->status==2) {
+                if($announcement->sms) {
+//                    foreach ($announcement->receivers()->get() as $receiver) {
+//                        SMS::message($receiver, $announcement);
+//                    }
+                }
+            }
+
+            DB::commit();
+
+            return Redirect::back()->withSuccess('Announcement has been successfully sent');
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
+    }
+
 }

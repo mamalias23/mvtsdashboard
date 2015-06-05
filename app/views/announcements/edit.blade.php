@@ -64,20 +64,20 @@
                         }}
                     </div>
 
-                    {{--<div class="col-md-12">--}}
-                        {{--<div class="checkbox icheck">--}}
-                            {{--<label>--}}
-                                {{--{{--}}
-                                    {{--Form::checkbox(--}}
-                                        {{--'sms',--}}
-                                        {{--1,--}}
-                                        {{--true,--}}
-                                        {{--array('class'=>'minimal-red')--}}
-                                    {{--)--}}
-                                {{--}} SMS - will be sent to receiver's mobile number--}}
-                            {{--</label>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
+                    <div class="col-md-12">
+                        <div class="checkbox icheck">
+                            <label>
+                                {{
+                                    Form::checkbox(
+                                        'sms',
+                                        1,
+                                        $announcement->sms,
+                                        array('class'=>'minimal-red')
+                                    )
+                                }} SMS
+                            </label>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="col-md-6">
