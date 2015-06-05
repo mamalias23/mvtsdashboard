@@ -92,9 +92,9 @@ class AnnouncementsController extends \BaseController {
                     $this->pusher->trigger('demoChannel', 'NewAnnouncement', ['message'=>'creating announcement']);
 
                 if($announcement->sms) {
-//                    foreach ($announcement->receivers()->get() as $receiver) {
-//                        SMS::message($receiver, $announcement);
-//                    }
+                    foreach ($announcement->receivers()->get() as $receiver) {
+                        SMS::message($receiver, $announcement);
+                    }
                 }
             }
 
@@ -234,9 +234,9 @@ class AnnouncementsController extends \BaseController {
                 $this->pusher->trigger('demoChannel', 'NewAnnouncement', ['message'=>'creating announcement']);
             //send the sms
             if($announcement->sms) {
-//                foreach ($announcement->receivers()->get() as $receiver) {
-//                    SMS::message($receiver, $announcement);
-//                }
+                foreach ($announcement->receivers()->get() as $receiver) {
+                    SMS::message($receiver, $announcement);
+                }
             }
 
             DB::commit();

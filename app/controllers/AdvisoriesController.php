@@ -231,9 +231,9 @@ class AdvisoriesController extends \BaseController {
 
             if($announcement->status==2) {
                 if($announcement->sms) {
-//                    foreach ($announcement->receivers()->get() as $receiver) {
-//                        SMS::message($receiver, $announcement);
-//                    }
+                    foreach ($announcement->receivers()->get() as $receiver) {
+                        SMS::message($receiver, $announcement);
+                    }
                 }
             }
 

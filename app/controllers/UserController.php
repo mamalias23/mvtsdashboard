@@ -4,6 +4,8 @@ class UserController extends BaseController {
 
 	public function getLogin()
 	{
+        if(Sentry::check())
+            return Redirect::to('/backend/dashboard');
 		return View::make('login');
 	}
 
