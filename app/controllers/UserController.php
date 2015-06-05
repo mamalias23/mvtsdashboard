@@ -61,6 +61,66 @@ class UserController extends BaseController {
 		}
 	}
 
+    public function getProfile()
+    {
+        return View::make('profile');
+    }
+
+    public function postProfile()
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'first_name' => 'required',
+                    'last_name' => 'required',
+                    'gender' => 'required',
+                    'full_address' => 'required',
+                    'birthdate' => 'required|date',
+                    'mobile' => 'required|size:13',
+                    'picture' => 'image',
+                )
+            );
+
+            if($validator->fails()) {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+
+            $user = User::find(Sentry::getUser()->id);
+            $user->first_name = Input::get('first_name');
+            $user->last_name = Input::get('last_name');
+            $user->middle_initial = Input::get('middle_initial');
+            $user->gender = Input::get('gender');
+            $user->birthdate = Input::get('birthdate');
+            $user->mobile_number = Input::get('mobile');
+            $user->full_address = Input::get('full_address');
+
+            if(Input::file('picture')) {
+                $image = Input::file('picture');
+                $filename = Sentry::getUser()->id;
+                $saveUrl = base_path().'/public/img/'.$filename.'.jpg';
+                Image::make($image->getRealPath())
+                        ->fit(215)
+                        ->save($saveUrl);
+
+                $user->picture = $filename . '.jpg';
+            }
+
+            $user->save();
+
+            DB::commit();
+
+            return Redirect::back()->withSuccess('Profile has been successfully updated.');
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return Redirect::back()->withError('Something went wrong, it might be our code :( <br /><br />' . $e->getMessage())->withInput();
+        }
+    }
+
 	public function getLogout() 
 	{
 		Sentry::logout();

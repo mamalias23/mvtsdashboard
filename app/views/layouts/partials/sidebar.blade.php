@@ -4,7 +4,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="{{ asset('img/avatar-male.png') }}" class="img-circle" alt="User Image" />
+                <img src="/img/{{ Sentry::getUser()->picture ?: 'avatar-' . Sentry::getUser()->gender . '.png' }}" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
                 <p>{{ Sentry::getUser()->first_name . " " . Sentry::getUser()->last_name }}</p>
@@ -115,8 +115,8 @@
             </li>
         @endif
         <li class="header"><i class="fa fa-cogs"></i> USER SETTINGS</li>
-        <li>
-            <a href="#">
+        <li class="{{ Request::is('backend/user/profile*') ? 'active':'' }}">
+            <a href="{{ url('backend/user/profile') }}">
                 <span>Profile</span>
             </a>
         </li>
