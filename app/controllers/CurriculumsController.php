@@ -5,7 +5,7 @@ class CurriculumsController extends \BaseController {
     public function __construct()
     {
         $this->beforeFilter('csrf', array('on'=>'post'));
-        $this->beforeFilter('admin');
+        $this->beforeFilter('admin', array('except'=>array('json')));
     }
 
 	/**
