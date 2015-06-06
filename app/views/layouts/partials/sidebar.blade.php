@@ -48,7 +48,9 @@
                 <i class="fa fa-weixin"></i> <span>ANNOUNCEMENTS</span>
             </a>
         </li>
-        <li><a href="{{ route('backend.activities.index') }}"><i class="fa fa-calendar"></i> Activities / Events</a></li>
+        @if(Sentry::getUser()->groups()->first()->name!='Students' && Sentry::getUser()->groups()->first()->name!='Parents or Guardians')
+            <li><a href="{{ route('backend.activities.index') }}"><i class="fa fa-calendar"></i> Activities / Events</a></li>
+        @endif
         <li class="header">MAIN NAVIGATION</li>
         @if(Sentry::getUser()->hasAccess('admin'))
             <li class="{{ Request::is('backend/school-year/*/personels*') ? 'active':'' }}">
