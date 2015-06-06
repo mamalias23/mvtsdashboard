@@ -179,7 +179,7 @@
     <!-- bootbox -->
     <script src="{{ asset('bower_components/bootbox/bootbox.js') }}"></script>
     <!-- DATA TABES SCRIPT -->
-    <script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.js?v=1.0') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/datatables/dataTables.bootstrap.js') }}" type="text/javascript"></script>
     <!-- select2 -->
     <script src="{{ asset('bower_components/select2/select2.min.js') }}" type="text/javascript"></script>

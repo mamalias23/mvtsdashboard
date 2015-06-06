@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-striped dynamic" id="studentTable">
+                <table class="table table-bordered table-striped" id="studentTable">
                     <thead>
                         <tr>
                             <th>Last name</th>
@@ -120,16 +120,38 @@
         });
 
         // Setup - add a text input to each footer cell
-        $('#studentTable tfoot th').each( function (i) {
-            var title = $('#studentTable thead th').eq( $(this).index() ).text();
-            var search = '<input type="text" placeholder="Search ' + title + '" />';
-            $(this).html('');
-            $(search).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
-            //$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-        } );
+        // $('#studentTable tfoot th').each( function (i) {
+        //     var title = $('#studentTable thead th').eq( $(this).index() ).text();
+        //     var search = '<input type="text" placeholder="Search ' + title + '" />';
+        //     $(this).html('');
+        //     $(search).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+        //     //$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        // } );
      
         // DataTable
-        var table = $('#studentTable').dataTable();
+        $('#studentTable').DataTable( {
+            initComplete: function () {
+                this.api().columns().every( function () {
+                    var column = this;
+                    console.log(column);
+                    var select = $('<select><option value=""></option></select>')
+                        .appendTo( $(column.footer()).empty() )
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+     
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+     
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            }
+        } );
      
         // Apply the search
         // table.columns().every( function () {
