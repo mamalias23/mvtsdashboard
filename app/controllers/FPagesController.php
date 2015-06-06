@@ -17,7 +17,7 @@ class FPagesController extends \BaseController {
     public function monitor()
     {
         //dd(\Carbon\Carbon::now()->toDateString());
-        //dd(\Carbon\Carbon::now()->tz('Asia/Manila')->toDateString());
+        //dd(\Carbon\Carbon::now()->tz('Asia/Manila')->format('Y-m-d'));
         $announcements = Announcement::where('receivers_group', 'LIKE', '{"all":1%')
                         //->where('updated_at', '>=', \Carbon\Carbon::now()->tz('Asia/Manila')->toDateString())
                         ->orderBy('created_at', 'DESC')->get();

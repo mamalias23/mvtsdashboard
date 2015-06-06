@@ -66,7 +66,9 @@
 <ul id="menu">
 @if($announcements->count())
     @foreach($announcements as $announcement)
-        <li data-menuanchor="{{ $announcement->id }}"><a href="#{{ $announcement->id }}">{{ $announcement->title }}</a></li>
+        @if(\Carbon\Carbon::now()->tz('Asia/Manila')->format('Y-m-d') == $announcement->updated_at->tz('Asia/Manila')->format('Y-m-d'))
+            <li data-menuanchor="{{ $announcement->id }}"><a href="#{{ $announcement->id }}">{{ $announcement->title }}</a></li>
+        @endif
     @endforeach
 @else
     <li data-menuanchor="noAnnouncement" class="active"><a href="#noAnnouncement">no announcement</a></li>
@@ -76,16 +78,18 @@
 <div id="fullpage">
 @if($announcements->count())
     @foreach($announcements as $announcement)
-        <div class="section">
-            <span>{{ nl2br($announcement->body) }}</span>
-            <div class="announcer">
-                By:
-                <img src="/img/{{ $announcement->created_by()->picture ?: 'avatar-' . $announcement->created_by()->gender . '.png' }}" width="30px" />
-                {{ $announcement->created_by()->first_name . " " . $announcement->created_by()->last_name }}
-                 -
-                 {{ $announcement->updated_at->tz('Asia/Manila')->format('l @ h:i A') }}
+        @if(\Carbon\Carbon::now()->tz('Asia/Manila')->format('Y-m-d') == $announcement->updated_at->tz('Asia/Manila')->format('Y-m-d'))
+            <div class="section">
+                <span>{{ nl2br($announcement->body) }}</span>
+                <div class="announcer">
+                    By:
+                    <img src="/img/{{ $announcement->created_by()->picture ?: 'avatar-' . $announcement->created_by()->gender . '.png' }}" width="30px" />
+                    {{ $announcement->created_by()->first_name . " " . $announcement->created_by()->last_name }}
+                     -
+                     {{ $announcement->updated_at->tz('Asia/Manila')->format('l @ h:i A') }}
+                </div>
             </div>
-        </div>
+        @endif
     @endforeach
 @else
     <div class="section">
