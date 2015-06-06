@@ -3,8 +3,65 @@
 @section('content-header')
 
 <h1>
-    Students
-    <button type="button" class="btn btn-lg btn-warning view-past-records">VIEW PAST RECORDS</button>
+    {{ Form::open(array('route'=>array('backend.school-year.students.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
+    <div class="row" id="">
+        <div class="col-md-2">Students</div>
+        <div class="col-md-2">
+            <label for="school_year" class="control-label sr-only">From School Year</label>
+            <select class="form-control" name="school_year" id="school_year" onchange="this.form.submit()">
+                <option value="{{ SchoolYear::getActivated()->id }}" @if(Input::get('school_year')==SchoolYear::getActivated()->id) selected="selected" @endif>{{ SchoolYear::getActivated()->school_year }}</option>
+                @foreach($years as $year)
+                    <option value="{{ $year->id }}" @if(Input::get('school_year')==$year->id) selected="selected" @endif >{{ $year->school_year }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="curriculum" class="control-label sr-only">Select Curriculum</label>
+            {{ 
+                Form::select(
+                    'curriculum', 
+                    array(), 
+                    null,
+                    array(
+                        'id'=>'curriculum', 
+                        'class'=>'form-control'
+                    )
+                ) 
+            }}
+        </div>
+
+        <div class="col-md-2">
+            <label for="first_name" class="control-label sr-only">Select Year Level</label>
+            {{ 
+                Form::select(
+                    'year_level', 
+                    array(), 
+                    null,
+                    array(
+                        'id'=>'years', 
+                        'class'=>'form-control'
+                    )
+                ) 
+            }}
+        </div>
+        <div class="col-md-2">
+            <label for="first_name" class="control-label sr-only">Select Section</label>
+            {{ 
+                Form::select(
+                    'sections', 
+                    array(), 
+                    null,
+                    array(
+                        'id'=>'sections', 
+                        'class'=>'form-control'
+                    )
+                ) 
+            }}
+        </div>
+    </div>
+    {{ Form::close() }}
+
+    <!-- <button type="button" class="btn btn-lg btn-warning view-past-records">VIEW PAST RECORDS</button> -->
     <small></small>
 </h1>
 <ol class="breadcrumb">
@@ -94,7 +151,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="pastRecords" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="pastRecords" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             {{ Form::open(array('route'=>array('backend.school-year.students.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
@@ -165,7 +222,7 @@
             {{ Form::close() }}
         </div>
     </div>
-</div>
+</div> -->
 @section('on-page-scripts')
 <script>
     $(document).ready(function() {
@@ -183,6 +240,7 @@
         //     //$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
         // } );
      
+        $('#studentTable').DataTable();
         // DataTable
         // $('#studentTable').DataTable( {
         //     initComplete: function () {
@@ -236,7 +294,8 @@
                                 }
                             }));
                         });
-                    }
+                    },
+                    selected:'{{ Input::get("curriculum") ?:"" }}'
                 },
                 {
                     selector: '#years',
