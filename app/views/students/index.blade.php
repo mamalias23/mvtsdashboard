@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-striped dynamic">
+                <table class="table table-bordered table-striped dynamic" id="studentTable">
                     <thead>
                         <tr>
                             <th>Last name</th>
@@ -42,6 +42,19 @@
                             <th data-orderable="false">Action</th>
                         </tr>
                     </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Last name</th>
+                            <th>First name</th>
+                            <th>Middle initial</th>
+                            <th>Gender</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Username</th>
+                            <th>Year</th>
+                            <th>Section</th>
+                        </tr>
+                    </tfoot>
                     <tbody>
                     @foreach($students as $student)
                         <tr>
@@ -105,6 +118,26 @@
             e.preventDefault();
             $("#pastRecords").modal();
         });
+
+        // Setup - add a text input to each footer cell
+        $('#studentTable tfoot th').each( function () {
+            var title = $('#studentTable thead th').eq( $(this).index() ).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        } );
+     
+        // DataTable
+        var table = $('#studentTable').DataTable();
+     
+        // Apply the search
+        table.columns().every( function () {
+            var that = this;
+     
+            $( 'input', this.footer() ).on( 'keyup change', function () {
+                that
+                    .search( this.value )
+                    .draw();
+            } );
+        } );
     });
 </script>
 @stop

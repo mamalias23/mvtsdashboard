@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <table class="table table-bordered table-striped dynamic">
+                <table class="table table-bordered table-striped" id="studentTable">
                     <thead>
                         <tr>
                             <th>Last name</th>
@@ -40,6 +40,19 @@
                             <th>Section</th>
                         </tr>
                     </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Last name</th>
+                            <th>First name</th>
+                            <th>Middle initial</th>
+                            <th>Gender</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Username</th>
+                            <th>Year</th>
+                            <th>Section</th>
+                        </tr>
+                    </tfoot>
                     <tbody>
                     @foreach($students as $student)
                         <tr>
@@ -99,6 +112,29 @@
             e.preventDefault();
             $("#pastRecords").modal();
         });
+
+        // Setup - add a text input to each footer cell
+        $('#studentTable tfoot th').each( function (i) {
+            var title = $('#studentTable thead th').eq( $(this).index() ).text();
+            var search = '<input type="text" placeholder="Search ' + title + '" />';
+            $(this).html('');
+            $(search).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+            //$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        } );
+     
+        // DataTable
+        var table = $('#studentTable').dataTable();
+     
+        // Apply the search
+        // table.columns().every( function () {
+        //     var that = this;
+     
+        //     $( 'input', this.footer() ).on( 'keyup change', function () {
+        //         that
+        //             .search( this.value )
+        //             .draw();
+        //     } );
+        // } );
     });
 </script>
 @stop
