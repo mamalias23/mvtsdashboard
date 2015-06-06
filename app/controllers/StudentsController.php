@@ -19,8 +19,33 @@ class StudentsController extends \BaseController {
         //get activated school year
         $yearActivated = SchoolYear::find($school_year_id);
         $students = $yearActivated->students()->get();
+
+        $curriculums = Curriculum::where('school_year_id',$school_year_id)->orderBy('name')->get();
+        $curriculumsArray = array();
+        $curriculumsArray[''] = "Select Curriculum";
+        foreach ($curriculums as $curriculum) {
+            $curriculumsArray[$curriculum->id] = $curriculum->name;
+        }
+
+        $years = YearLevel::where('school_year_id',Input::get('school_year'))->where('curriculum_id', Input::get('curriculum'))->orderBy('level')->get();
+        $yearLevels = array();
+        $yearLevels[''] = "Select Year Level";
+        foreach ($years as $year) {
+            $yearLevels[$year->id] = $year->description;
+        }
+
+        $sections = Section::where('school_year_id',Input::get('school_year'))
+                            ->where('curriculum_id', Input::get('curriculum'))
+                            ->where('year_level_id', Input::get('year_level'))
+                            ->orderBy('name')->get();
+        $sectionsArray = array();
+        $sectionsArray[''] = "Select Section";
+        foreach ($sections as $section) {
+            $sectionsArray[$section->id] = $section->name;
+        }
+        
         $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
-        return View::make('students.index', compact('students', 'years'));
+        return View::make('students.index', compact('students', 'years', 'curriculumsArray', 'yearLevels', 'sectionsArray'));
 	}
 
     public function pastRecords($school_year_id)

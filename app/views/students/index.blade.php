@@ -20,11 +20,12 @@
             {{ 
                 Form::select(
                     'curriculum', 
-                    array(), 
-                    null,
+                    $curriculumsArray, 
+                    Input::get('curriculum') ?: null,
                     array(
                         'id'=>'curriculum', 
-                        'class'=>'form-control'
+                        'class'=>'form-control',
+                        'onchange'=>'this.form.submit()'
                     )
                 ) 
             }}
@@ -35,11 +36,12 @@
             {{ 
                 Form::select(
                     'year_level', 
-                    array(), 
-                    null,
+                    $yearLevels, 
+                    Input::get('year_level') ?: null,
                     array(
                         'id'=>'years', 
-                        'class'=>'form-control'
+                        'class'=>'form-control',
+                        'onchange'=>'this.form.submit()'
                     )
                 ) 
             }}
@@ -49,15 +51,17 @@
             {{ 
                 Form::select(
                     'sections', 
-                    array(), 
-                    null,
+                    $sectionsArray, 
+                    Input::get('sections') ?: null,
                     array(
                         'id'=>'sections', 
-                        'class'=>'form-control'
+                        'class'=>'form-control',
+                        'onchange'=>'this.form.submit()'
                     )
                 ) 
             }}
         </div>
+
     </div>
     {{ Form::close() }}
 
