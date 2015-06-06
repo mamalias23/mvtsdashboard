@@ -38,14 +38,14 @@ class StudentsController extends \BaseController {
 
         $curriculums = Curriculum::where('school_year_id',Input::get('school_year'))->orderBy('name')->get();
         $curriculumsArray = array();
-        $curriculumsArray[''] = "";
+        $curriculumsArray[''] = "Select Curriculum";
         foreach ($curriculums as $curriculum) {
             $curriculumsArray[$curriculum->id] = $curriculum->name;
         }
 
         $years = YearLevel::where('school_year_id',Input::get('school_year'))->where('curriculum_id', Input::get('curriculum'))->orderBy('level')->get();
         $yearLevels = array();
-        $yearLevels[''] = "";
+        $yearLevels[''] = "Select Year Level";
         foreach ($years as $year) {
             $yearLevels[$year->id] = $year->description;
         }
@@ -55,7 +55,7 @@ class StudentsController extends \BaseController {
                             ->where('year_level_id', Input::get('year_level'))
                             ->orderBy('name')->get();
         $sectionsArray = array();
-        $sectionsArray[''] = "";
+        $sectionsArray[''] = "Select Section";
         foreach ($sections as $section) {
             $sectionsArray[$section->id] = $section->name;
         }
