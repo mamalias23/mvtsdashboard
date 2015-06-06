@@ -83,7 +83,6 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Students</h3>
                 <div class="box-tools pull-right">
-                    <a href="{{ route('backend.school-year.students.create', array(SchoolYear::getActivated()->id)) }}" class="btn btn-xs btn-info">Add new</a>
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 </div>
             </div>
@@ -100,7 +99,6 @@
                             <th>Username</th>
                             <th>Year</th>
                             <th>Section</th>
-                            <th data-orderable="false">Action</th>
                         </tr>
                     </thead>
                     <!-- <tfoot>
@@ -141,10 +139,6 @@
                             <td>{{ $student->user->username }}</td>
                             <td>{{ $student->section->year->description }}</td>
                             <td>{{ $student->section->name }}</td>
-                            <td>
-                                <a href="{{ route('backend.school-year.students.edit', array(SchoolYear::getActivated()->id, $student->id)) }}" class="btn btn-success btn-xs">Edit</a>
-                                <a href="{{ route('backend.school-year.students.destroy', array(SchoolYear::getActivated()->id, $student->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to un-enroll this?">Un-enroll</a>
-                            </td>
                         </tr>
                     @endforeach
                     </tbody>
