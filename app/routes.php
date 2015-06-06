@@ -23,6 +23,7 @@ Route::group(array('prefix'=>'backend'), function() {
 	Route::get('school-year/{school_year}/year-level/json', ['as' => 'backend.school-year.year-level.json', 'uses' => 'YearLevelController@json']);
     Route::resource('school-year.year-level', 'YearLevelController');
 
+    Route::get('school-year/{school_year}/curriculums/json', ['as' => 'backend.school-year.curriculums.json', 'uses' => 'CurriculumsController@json']);
     Route::get('school-year/{school_year}/curriculums/past-record', ['as' => 'backend.school-year.curriculums.pastRecords', 'uses' => 'CurriculumsController@pastRecords']);
     Route::resource('school-year.curriculums', 'CurriculumsController');
 

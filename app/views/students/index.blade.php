@@ -42,7 +42,7 @@
                             <th data-orderable="false">Action</th>
                         </tr>
                     </thead>
-                    <tfoot>
+                    <!-- <tfoot>
                         <tr>
                             <th>Last name</th>
                             <th>First name</th>
@@ -54,9 +54,22 @@
                             <th>Year</th>
                             <th>Section</th>
                         </tr>
-                    </tfoot>
+                    </tfoot> -->
                     <tbody>
                     @foreach($students as $student)
+                        @if(Input::get('curriculum') && Input::get('year_level') && Input::get('sections'))
+                            @if($student->section->curriculum->id!=Input::get('curriculum') || $student->section->year->id!=Input::get('year_level') || $student->section->id!=Input::get('sections'))
+                                <?php continue; ?>
+                            @endif
+                        @elseif(Input::get('curriculum') && Input::get('year_level') && !Input::get('sections'))
+                            @if($student->section->curriculum->id!=Input::get('curriculum') || $student->section->year->id!=Input::get('year_level'))
+                                <?php continue; ?>
+                            @endif
+                        @elseif(Input::get('curriculum') && !Input::get('year_level') && !Input::get('sections'))
+                            @if($student->section->curriculum->id!=Input::get('curriculum'))
+                                <?php continue; ?>
+                            @endif
+                        @endif
                         <tr>
                             <td>{{ $student->user->last_name }}</td>
                             <td>{{ $student->user->first_name }}</td>
@@ -91,15 +104,57 @@
                 <h4 class="modal-title" id="myModalLabel">View Past Records</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
+                <div class="row" id="example1">
                     <div class="col-md-12">
                         <label for="school_year" class="control-label">From School Year</label>
-                        <select class="form-control" name="school_year">
+                        <select class="form-control" name="school_year" id="school_year">
                             <option value="">-----select-----</option>
                             @foreach($years as $year)
                                 <option value="{{ $year->id }}">{{ $year->school_year }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="curriculum" class="control-label">Select Curriculum</label>
+                        {{ 
+                            Form::select(
+                                'curriculum', 
+                                array(), 
+                                null,
+                                array(
+                                    'id'=>'curriculum', 
+                                    'class'=>'form-control'
+                                )
+                            ) 
+                        }}
+                    </div>
+                    <div class="col-md-12">
+                        <label for="first_name" class="control-label">Select Year Level</label>
+                        {{ 
+                            Form::select(
+                                'year_level', 
+                                array(), 
+                                null,
+                                array(
+                                    'id'=>'years', 
+                                    'class'=>'form-control'
+                                )
+                            ) 
+                        }}
+                    </div>
+                    <div class="col-md-12">
+                        <label for="first_name" class="control-label">Select Section</label>
+                        {{ 
+                            Form::select(
+                                'sections', 
+                                array(), 
+                                null,
+                                array(
+                                    'id'=>'sections', 
+                                    'class'=>'form-control'
+                                )
+                            ) 
+                        }}
                     </div>
                 </div>
             </div>
@@ -129,29 +184,29 @@
         // } );
      
         // DataTable
-        $('#studentTable').DataTable( {
-            initComplete: function () {
-                this.api().columns().every( function () {
-                    var column = this;
-                    console.log(column);
-                    var select = $('<select><option value=""></option></select>')
-                        .appendTo( $(column.footer()).empty() )
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        // $('#studentTable').DataTable( {
+        //     initComplete: function () {
+        //         this.api().columns().every( function () {
+        //             var column = this;
+        //             console.log(column);
+        //             var select = $('<select><option value=""></option></select>')
+        //                 .appendTo( $(column.footer()).empty() )
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
      
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
      
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                } );
-            }
-        } );
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         } );
+        //     }
+        // } );
      
         // Apply the search
         // table.columns().every( function () {
@@ -163,6 +218,56 @@
         //             .draw();
         //     } );
         // } );
+
+        $('#example1').cascadingDropdown({
+            selectBoxes: [
+                {
+                    selector: '#school_year'
+                },
+                {
+                    selector: '#curriculum',
+                    requires: ['#school_year'],
+                    source: function(request, response) {
+                        $.getJSON('/backend/school-year/<?php echo SchoolYear::getActivated()->id ?>/curriculums/json', request, function(data) {
+                            response($.map(data, function(item, index) {
+                                return {
+                                    label: item.label,
+                                    value: item.value
+                                }
+                            }));
+                        });
+                    }
+                },
+                {
+                    selector: '#years',
+                    requires: ['#curriculum'],
+                    source: function(request, response) {
+                        $.getJSON('/backend/school-year/<?php echo SchoolYear::getActivated()->id ?>/year-level/json', request, function(data) {
+                            response($.map(data, function(item, index) {
+                                return {
+                                    label: item.label,
+                                    value: item.value
+                                }
+                            }));
+                        });
+                    }
+                },
+                {
+                    selector: '#sections',
+                    requires: ['#years'],
+                    source: function(request, response) {
+                        $.getJSON('/backend/school-year/<?php echo SchoolYear::getActivated()->id ?>/sections/json', request, function(data) {
+                            response($.map(data, function(item, index) {
+                                return {
+                                    label: item.label,
+                                    value: item.value
+                                }
+                            }));
+                        });
+                    }
+                }
+            ]
+        });
     });
 </script>
 @stop

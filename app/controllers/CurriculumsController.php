@@ -40,6 +40,19 @@ class CurriculumsController extends \BaseController {
         return View::make('curriculums.past-records', compact('curriculums', 'years', 'pastRecords'));
 	}
 
+	public function json() {
+        $curriculums = Curriculum::where('school_year_id',Input::get('school_year'))->orderBy('name')->get();
+        $out = array();
+        $out[] = array('label'=>'', 'value'=>'');
+        foreach ($curriculums as $curriculum) {
+            $out[] = array(
+                'label'=>$curriculum->name,
+                'value'=>$curriculum->id
+            );
+        }
+        echo json_encode($out);
+    }
+
 	/**
 	 * Show the form for creating a new resource.
 	 * GET /curriculums/create
