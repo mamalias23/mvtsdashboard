@@ -94,9 +94,9 @@
                             <ul class="contact-details">
                                 <li><a href="#"><i class="fa fa-map-marker"></i> Mabini St., Molave, Zambo Sur</a>
                                 </li>
-                                <li><a href="#"><i class="fa fa-envelope-o"></i> info@mvtsdashboard.com</a>
+                                <li><a href="#"><i class="fa fa-envelope-o"></i> info{{ '@' . Config::get('app.domain') }}</a>
                                 </li>
-                                <li><a href="#"><i class="fa fa-phone"></i> +6399999999</a>
+                                <li><a href="#"><i class="fa fa-phone"></i> 09485452243</a>
                                 </li>
                             </ul>
                             <!-- End Contact Info -->
@@ -386,9 +386,8 @@
                         <div class="footer-widget contact-widget">
                             <h4>Reach Us<span class="head-line"></span></h4>
                             <ul>
-                                <li><span>Phone Number:</span> +63999999999</li>
-                                <li><span>Email:</span> admin@mvts.com</li>
-                                <li><span>Website:</span> www.mvtsdashboard.com</li>
+                                <li><span>Phone Number:</span> 09485452243</li>
+                                <li><span>Email:</span> info{{ '@' . Config::get('app.domain') }}</li>
                             </ul>
                         </div>
                     </div><!-- .col-md-3 -->
@@ -398,7 +397,7 @@
                 <div class="copyright-section">
                     <div class="row">
                         <div class="col-md-6">
-                            <p>&copy; 2015 MVTS -  All Rights Reserved </p>
+                            <p>&copy; 2015 MVTSDASHBOARD -  All Rights Reserved </p>
                         </div>
                         <div class="col-md-6">
                             <ul class="footer-nav">

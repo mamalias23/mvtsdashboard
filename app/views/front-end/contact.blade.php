@@ -56,8 +56,8 @@
             <!-- Info - Icons List -->
             <ul class="icons-list">
                 <li><i class="fa fa-globe">  </i> <strong>Address:</strong> Mabini Street., Molave, Zambo Sur</li>
-                <li><i class="fa fa-envelope-o"></i> <strong>Email:</strong> info@mvtsdashboard.org</li>
-                <li><i class="fa fa-mobile"></i> <strong>Phone:</strong> +12 345 678 001</li>
+                <li><i class="fa fa-envelope-o"></i> <strong>Email:</strong> info{{ '@' . Config::get('app.domain') }}</li>
+                <li><i class="fa fa-mobile"></i> <strong>Mobile:</strong> 09485452243</li>
             </ul>
 
             <!-- Divider -->
