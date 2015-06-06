@@ -4,6 +4,7 @@
 
 <h1>
     Students
+    <button type="button" class="btn btn-lg btn-warning view-past-records">VIEW PAST RECORDS</button>
     <small></small>
 </h1>
 <ol class="breadcrumb">
@@ -66,5 +67,46 @@
         <!-- /.box -->
     </div>
 </div>
+
+<div class="modal fade" id="pastRecords" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {{ Form::open(array('route'=>array('backend.school-year.students.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">View Past Records</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="school_year" class="control-label">From School Year</label>
+                        <select class="form-control" name="school_year">
+                            <option value="">-----select-----</option>
+                            @foreach($years as $year)
+                                <option value="{{ $year->id }}">{{ $year->school_year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">View</button>
+            </div>
+            {{ Form::close() }}
+        </div>
+    </div>
+</div>
+@section('on-page-scripts')
+<script>
+    $(document).ready(function() {
+        $(".view-past-records").on("click", function(e) {
+            e.preventDefault();
+            $("#pastRecords").modal();
+        });
+    });
+</script>
+@stop
 
 @stop

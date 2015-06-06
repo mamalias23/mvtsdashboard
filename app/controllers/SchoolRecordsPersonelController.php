@@ -13,7 +13,28 @@ class SchoolRecordsPersonelController extends BaseController {
         //get activated school year
         $yearActivated = SchoolYear::find($school_year_id);
         $personels = $yearActivated->records_personel()->get();
-        return View::make('school-records-personel.index', compact('personels'));
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('school-records-personel.index', compact('personels', 'years'));
+    }
+
+    public function pastRecords($school_year_id)
+    {
+        $validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        //get activated school year
+        $yearActivated = SchoolYear::find(Input::get('school_year'));
+        $personels = $yearActivated->records_personel()->get();
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('school-records-personel.past-records', compact('personels', 'years'));
     }
 
     public function create($school_year_id)

@@ -19,8 +19,29 @@ class TeachersController extends \BaseController {
 		//get activated school year
         $yearActivated = SchoolYear::find($school_year_id);
         $teachers = $yearActivated->teachers()->get();
-        return View::make('teachers.index', compact('teachers'));
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('teachers.index', compact('teachers', 'years'));
 	}
+
+    public function pastRecords($school_year_id)
+    {
+        $validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        //get activated school year
+        $yearActivated = SchoolYear::find(Input::get('school_year'));
+        $teachers = $yearActivated->teachers()->get();
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('teachers.past-records', compact('teachers', 'years'));
+    }
 
 	/**
 	 * Show the form for creating a new resource.

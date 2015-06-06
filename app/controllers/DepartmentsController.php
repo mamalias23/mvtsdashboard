@@ -36,10 +36,48 @@ class DepartmentsController extends \BaseController {
                 }
             }
         }
-
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
 		$departments = Department::where('school_year_id',$school_year_id)->orderBy('name')->get();
-        return View::make('departments.index', compact('departments', 'curriculumsArray', 'availableTeachers'));
+        return View::make('departments.index', compact('departments', 'curriculumsArray', 'availableTeachers', 'years'));
 	}
+
+    public function pastRecords($school_year_id)
+    {
+        $validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $curriculums = Curriculum::where('school_year_id',Input::get('school_year'))->orderBy('name')->get();
+        $curriculumsArray = array();
+        $curriculumsArray[''] = "";
+        foreach ($curriculums as $curriculum) {
+            $curriculumsArray[$curriculum->id] = $curriculum->name;
+        }
+
+        $availableTeachers = array();
+        $availableTeachers[""] = "";
+        $group = Sentry::findGroupByName('Teachers');
+        $users = Sentry::findAllUsersInGroup($group);
+        foreach($users as $user) {
+            $teacher_exists_in_school_year = Teacher::where('school_year_id',Input::get('school_year'))->where('user_id', $user->id)->first();
+            if($teacher_exists_in_school_year) {
+                $teacher_check = Department::where('school_year_id',Input::get('school_year'))->where('teacher_id',$teacher_exists_in_school_year->id)->get();
+                if($teacher_check->count()==0) {
+                    $availableTeachers[$teacher_exists_in_school_year->id] = $user->first_name . " " . $user->middle_initial . ". " . $user->last_name;
+                }
+            }
+        }
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        $departments = Department::where('school_year_id',Input::get('school_year'))->orderBy('name')->get();
+        return View::make('departments.past-records', compact('departments', 'curriculumsArray', 'availableTeachers', 'years'));
+    }
 
 	public function json() {
         $departments = Department::where('curriculum_id',Input::get('curriculum'))->orderBy('name')->get();

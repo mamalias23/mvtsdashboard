@@ -17,8 +17,27 @@ class SubjectsController extends \BaseController {
 	public function index($school_year_id)
 	{
 		$subjects = Subject::where('school_year_id',$school_year_id)->orderBy('name')->get();
-        return View::make('subjects.index', compact('subjects'));
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('subjects.index', compact('subjects', 'years'));
 	}
+
+    public function pastRecords($school_year_id)
+    {
+        $validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $subjects = Subject::where('school_year_id',Input::get('school_year'))->orderBy('name')->get();
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('subjects.past-records', compact('subjects', 'years'));
+    }
 
 	/**
 	 * Show the form for creating a new resource.

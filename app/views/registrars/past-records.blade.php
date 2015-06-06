@@ -3,14 +3,14 @@
 @section('content-header')
 
 <h1>
-    Teachers
+    Registrars in {{ SchoolYear::find(Input::get('school_year'))->school_year }}
     <button type="button" class="btn btn-lg btn-warning view-past-records">VIEW PAST RECORDS</button>
     <small></small>
 </h1>
 <ol class="breadcrumb">
 <!-- <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
     <li><a href="#">Examples</a></li> -->
-    <li class="active">Teachers</li>
+    <li class="active">Registrars</li>
 </ol>
 
 @stop
@@ -20,9 +20,8 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Teachers</h3>
+                <h3 class="box-title">Registrars</h3>
                 <div class="box-tools pull-right">
-                    <a href="{{ route('backend.school-year.teachers.create', array(SchoolYear::getActivated()->id)) }}" class="btn btn-xs btn-info">Add new</a>
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 </div>
             </div>
@@ -37,24 +36,18 @@
                             <th>Mobile</th>
                             <th>Address</th>
                             <th>Username</th>
-                            <th data-orderable="false">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($teachers as $teacher)
+                    @foreach($registrars as $registrar)
                         <tr>
-                            <td>{{ $teacher->user->last_name }}</td>
-                            <td>{{ $teacher->user->first_name }}</td>
-                            <td>{{ $teacher->user->middle_initial }}</td>
-                            <td>{{ $teacher->user->gender }}</td>
-                            <td>{{ $teacher->user->mobile_number }}</td>
-                            <td>{{ $teacher->user->full_address }}</td>
-                            <td>{{ $teacher->user->username }}</td>
-                            <td>
-                                <a href="{{ route('backend.school-year.teachers.show', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-info btn-xs">View/Manage</a>
-                                <a href="{{ route('backend.school-year.teachers.edit', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-success btn-xs">Edit</a>
-                                <a href="{{ route('backend.school-year.teachers.destroy', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
-                            </td>
+                            <td>{{ $registrar->user->last_name }}</td>
+                            <td>{{ $registrar->user->first_name }}</td>
+                            <td>{{ $registrar->user->middle_initial }}</td>
+                            <td>{{ $registrar->user->gender }}</td>
+                            <td>{{ $registrar->user->mobile_number }}</td>
+                            <td>{{ $registrar->user->full_address }}</td>
+                            <td>{{ $registrar->user->username }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -68,7 +61,7 @@
 <div class="modal fade" id="pastRecords" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {{ Form::open(array('route'=>array('backend.school-year.teachers.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
+            {{ Form::open(array('route'=>array('backend.school-year.registrars.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -3,14 +3,14 @@
 @section('content-header')
 
 <h1>
-    Teachers
+    Announcements in {{ SchoolYear::find(Input::get('school_year'))->school_year }}
     <button type="button" class="btn btn-lg btn-warning view-past-records">VIEW PAST RECORDS</button>
     <small></small>
 </h1>
 <ol class="breadcrumb">
 <!-- <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
     <li><a href="#">Examples</a></li> -->
-    <li class="active">Teachers</li>
+    <li class="active">Announcements</li>
 </ol>
 
 @stop
@@ -20,9 +20,8 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Teachers</h3>
+                <h3 class="box-title">Announcements</h3>
                 <div class="box-tools pull-right">
-                    <a href="{{ route('backend.school-year.teachers.create', array(SchoolYear::getActivated()->id)) }}" class="btn btn-xs btn-info">Add new</a>
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 </div>
             </div>
@@ -30,32 +29,30 @@
                 <table class="table table-bordered table-striped dynamic">
                     <thead>
                         <tr>
-                            <th>Last name</th>
-                            <th>First name</th>
-                            <th>Middle initial</th>
-                            <th>Gender</th>
-                            <th>Mobile</th>
-                            <th>Address</th>
-                            <th>Username</th>
-                            <th data-orderable="false">Action</th>
+                            <th>Created by</th>
+                            <th>Title</th>
+                        @if(!Sentry::getUser()->groups()->first()->name=='Students' && !Sentry::getUser()->groups()->first()->name=='Parents or Guardians')
+                            <th>Status</th>
+                        @endif
+                            <th>SMS</th>
+                            <th>Created</th>
+                            <th>Updated</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($teachers as $teacher)
-                        <tr>
-                            <td>{{ $teacher->user->last_name }}</td>
-                            <td>{{ $teacher->user->first_name }}</td>
-                            <td>{{ $teacher->user->middle_initial }}</td>
-                            <td>{{ $teacher->user->gender }}</td>
-                            <td>{{ $teacher->user->mobile_number }}</td>
-                            <td>{{ $teacher->user->full_address }}</td>
-                            <td>{{ $teacher->user->username }}</td>
-                            <td>
-                                <a href="{{ route('backend.school-year.teachers.show', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-info btn-xs">View/Manage</a>
-                                <a href="{{ route('backend.school-year.teachers.edit', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-success btn-xs">Edit</a>
-                                <a href="{{ route('backend.school-year.teachers.destroy', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
-                            </td>
-                        </tr>
+                    @foreach($announcements as $announcement)
+                        @if(Sentry::getUser()->id == $announcement->sender_id || Sentry::getUser()->hasAccess('admin') || ($announcement->receivers->contains(Sentry::getUser()->id) && $announcement->status==2))
+                            <tr>
+                                <td>{{ $announcement->created_by()->first_name . " " . $announcement->created_by()->middle_initial . ". " . $announcement->created_by()->last_name }}</td>
+                                <td>{{ $announcement->title }}</td>
+                            @if(!Sentry::getUser()->groups()->first()->name=='Students' && !Sentry::getUser()->groups()->first()->name=='Parents or Guardians')
+                                <td>{{ $announcement->status==1 ? 'Pending':'Approved' }}</td>
+                            @endif
+                                <td>{{ $announcement->sms ? '<i class="fa fa-check-circle icon-success"></i> Yes' : '<i class="fa fa-times-circle icon-danger"></i> Nope' }}</td>
+                                <td>{{ $announcement->created_at->tz('Asia/Manila')->diffForHumans() }}</td>
+                                <td>{{ $announcement->updated_at->tz('Asia/Manila')->diffForHumans() }}</td>
+                            </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>
@@ -68,7 +65,7 @@
 <div class="modal fade" id="pastRecords" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {{ Form::open(array('route'=>array('backend.school-year.teachers.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
+            {{ Form::open(array('route'=>array('backend.school-year.announcements.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

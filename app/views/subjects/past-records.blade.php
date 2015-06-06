@@ -3,14 +3,14 @@
 @section('content-header')
 
 <h1>
-    Teachers
+    Subjects in {{ SchoolYear::find(Input::get('school_year'))->school_year }}
     <button type="button" class="btn btn-lg btn-warning view-past-records">VIEW PAST RECORDS</button>
     <small></small>
 </h1>
 <ol class="breadcrumb">
 <!-- <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
     <li><a href="#">Examples</a></li> -->
-    <li class="active">Teachers</li>
+    <li class="active">Subjects</li>
 </ol>
 
 @stop
@@ -20,9 +20,8 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Teachers</h3>
+                <h3 class="box-title">Subjects</h3>
                 <div class="box-tools pull-right">
-                    <a href="{{ route('backend.school-year.teachers.create', array(SchoolYear::getActivated()->id)) }}" class="btn btn-xs btn-info">Add new</a>
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 </div>
             </div>
@@ -30,31 +29,21 @@
                 <table class="table table-bordered table-striped dynamic">
                     <thead>
                         <tr>
-                            <th>Last name</th>
-                            <th>First name</th>
-                            <th>Middle initial</th>
-                            <th>Gender</th>
-                            <th>Mobile</th>
-                            <th>Address</th>
-                            <th>Username</th>
-                            <th data-orderable="false">Action</th>
+                            <th>Curriculum</th>
+                            <th>Year Level</th>
+                            <th>Department</th>
+                            <th>Name</th>
+                            <th>Major</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($teachers as $teacher)
+                    @foreach($subjects as $subject)
                         <tr>
-                            <td>{{ $teacher->user->last_name }}</td>
-                            <td>{{ $teacher->user->first_name }}</td>
-                            <td>{{ $teacher->user->middle_initial }}</td>
-                            <td>{{ $teacher->user->gender }}</td>
-                            <td>{{ $teacher->user->mobile_number }}</td>
-                            <td>{{ $teacher->user->full_address }}</td>
-                            <td>{{ $teacher->user->username }}</td>
-                            <td>
-                                <a href="{{ route('backend.school-year.teachers.show', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-info btn-xs">View/Manage</a>
-                                <a href="{{ route('backend.school-year.teachers.edit', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-success btn-xs">Edit</a>
-                                <a href="{{ route('backend.school-year.teachers.destroy', array(SchoolYear::getActivated()->id, $teacher->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
-                            </td>
+                            <td>{{ $subject->year->curriculum->name }}</td>
+                            <td>{{ $subject->year->level }} - {{ $subject->year->description }}</td>
+                            <td>{{ $subject->department->name }}</td>
+                            <td>{{ $subject->name }}</td>
+                            <td>{{ $subject->major ? '<i class="fa fa-check-circle icon-success"></i> Yes' : '<i class="fa fa-times-circle icon-danger"></i> Nope' }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -68,7 +57,7 @@
 <div class="modal fade" id="pastRecords" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {{ Form::open(array('route'=>array('backend.school-year.teachers.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
+            {{ Form::open(array('route'=>array('backend.school-year.subjects.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

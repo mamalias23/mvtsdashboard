@@ -18,8 +18,27 @@ class AnnouncementsController extends \BaseController {
 	public function index($school_year_id)
 	{
         $announcements = Announcement::where('school_year_id', $school_year_id)->orderBy('created_at', 'DESC')->get();
-        return View::make('announcements.index', compact('announcements'));
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('announcements.index', compact('announcements', 'years'));
 	}
+
+    public function pastRecords($school_year_id)
+    {
+        $validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $announcements = Announcement::where('school_year_id', Input::get('school_year'))->orderBy('created_at', 'DESC')->get();
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('announcements.past-records', compact('announcements', 'years'));
+    }
 
 	/**
 	 * Show the form for creating a new resource.

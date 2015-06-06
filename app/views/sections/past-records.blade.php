@@ -3,7 +3,7 @@
 @section('content-header')
 
 <h1>
-    Sections
+    Sections in {{ SchoolYear::find(Input::get('school_year'))->school_year }}
     <button type="button" class="btn btn-lg btn-warning view-past-records">VIEW PAST RECORDS</button>
     <small></small>
 </h1>
@@ -22,7 +22,6 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Sections</h3>
                 <div class="box-tools pull-right">
-                    <a href="{{ route('backend.school-year.sections.create', array(SchoolYear::getActivated()->id)) }}" class="btn btn-xs btn-info">Add new</a>
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                 </div>
             </div>
@@ -34,7 +33,6 @@
                             <th>Year Level</th>
                             <th>Name</th>
                             <th>Adviser</th>
-                            <th data-orderable="false">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,22 +41,7 @@
                             <td>{{ $section->curriculum->name }}</td>
                             <td>{{ $section->year->level }} - {{ $section->year->description }}</td>
                             <td>{{ $section->name }}</td>
-                            <td>{{ $section->adviser ? '<a href="'.route('backend.school-year.teachers.show', array(SchoolYear::getActivated()->id, $section->adviser->id)).'">'.$section->adviser->user->first_name . " " . $section->adviser->user->last_name.'</a>' : 'No Adviser'; }}</td>
-                            <td>
-                                @if(!$section->adviser)
-                                <a
-                                    href="javascript:;"
-                                    data-id="{{ $section->id }}"
-                                    data-curriculum="{{ $section->curriculum_id }}"
-                                    data-name="{{ $section->name }}"
-                                    class="btn btn-xs btn-info assign-adviser"
-                                >Assign Adviser</a>
-                                @else
-                                    <a href="{{ route('backend.school-year.sections.removeAdviser', array(SchoolYear::getActivated()->id, $section->id)) }}" class="btn btn-xs btn-warning" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to remove the adviser?">Remove Adviser</a>
-                                @endif
-                                <a href="{{ route('backend.school-year.sections.edit', array(SchoolYear::getActivated()->id, $section->id)) }}" class="btn btn-success btn-xs">Edit</a>
-                                <a href="{{ route('backend.school-year.sections.destroy', array(SchoolYear::getActivated()->id, $section->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
-                            </td>
+                            <td>{{ $section->adviser ? $section->adviser->user->first_name . " " . $section->adviser->user->last_name : 'No Adviser'; }}</td>
                         </tr>
                     @endforeach
                     </tbody>

@@ -18,42 +18,57 @@ Route::group(array('prefix'=>'backend'), function() {
 
 	Route::get('school-year/{school_year}/activate', ['as' => 'backend.school-year.activate', 'uses' => 'SchoolYearController@activate']);
 	Route::resource('school-year', 'SchoolYearController');
+
+    Route::get('school-year/{school_year}/year-level/past-record', ['as' => 'backend.school-year.year-level.pastRecords', 'uses' => 'YearLevelController@pastRecords']);
 	Route::get('school-year/{school_year}/year-level/json', ['as' => 'backend.school-year.year-level.json', 'uses' => 'YearLevelController@json']);
     Route::resource('school-year.year-level', 'YearLevelController');
+
+    Route::get('school-year/{school_year}/curriculums/past-record', ['as' => 'backend.school-year.curriculums.pastRecords', 'uses' => 'CurriculumsController@pastRecords']);
     Route::resource('school-year.curriculums', 'CurriculumsController');
+
+    Route::get('school-year/{school_year}/personels/past-record', ['as' => 'backend.school-year.personels.pastRecords', 'uses' => 'SchoolRecordsPersonelController@pastRecords']);
     Route::post('school-year/{school_year}/personels/existing', ['as' => 'backend.school-year.personels.storeFromExisting', 'uses' => 'SchoolRecordsPersonelController@storeFromExisting']);
 	Route::resource('school-year.personels', 'SchoolRecordsPersonelController');
 
+    Route::get('school-year/{school_year}/departments/past-record', ['as' => 'backend.school-year.departments.pastRecords', 'uses' => 'DepartmentsController@pastRecords']);
     Route::post('school-year/{school_year}/departments/store-head', ['as' => 'backend.school-year.departments.storeHead', 'uses' => 'DepartmentsController@storeHead']);
 	Route::get('school-year/{school_year}/departments/json', ['as' => 'backend.school-year.departments.json', 'uses' => 'DepartmentsController@json']);
     Route::delete('school-year/{school_year}/departments/{departments}/remove-head', ['as' => 'backend.school-year.departments.removeHead', 'uses' => 'DepartmentsController@removeHead']);
 	Route::resource('school-year.departments', 'DepartmentsController');
 
+    Route::get('school-year/{school_year}/sections/past-record', ['as' => 'backend.school-year.sections.pastRecords', 'uses' => 'SectionsController@pastRecords']);
     Route::post('school-year/{school_year}/sections/store-adviser', ['as' => 'backend.school-year.sections.storeAdviser', 'uses' => 'SectionsController@storeAdviser']);
     Route::get('school-year/{school_year}/sections/json', ['as' => 'backend.school-year.sections.json', 'uses' => 'SectionsController@json']);
     Route::delete('school-year/{school_year}/sections/{sections}/remove-adviser', ['as' => 'backend.school-year.sections.removeAdviser', 'uses' => 'SectionsController@removeAdviser']);
 	Route::resource('school-year.sections', 'SectionsController');
 
+    Route::get('school-year/{school_year}/subjects/past-record', ['as' => 'backend.school-year.subjects.pastRecords', 'uses' => 'SubjectsController@pastRecords']);
 	Route::resource('school-year.subjects', 'SubjectsController');
 
+    Route::get('school-year/{school_year}/teachers/past-record', ['as' => 'backend.school-year.teachers.pastRecords', 'uses' => 'TeachersController@pastRecords']);
 	Route::post('school-year/{school_year}/teachers/{teachers}/advisory', ['as' => 'backend.school-year.teachers.advisory', 'uses' => 'TeachersController@advisory']);
 	Route::post('school-year/{school_year}/teachers/{teachers}/subjects', ['as' => 'backend.school-year.teachers.subjects', 'uses' => 'TeachersController@subjects']);
 	Route::post('school-year/{school_year}/teachers/existing', ['as' => 'backend.school-year.teachers.storeFromExisting', 'uses' => 'TeachersController@storeFromExisting']);
 	Route::resource('school-year.teachers', 'TeachersController');
 
+    Route::get('school-year/{school_year}/registrars/past-record', ['as' => 'backend.school-year.registrars.pastRecords', 'uses' => 'RegistrarsController@pastRecords']);
 	Route::post('school-year/{school_year}/registrars/existing', ['as' => 'backend.school-year.registrars.storeFromExisting', 'uses' => 'RegistrarsController@storeFromExisting']);
 	Route::resource('school-year.registrars', 'RegistrarsController');
 
+    Route::get('school-year/{school_year}/guards/past-record', ['as' => 'backend.school-year.guards.pastRecords', 'uses' => 'GuardsController@pastRecords']);
 	Route::post('school-year/{school_year}/guards/existing', ['as' => 'backend.school-year.guards.storeFromExisting', 'uses' => 'GuardsController@storeFromExisting']);
 	Route::resource('school-year.guards', 'GuardsController');
 
+    Route::get('school-year/{school_year}/staffs/past-record', ['as' => 'backend.school-year.staffs.pastRecords', 'uses' => 'StaffsController@pastRecords']);
 	Route::post('school-year/{school_year}/staffs/existing', ['as' => 'backend.school-year.staffs.storeFromExisting', 'uses' => 'StaffsController@storeFromExisting']);
 	Route::resource('school-year.staffs', 'StaffsController');
 
+    Route::get('school-year/{school_year}/students/past-record', ['as' => 'backend.school-year.students.pastRecords', 'uses' => 'StudentsController@pastRecords']);
     Route::get('school-year/{school_year}/students/enroll', ['as' => 'backend.school-year.students.enroll', 'uses' => 'StudentsController@enroll']);
     Route::post('school-year/{school_year}/students/enroll', ['as' => 'backend.school-year.students.storeEnroll', 'uses' => 'StudentsController@storeEnroll']);
     Route::resource('school-year.students', 'StudentsController');
 
+    Route::get('school-year/{school_year}/announcements/past-record', ['as' => 'backend.school-year.announcements.pastRecords', 'uses' => 'AnnouncementsController@pastRecords']);
     Route::get('school-year/{school_year}/announcements/{announcements}/approve', ['as' => 'backend.school-year.announcements.approve', 'uses' => 'AnnouncementsController@approve']);
     Route::resource('school-year.announcements', 'AnnouncementsController');
 

@@ -3,7 +3,7 @@
 @section('content-header')
 
 <h1>
-    Departments
+    Departments in {{ SchoolYear::find(Input::get('school_year'))->school_year }}
     <button type="button" class="btn btn-lg btn-warning view-past-records">VIEW PAST RECORDS</button>
     <small></small>
 </h1>
@@ -22,7 +22,6 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Departments</h3>
                 <div class="box-tools pull-right">
-                    <a href="javascript:;" class="btn btn-xs btn-info add-by-modal">Add new</a>
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                     <!-- <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button> -->
                 </div>
@@ -34,7 +33,6 @@
                             <th>Curriculum</th>
                             <th>Name</th>
                             <th>Head</th>
-                            <th>Action</th>
                         </tr>
                         @if($departments->count())
                             @foreach($departments as $department)
@@ -48,33 +46,12 @@
                                     <td>
                                         {{ $department->head ? $department->head->user->first_name . " " . $department->head->user->last_name : 'no head yet' }}
                                     </td>
-                                    <td>
-                                        @if(!$department->head)
-                                        <a
-                                            href="javascript:;"
-                                            data-id="{{ $department->id }}"
-                                            data-curriculum="{{ $department->curriculum_id }}"
-                                            data-name="{{ $department->name }}"
-                                            class="btn btn-xs btn-info assign-department-head"
-                                        >Assign Department Head</a>
-                                        @else
-                                            <a href="{{ route('backend.school-year.departments.removeHead', array(SchoolYear::getActivated()->id, $department->id)) }}" class="btn btn-xs btn-warning" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to remove this head?">Remove Department Head</a>
-                                        @endif
-                                        <a 
-                                            href="javascript:;" 
-                                            data-id="{{ $department->id }}" 
-                                            data-curriculum="{{ $department->curriculum_id }}" 
-                                            data-name="{{ $department->name }}" 
-                                            class="btn btn-xs btn-success edit-by-modal"
-                                        >Edit</a>
-                                        <a href="{{ route('backend.school-year.departments.destroy', array(SchoolYear::getActivated()->id, $department->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
-                                    </td>
                                 </tr>
                             @endforeach
                         @else
                            <tr>
                                 <td colspan="3">
-                                    No departments added for school year {{ SchoolYear::getActivated()->school_year }}
+                                    No departments added for school year {{ SchoolYear::find(Input::get('school_year'))->school_year }}
                                 </td>
                             </tr> 
                         @endif

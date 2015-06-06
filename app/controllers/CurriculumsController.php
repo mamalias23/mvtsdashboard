@@ -17,7 +17,27 @@ class CurriculumsController extends \BaseController {
 	public function index($school_year_id)
 	{
 		$curriculums = Curriculum::where('school_year_id',$school_year_id)->orderBy('name')->get();
-        return View::make('curriculums.index', compact('curriculums'));
+		$years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('curriculums.index', compact('curriculums', 'years'));
+	}
+
+	public function pastRecords($school_year_id)
+	{
+		$validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+		$curriculums = Curriculum::where('school_year_id',Input::get('school_year'))->orderBy('name')->get();
+		$years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+		$pastRecords = 1;
+        return View::make('curriculums.past-records', compact('curriculums', 'years', 'pastRecords'));
 	}
 
 	/**

@@ -17,7 +17,32 @@ class YearLevelController extends BaseController {
             $curriculumsArray[$curriculum->id] = $curriculum->name;
         }
         $years = YearLevel::where('school_year_id',$school_year_id)->orderBy('level')->get();
-        return View::make('year-level.index', compact('years', 'curriculumsArray'));
+        $school_years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('year-level.index', compact('years', 'curriculumsArray', 'school_years'));
+    }
+
+    public function pastRecords($school_year_id)
+    {
+        $validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $curriculums = Curriculum::where('school_year_id',Input::get('school_year'))->orderBy('name')->get();
+        $curriculumsArray = array();
+        $curriculumsArray[''] = "";
+        foreach ($curriculums as $curriculum) {
+            $curriculumsArray[$curriculum->id] = $curriculum->name;
+        }
+        $years = YearLevel::where('school_year_id', Input::get('school_year'))->orderBy('level')->get();
+        $school_years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('year-level.past-records', compact('years', 'curriculumsArray', 'school_years'));
     }
 
     public function json() {

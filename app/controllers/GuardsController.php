@@ -19,8 +19,29 @@ class GuardsController extends \BaseController {
 		//get activated school year
         $yearActivated = SchoolYear::find($school_year_id);
         $guards = $yearActivated->guards()->get();
-        return View::make('guards.index', compact('guards'));
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('guards.index', compact('guards', 'years'));
 	}
+
+    public function pastRecords($school_year_id)
+    {
+        $validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        //get activated school year
+        $yearActivated = SchoolYear::find(Input::get('school_year'));
+        $guards = $yearActivated->guards()->get();
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('guards.past-records', compact('guards', 'years'));
+    }
 
 	/**
 	 * Show the form for creating a new resource.

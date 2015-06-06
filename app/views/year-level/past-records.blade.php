@@ -3,14 +3,14 @@
 @section('content-header')
 
 <h1>
-    Departments
+    Year Levels in {{ SchoolYear::find(Input::get('school_year'))->school_year }}
     <button type="button" class="btn btn-lg btn-warning view-past-records">VIEW PAST RECORDS</button>
     <small></small>
 </h1>
 <ol class="breadcrumb">
 <!-- <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
     <li><a href="#">Examples</a></li> -->
-    <li class="active">Departments</li>
+    <li class="active">Year levels</li>
 </ol>
 
 @stop
@@ -20,9 +20,8 @@
     <div class="col-md-6">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Departments</h3>
+                <h3 class="box-title">Year Levels</h3>
                 <div class="box-tools pull-right">
-                    <a href="javascript:;" class="btn btn-xs btn-info add-by-modal">Add new</a>
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                     <!-- <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button> -->
                 </div>
@@ -32,49 +31,27 @@
                     <tbody>
                         <tr>
                             <th>Curriculum</th>
-                            <th>Name</th>
-                            <th>Head</th>
-                            <th>Action</th>
+                            <th>Level</th>
+                            <th>Description</th>
                         </tr>
-                        @if($departments->count())
-                            @foreach($departments as $department)
+                        @if($years->count())
+                            @foreach($years as $year)
                                 <tr>
                                     <td>
-                                        {{ $department->curriculum->name }}
+                                        {{ $year->curriculum->name }}
                                     </td>
                                     <td>
-                                        {{ $department->name }}
+                                        {{ $year->level }}
                                     </td>
                                     <td>
-                                        {{ $department->head ? $department->head->user->first_name . " " . $department->head->user->last_name : 'no head yet' }}
-                                    </td>
-                                    <td>
-                                        @if(!$department->head)
-                                        <a
-                                            href="javascript:;"
-                                            data-id="{{ $department->id }}"
-                                            data-curriculum="{{ $department->curriculum_id }}"
-                                            data-name="{{ $department->name }}"
-                                            class="btn btn-xs btn-info assign-department-head"
-                                        >Assign Department Head</a>
-                                        @else
-                                            <a href="{{ route('backend.school-year.departments.removeHead', array(SchoolYear::getActivated()->id, $department->id)) }}" class="btn btn-xs btn-warning" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to remove this head?">Remove Department Head</a>
-                                        @endif
-                                        <a 
-                                            href="javascript:;" 
-                                            data-id="{{ $department->id }}" 
-                                            data-curriculum="{{ $department->curriculum_id }}" 
-                                            data-name="{{ $department->name }}" 
-                                            class="btn btn-xs btn-success edit-by-modal"
-                                        >Edit</a>
-                                        <a href="{{ route('backend.school-year.departments.destroy', array(SchoolYear::getActivated()->id, $department->id)) }}" class="btn btn-xs btn-danger" data-method="delete" rel="nofollow" data-confirm="Are you sure you want to delete this?">Delete</a>
+                                        {{ $year->description }}
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                            <tr>
                                 <td colspan="3">
-                                    No departments added for school year {{ SchoolYear::getActivated()->school_year }}
+                                    No year level added for school year {{ SchoolYear::find(Input::get('school_year'))->school_year }}
                                 </td>
                             </tr> 
                         @endif
@@ -90,7 +67,7 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {{ Form::open(array('route'=>array('backend.school-year.departments.index', SchoolYear::getActivated()->id))) }}
+            {{ Form::open(array('route'=>array('backend.school-year.year-level.index', SchoolYear::getActivated()->id))) }}
             {{ 
                 Form::hidden(
                     'hidden_id', 
@@ -102,10 +79,10 @@
             }}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">New Department</h4>
+                <h4 class="modal-title" id="myModalLabel">New Year level</h4>
             </div>
             <div class="modal-body">
-                <div class="row" style="margin-top:15px">
+                <div class="row">
                     <div class="col-md-12">
                         <label for="curriculum" class="control-label">Select Curriculum</label>
                         {{ 
@@ -123,16 +100,33 @@
                     </div>
                 </div>
                 <div class="row" style="margin-top:15px">
-                    <div class="col-md-12">
-                        <label for="name" class="control-label">Name</label>
+                    <div class="col-md-5">
                         {{ 
-                            Form::text(
-                                'name', 
+                            Form::number(
+                                'level', 
                                 null, 
                                 array(
-                                    'id'=>'name', 
+                                    'id'=>'level', 
                                     'class'=>'form-control',
-                                    'placeholder'=>'eg: Computer, Science',
+                                    'placeholder'=>'Year level',
+                                    'data-rule-required'=>'true',
+                                    'min'=>1,
+                                    'max'=>10,
+                                )
+                            ) 
+                        }}
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px">
+                    <div class="col-md-12">
+                        {{ 
+                            Form::text(
+                                'description', 
+                                null, 
+                                array(
+                                    'id'=>'description', 
+                                    'class'=>'form-control',
+                                    'placeholder'=>'eg: First Year, Second Year',
                                     'data-rule-required'=>'true',
                                 )
                             ) 
@@ -149,55 +143,10 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-assign-head" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAssignHead" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            {{ Form::open(array('route'=>array('backend.school-year.departments.storeHead', SchoolYear::getActivated()->id))) }}
-            {{
-                Form::hidden(
-                    'hidden_id',
-                    null,
-                    array(
-                        'id'=>'hidden_id_department',
-                    )
-                )
-            }}
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabelAssignHead">Assign Department Head</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row" style="margin-top:15px">
-                    <div class="col-md-12">
-                        <label for="teacher_id" class="control-label">Select Teacher</label>
-                        {{
-                            Form::select(
-                                'teacher_id',
-                                $availableTeachers,
-                                null,
-                                array(
-                                    'id'=>'teacher_id',
-                                    'class'=>'form-control',
-                                    'data-rule-required'=>'true'
-                                )
-                            )
-                        }}
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" name="submit" value="add" class="btn btn-primary">Save</button>
-            </div>
-            {{ Form::close() }}
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="pastRecords" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            {{ Form::open(array('route'=>array('backend.school-year.departments.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
+            {{ Form::open(array('route'=>array('backend.school-year.year-level.pastRecords', SchoolYear::getActivated()->id), 'method'=>'GET')) }}
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -209,7 +158,7 @@
                         <label for="school_year" class="control-label">From School Year</label>
                         <select class="form-control" name="school_year">
                             <option value="">-----select-----</option>
-                            @foreach($years as $year)
+                            @foreach($school_years as $year)
                                 <option value="{{ $year->id }}">{{ $year->school_year }}</option>
                             @endforeach
                         </select>
@@ -231,26 +180,21 @@
         $(".add-by-modal").on("click", function(e) {
             e.preventDefault();
             $("#myModal").modal();
-            $("#myModalLabel").html("New Department");
+            $("#myModalLabel").html("New Year level");
             $("#hidden_id").val('');
-            $("#name").val('');
+            $("#level").val('');
+            $("#description").val('');
             $("#curriculum").val('');
         });
 
         $(".edit-by-modal").on("click", function(e) {
             e.preventDefault();
             $("#myModal").modal();
-            $("#myModalLabel").html("Update Department");
+            $("#myModalLabel").html("Update Year level");
             $("#hidden_id").val($(this).data('id'));
-            $("#name").val($(this).data('name'));
+            $("#level").val($(this).data('level'));
+            $("#description").val($(this).data('description'));
             $("#curriculum").val($(this).data('curriculum'));
-        });
-
-        $(".assign-department-head").on("click", function(e) {
-            e.preventDefault();
-            $("#modal-assign-head").modal();
-            $("#myModalLabelAssignHead").html("Assign Department Head");
-            $("#hidden_id_department").val($(this).data('id'));
         });
 
         $(".view-past-records").on("click", function(e) {

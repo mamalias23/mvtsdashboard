@@ -18,8 +18,29 @@ class RegistrarsController extends \BaseController {
 		//get activated school year
         $yearActivated = SchoolYear::find($school_year_id);
         $registrars = $yearActivated->registrars()->get();
-        return View::make('registrars.index', compact('registrars'));
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('registrars.index', compact('registrars', 'years'));
 	}
+
+    public function pastRecords($school_year_id)
+    {
+        $validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        //get activated school year
+        $yearActivated = SchoolYear::find(Input::get('school_year'));
+        $registrars = $yearActivated->registrars()->get();
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('registrars.past-records', compact('registrars', 'years'));
+    }
 
 	/**
 	 * Show the form for creating a new resource.

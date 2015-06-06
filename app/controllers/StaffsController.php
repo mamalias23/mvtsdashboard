@@ -19,8 +19,29 @@ class StaffsController extends \BaseController {
 		//get activated school year
         $yearActivated = SchoolYear::find($school_year_id);
         $staffs = $yearActivated->staffs()->get();
-        return View::make('staffs.index', compact('staffs'));
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('staffs.index', compact('staffs', 'years'));
 	}
+
+    public function pastRecords($school_year_id)
+    {
+        $validator = Validator::make(
+            Request::all(),
+            array(
+                'school_year' => 'required'
+            )
+        );
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        //get activated school year
+        $yearActivated = SchoolYear::find(Input::get('school_year'));
+        $staffs = $yearActivated->staffs()->get();
+        $years = SchoolYear::where('id', '<>', $school_year_id)->orderBy('school_year')->get();
+        return View::make('staffs.past-records', compact('staffs', 'years'));
+    }
 
 	/**
 	 * Show the form for creating a new resource.
