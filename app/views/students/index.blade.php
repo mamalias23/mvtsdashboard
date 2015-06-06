@@ -120,24 +120,27 @@
         });
 
         // Setup - add a text input to each footer cell
-        $('#studentTable tfoot th').each( function () {
+        $('#studentTable tfoot th').each( function (i) {
             var title = $('#studentTable thead th').eq( $(this).index() ).text();
-            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            var search = '<input type="text" placeholder="Search ' + title + '" />';
+            $(this).html('');
+            $(search).appendTo(this).keyup(function(){table.fnFilter($(this).val(),i)})
+            //$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
         } );
      
         // DataTable
-        var table = $('#studentTable').DataTable();
+        var table = $('#studentTable').dataTable();
      
         // Apply the search
-        table.columns().every( function () {
-            var that = this;
+        // table.columns().every( function () {
+        //     var that = this;
      
-            $( 'input', this.footer() ).on( 'keyup change', function () {
-                that
-                    .search( this.value )
-                    .draw();
-            } );
-        } );
+        //     $( 'input', this.footer() ).on( 'keyup change', function () {
+        //         that
+        //             .search( this.value )
+        //             .draw();
+        //     } );
+        // } );
     });
 </script>
 @stop
