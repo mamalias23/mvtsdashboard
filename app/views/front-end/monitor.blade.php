@@ -56,6 +56,7 @@
         bottom: 0;
         right: 0;
         padding:10px;
+        padding-bottom: 25px;
         font-size: 30px;
         color:#000;
     }
